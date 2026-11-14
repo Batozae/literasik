@@ -1,4 +1,4 @@
-# 01_STATUS: Literasik
+# STATUS: Literasik
 
 > Diperbarui di **akhir setiap fase** oleh pengerja fase itu. Dibaca AI bersama `00_MASTER_CONTEXT.md` dan dokumen fase sebelumnya.
 > Jika bertentangan dengan Master Context, Master Context yang berlaku.
