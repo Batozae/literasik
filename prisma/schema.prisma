@@ -1,15 +1,248 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+}
+
+enum AssessmentType {
+  WAJIB
+  LATIHAN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum SessionKind {
+  WAJIB
+  LATIHAN
+}
+
+enum PointEventType {
+  WAJIB_ANSWER
+  WAJIB_BONUS
+  LATIHAN_ANSWER
+}
+
+// Akun untuk siswa dan guru.
+model User {
+  id             Int                 @id @default(autoincrement())
+  name           String              @db.VarChar(191)
+  username       String              @unique @db.VarChar(191)
+  passwordHash   String              @db.VarChar(255)
+  role           Role
+  student        StudentProfile?
+  teacherClasses TeacherClass[]
+  assessments    Assessment[]
+  answers        Answer[]
+  pointEvents    PointEvent[]
+  badges         StudentBadge[]
+  sessions       AssessmentSession[]
+}
+
+// Kelas belajar dengan satu tingkat angkatan.
+model Class {
+  id                Int               @id @default(autoincrement())
+  name              String            @db.VarChar(191)
+  gradeLevel        Int
+  students          StudentProfile[]
+  teachers          TeacherClass[]
+  assessmentTargets AssessmentClass[]
+}
+
+// Profil siswa dan kelas yang diikuti.
+model StudentProfile {
+  id      Int   @id @default(autoincrement())
+  userId  Int   @unique
+  classId Int
+  user    User  @relation(fields: [userId], references: [id])
+  class   Class @relation(fields: [classId], references: [id])
+}
+
+// Penghubung guru dengan kelas yang diajar.
+model TeacherClass {
+  id        Int   @id @default(autoincrement())
+  teacherId Int
+  classId   Int
+  teacher   User  @relation(fields: [teacherId], references: [id])
+  class     Class @relation(fields: [classId], references: [id])
+
+  @@unique([teacherId, classId])
+}
+
+// Pilar literasi digital.
+model Pillar {
+  id     Int     @id @default(autoincrement())
+  code   String  @unique @db.VarChar(64)
+  name   String  @db.VarChar(191)
+  topics Topic[]
+}
+
+// Materi dalam satu pilar dan tingkat angkatan.
+model Topic {
+  id          Int                 @id @default(autoincrement())
+  pillarId    Int
+  name        String              @db.VarChar(191)
+  gradeLevel  Int
+  pillar      Pillar              @relation(fields: [pillarId], references: [id])
+  questions   Question[]
+  assessments Assessment[]
+  sessions    AssessmentSession[]
+}
+
+// Soal pilihan ganda pada suatu materi.
+model Question {
+  id                  Int                  @id @default(autoincrement())
+  topicId             Int
+  text                String               @db.Text
+  difficulty          Difficulty
+  explanation         String               @db.Text
+  isActive            Boolean              @default(true)
+  topic               Topic                @relation(fields: [topicId], references: [id])
+  options             Option[]
+  assessmentQuestions AssessmentQuestion[]
+  answers             Answer[]
+}
+
+// Salah satu opsi jawaban soal.
+model Option {
+  id              Int      @id @default(autoincrement())
+  questionId      Int
+  text            String   @db.Text
+  isCorrect       Boolean  @default(false)
+  order           Int
+  question        Question @relation(fields: [questionId], references: [id])
+  selectedAnswers Answer[]
+
+  @@unique([questionId, order])
+}
+
+// Asesmen wajib terjadwal atau latihan.
+model Assessment {
+  id            Int                  @id @default(autoincrement())
+  title         String               @db.VarChar(191)
+  description   String?              @db.Text
+  type          AssessmentType
+  gradeLevel    Int
+  opensAt       DateTime?
+  closesAt      DateTime?
+  sourceTopicId Int?
+  isActive      Boolean              @default(false)
+  createdById   Int
+  createdAt     DateTime             @default(now())
+  sourceTopic   Topic?               @relation(fields: [sourceTopicId], references: [id])
+  createdBy     User                 @relation(fields: [createdById], references: [id])
+  questions     AssessmentQuestion[]
+  targetClasses AssessmentClass[]
+  sessions      AssessmentSession[]
+
+  @@index([gradeLevel])
+}
+
+// Urutan soal di dalam asesmen.
+model AssessmentQuestion {
+  id           Int        @id @default(autoincrement())
+  assessmentId Int
+  questionId   Int
+  order        Int
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
+  question     Question   @relation(fields: [questionId], references: [id])
+
+  @@unique([assessmentId, questionId])
+  @@unique([assessmentId, order])
+}
+
+// Kelas sasaran asesmen latihan rekomendasi.
+model AssessmentClass {
+  id           Int        @id @default(autoincrement())
+  assessmentId Int
+  classId      Int
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
+  class        Class      @relation(fields: [classId], references: [id])
+
+  @@unique([assessmentId, classId])
+}
+
+// Sesi pengerjaan wajib atau latihan oleh siswa.
+model AssessmentSession {
+  id           Int          @id @default(autoincrement())
+  studentId    Int
+  kind         SessionKind
+  assessmentId Int?
+  topicId      Int?
+  startedAt    DateTime     @default(now())
+  finishedAt   DateTime?
+  student      User         @relation(fields: [studentId], references: [id])
+  assessment   Assessment?  @relation(fields: [assessmentId], references: [id])
+  topic        Topic?       @relation(fields: [topicId], references: [id])
+  answers      Answer[]
+  pointEvents  PointEvent[]
+  wajibKey     String?      @unique @db.VarChar(64)
+
+  @@index([studentId])
+  @@index([assessmentId])
+}
+
+// Jawaban yang dikirim siswa pada satu sesi.
+model Answer {
+  id               Int               @id @default(autoincrement())
+  sessionId        Int
+  studentId        Int
+  questionId       Int
+  selectedOptionId Int
+  isCorrect        Boolean
+  answeredAt       DateTime          @default(now())
+  session          AssessmentSession @relation(fields: [sessionId], references: [id])
+  student          User              @relation(fields: [studentId], references: [id])
+  question         Question          @relation(fields: [questionId], references: [id])
+  selectedOption   Option            @relation(fields: [selectedOptionId], references: [id])
+
+  @@unique([sessionId, questionId])
+  @@index([studentId])
+}
+
+// Peristiwa poin dari jawaban atau bonus.
+model PointEvent {
+  id        Int               @id @default(autoincrement())
+  studentId Int
+  sessionId Int
+  type      PointEventType
+  points    Int
+  createdAt DateTime          @default(now())
+  student   User              @relation(fields: [studentId], references: [id])
+  session   AssessmentSession @relation(fields: [sessionId], references: [id])
+
+  @@index([studentId])
+}
+
+// Definisi lencana yang dapat diperoleh.
+model Badge {
+  id          Int            @id @default(autoincrement())
+  code        String         @unique @db.VarChar(64)
+  name        String         @db.VarChar(191)
+  description String         @db.Text
+  students    StudentBadge[]
+}
+
+// Lencana yang sudah diperoleh seorang siswa.
+model StudentBadge {
+  id        Int      @id @default(autoincrement())
+  studentId Int
+  badgeId   Int
+  awardedAt DateTime @default(now())
+  student   User     @relation(fields: [studentId], references: [id])
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+
+  @@unique([studentId, badgeId])
+  @@index([studentId])
 }
