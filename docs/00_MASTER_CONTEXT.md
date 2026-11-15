@@ -1,7 +1,7 @@
 # 00_MASTER_CONTEXT: Literasik (v2.0, ringkas)
 
 > Acuan tunggal proyek. Dibaca AI dan manusia di awal setiap sesi, bersama `README.md`.
-> Jika dokumen fase bertentangan dengan dokumen ini, **dokumen ini yang berlaku**. Perubahan keputusan dicatat di Bagian 13.
+> Jika dokumen fase bertentangan dengan dokumen ini, **dokumen ini yang berlaku**.
 
 ## 1. Ringkasan
 
@@ -130,7 +130,7 @@ _(Opsional F4 bila waktu ada: kolom "persentase benar per soal" di bank soal.)_
 
 ## 10. Aturan untuk AI (wajib)
 
-1. Baca dokumen ini, `README.md`, dan dokumen fase sebelumnya sebelum menulis kode.
+1. Baca dokumen ini, `README.md`, `docs/DESIGN.md`dan dokumen fase sebelumnya sebelum menulis kode.
 2. **Jangan mengubah `schema.prisma`** atau menjalankan migrasi tanpa instruksi eksplisit. Jika fase Anda butuh perubahan skema, catat usulannya di Status dan Bagian 13, lalu tanyakan.
 3. Angka ambang dan konstanta hanya dari `config.ts`; **jangan mengarang angka baru**.
 4. Analitik dan peringkat **hanya dari sesi WAJIB** (D-01).
@@ -145,7 +145,7 @@ _(Opsional F4 bila waktu ada: kolom "persentase benar per soal" di bank soal.)_
 - **Satu orang per fase.** Anggota yang memegang fase juga memegang berkas fase itu; pemeriksa kode adalah **anggota lain** (fokus: otorisasi, jendela waktu, aturan bisnis).
 - Pemilik `schema.prisma`: pengerja Fase 1; setelah itu perubahan skema hanya lewat kesepakatan kelompok dan dicatat di Bagian 13.
 - Satu branch per fase/fitur, digabung ke `main` setelah diuji manual oleh orang lain. Commit kecil, pesan menyebut ID fitur (mis. `GUR-04`).
-- Di akhir fase, pengerja memperbarui `README.md` (dan Bagian 13 bila ada keputusan baru) lalu menulis `Fase_N.md` (format di `README.md`). Fase berikutnya memakai 3 dokumen: Master Context, Status, Fase_N sebelumnya.
+- Di akhir fase, pengerja memperbarui `README.md` lalu menulis `Fase_N.md` (format di `README.md`). Fase berikutnya memakai 3 dokumen: Master Context, Status, Fase_N sebelumnya.
 
 ## 12. Skenario Demo dan Kriteria Penerimaan
 
@@ -165,11 +165,3 @@ _(Opsional F4 bila waktu ada: kolom "persentase benar per soal" di bank soal.)_
 - Fungsi `scoring.ts`, `analytics.ts`, `schedule.ts` punya unit test yang lulus; `npm run db:reset` memulihkan data demo.
 
 **Risiko / perlu verifikasi:** semua ambang adalah asumsi · pembagian materi perlu dicocokkan dengan modul resmi · tren per asesmen rawan salah tafsir (pertahankan catatan D-08) · absen mengurangi poin peringkat dan tidak bisa dipulihkan lewat latihan (bahas sebagai keterbatasan) · 5 soal per asesmen membuat hasil rawan tebakan (alasan ada jumlah minimum jawaban) · kebenaran 60 soal bergantung tinjauan manusia · penegakan jendela waktu bergantung kode server (area utama code review) · versi Next.js/Prisma/`jose` dan UU PDP perlu dicek di sumber resmi.
-
-## 13. Log Keputusan
-
-| Tanggal                                                       | Keputusan                                                                                                                        | Alasan                                     | Oleh              |
-| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
-| 2026-11-13                                                    | v1.0-1.1: stack, fitur, WAJIB vs LATIHAN, peringkat angkatan top 25, pembahasan tertunda, 60 soal / 6 asesmen wajib per angkatan | Dokumen awal dan revisi                    | Kelompok + Claude |
-| 2026-11-13                                                    | v2.0: dokumen diringkas; fitur dibagi ulang agar beban 4 fase seimbang (ASM-01/02 ke F1, SIS-07 ke F4, DAT-02 ke F2)             | 1 orang = 1 fase, hindari F2 terlalu padat | Kelompok + Claude |
-| (isi saat ada perubahan, termasuk versi pustaka yang dikunci) |                                                                                                                                  |                                            |                   |
