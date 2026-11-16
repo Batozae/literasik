@@ -1,0 +1,1442 @@
+[
+  {
+    "topic": "Pencarian dan penilaian informasi",
+    "items": [
+      {
+        "text": "Kamu mencari bahan untuk tugas IPS. Cara paling tepat agar hasil pencarian relevan adalah...",
+        "difficulty": "EASY",
+        "explanation": "Kata kunci yang spesifik mempersempit hasil sehingga lebih relevan. Kata yang terlalu umum menghasilkan hasil yang terlalu luas.",
+        "options": [
+          {
+            "text": "Memakai kata kunci yang spesifik sesuai topik tugas",
+            "isCorrect": true
+          },
+          {
+            "text": "Memakai satu kata yang sangat umum agar hasilnya sebanyak mungkin",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyalin seluruh soal tugas dan memakai hasil pertama saja",
+            "isCorrect": false
+          },
+          {
+            "text": "Membuka halaman teratas tanpa membaca isinya terlebih dahulu",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Untuk mencari data resmi jumlah penduduk suatu kota, sumber yang paling layak dipercaya adalah...",
+        "difficulty": "EASY",
+        "explanation": "Lembaga resmi mengumpulkan data dengan metode yang jelas dan dapat ditelusuri, berbeda dengan sumber anonim.",
+        "options": [
+          {
+            "text": "Situs resmi lembaga statistik pemerintah",
+            "isCorrect": true
+          },
+          {
+            "text": "Unggahan tanpa nama di media sosial yang banyak dibagikan",
+            "isCorrect": false
+          },
+          {
+            "text": "Blog pribadi yang tidak menyebut sumber datanya sama sekali",
+            "isCorrect": false
+          },
+          {
+            "text": "Komentar pengguna lain di sebuah forum diskusi daring",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Untuk menilai apakah sebuah artikel online kredibel, hal yang paling membantu diperiksa adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Penulis, tanggal, dan sumber data menunjukkan apakah informasi dapat ditelusuri. Popularitas dan judul menarik tidak menjamin kebenaran.",
+        "options": [
+          {
+            "text": "Penulisnya, tanggal terbit, dan sumber data yang dirujuk",
+            "isCorrect": true
+          },
+          {
+            "text": "Jumlah iklan yang tampil di halaman saat artikel dibuka",
+            "isCorrect": false
+          },
+          {
+            "text": "Banyaknya orang yang menekan tombol suka dan membagikan artikel itu",
+            "isCorrect": false
+          },
+          {
+            "text": "Seberapa heboh dan menarik judul yang dipakai artikel",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Hasil pencarian paling atas diberi label \"Iklan\". Artinya...",
+        "difficulty": "MEDIUM",
+        "explanation": "Hasil beriklan muncul karena dibayar pengiklan. Tetap perlu dinilai seperti hasil pencarian lainnya.",
+        "options": [
+          {
+            "text": "Posisinya berbayar, jadi tidak otomatis paling akurat",
+            "isCorrect": true
+          },
+          {
+            "text": "Isinya sudah pasti paling akurat karena dipilih mesin pencari",
+            "isCorrect": false
+          },
+          {
+            "text": "Isinya pasti berasal dari lembaga pemerintah resmi",
+            "isCorrect": false
+          },
+          {
+            "text": "Isinya sudah dicek dan dijamin benar oleh guru",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Dua situs memberi angka yang berbeda untuk topik yang sama. Langkah paling tepat adalah...",
+        "difficulty": "HARD",
+        "explanation": "Perbedaan angka biasanya berasal dari metode atau waktu pengambilan data yang berbeda. Sumber asli dapat memastikan mana yang tepat.",
+        "options": [
+          {
+            "text": "Mencari sumber asli, lalu membandingkan metode dan tanggal data",
+            "isCorrect": true
+          },
+          {
+            "text": "Mengambil rata-rata dari kedua angka yang berbeda tersebut",
+            "isCorrect": false
+          },
+          {
+            "text": "Memilih situs yang tampilannya lebih profesional dan banyak dikunjungi",
+            "isCorrect": false
+          },
+          {
+            "text": "Memilih angka yang lebih besar supaya aman dari kesalahan",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Komunikasi dan kolaborasi daring",
+    "items": [
+      {
+        "text": "Di grup kelas yang dipakai untuk membahas tugas, sikap yang paling tepat adalah...",
+        "difficulty": "EASY",
+        "explanation": "Pesan yang sopan, jelas, dan sesuai topik membuat diskusi efektif dan menghargai anggota lain.",
+        "options": [
+          {
+            "text": "Menulis dengan sopan dan jelas serta sesuai topik",
+            "isCorrect": true
+          },
+          {
+            "text": "Mengirim stiker dan pesan di luar topik berulang kali",
+            "isCorrect": false
+          },
+          {
+            "text": "Menulis semua pesan dengan huruf kapital agar dibaca",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengirim banyak pesan beruntun pada tengah malam",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Tugas kelompok dikerjakan di satu dokumen bersama. Agar pekerjaan tidak saling menimpa, sebaiknya...",
+        "difficulty": "EASY",
+        "explanation": "Pembagian tugas yang jelas mengurangi tumpang tindih. Menghapus pekerjaan orang lain merusak kerja sama.",
+        "options": [
+          {
+            "text": "Membagi bagian dengan jelas dan menulis di bagian masing-masing",
+            "isCorrect": true
+          },
+          {
+            "text": "Semua orang mengedit bagian yang sama pada waktu yang sama tanpa membagi tugas",
+            "isCorrect": false
+          },
+          {
+            "text": "Menunggu tanpa bicara sampai ada yang menyelesaikan semuanya",
+            "isCorrect": false
+          },
+          {
+            "text": "Menghapus bagian teman yang dianggap kurang bagus",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Pesanmu disalahpahami temanmu dan ia marah di grup. Langkah terbaik adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Pesan tertulis mudah disalahartikan. Klarifikasi yang tenang atau percakapan langsung lebih efektif daripada membalas dengan emosi.",
+        "options": [
+          {
+            "text": "Menjelaskan maksudmu dengan tenang, dan bicara langsung bila perlu",
+            "isCorrect": true
+          },
+          {
+            "text": "Membalas dengan emoji tertawa agar suasana cepat mencair di dalam grup",
+            "isCorrect": false
+          },
+          {
+            "text": "Membalas dengan nada marah agar semua tahu kebenarannya",
+            "isCorrect": false
+          },
+          {
+            "text": "Membahasnya dengan anggota lain tanpa melibatkan temanmu",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu mengirim email kepada guru untuk meminta perpanjangan waktu tugas. Bagian yang sebaiknya ada adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Email yang sopan dan lengkap memudahkan guru memahami dan memproses permintaanmu.",
+        "options": [
+          {
+            "text": "Subjek jelas, salam, nama dan kelas, alasan singkat, dan terima kasih",
+            "isCorrect": true
+          },
+          {
+            "text": "Tanpa subjek dan salam, cukup satu kalimat singkat agar tidak merepotkan guru",
+            "isCorrect": false
+          },
+          {
+            "text": "Bahasa gaul dengan banyak singkatan agar terasa lebih akrab dengan guru",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya emoji memohon karena guru pasti langsung mengerti maksudmu",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Dalam panggilan video kelompok, satu anggota terus menguasai pembicaraan sehingga yang lain tidak sempat bicara. Cara paling konstruktif adalah...",
+        "difficulty": "HARD",
+        "explanation": "Aturan giliran bicara menyelesaikan masalah tanpa menyerang pribadi dan membuat semua anggota ikut berkontribusi.",
+        "options": [
+          {
+            "text": "Mengusulkan giliran bicara dan meminta pendapat yang belum bicara",
+            "isCorrect": true
+          },
+          {
+            "text": "Diam saja supaya tidak timbul konflik apa pun di dalam kelompok kerja itu",
+            "isCorrect": false
+          },
+          {
+            "text": "Membicarakan kebiasaannya di grup lain tanpa sepengetahuannya",
+            "isCorrect": false
+          },
+          {
+            "text": "Keluar dari panggilan lalu mengerjakan tugas sendirian saja",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Etika bermedia sosial",
+    "items": [
+      {
+        "text": "Sebelum mengunggah foto bersama temanmu ke media sosial, sebaiknya kamu...",
+        "difficulty": "EASY",
+        "explanation": "Foto memuat wajah orang lain, jadi menghormati hak mereka berarti meminta izin sebelum mengunggah.",
+        "options": [
+          {
+            "text": "Meminta izin temanmu terlebih dahulu",
+            "isCorrect": true
+          },
+          {
+            "text": "Langsung mengunggah karena kamu yang memotret fotonya",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengunggah dulu, lalu dihapus bila temanmu keberatan",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengunggah lewat akun lain agar tidak ketahuan temanmu",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Sebuah unggahan membuatmu kesal. Komentar yang paling beretika adalah...",
+        "difficulty": "EASY",
+        "explanation": "Berbeda pendapat boleh, tetapi disampaikan dengan sopan dan fokus pada isi, bukan menyerang orangnya.",
+        "options": [
+          {
+            "text": "Menyampaikan pendapat dengan sopan tanpa menyerang pribadi",
+            "isCorrect": true
+          },
+          {
+            "text": "Membalas dengan kata kasar supaya penulisnya jera dan tidak mengulanginya",
+            "isCorrect": false
+          },
+          {
+            "text": "Menulis sindiran tanpa nama agar semua orang paham",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyebarkan unggahan itu agar ramai dikritik orang",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Seseorang memakai akun tanpa nama untuk mengomentari orang lain dengan kata menyakitkan. Pernyataan yang tepat adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Akun tanpa nama tidak menghapus tanggung jawab. Perbuatan yang menyakiti tetap salah dan jejaknya dapat ditelusuri.",
+        "options": [
+          {
+            "text": "Tidak etis, dan identitasnya sering tetap dapat dilacak",
+            "isCorrect": true
+          },
+          {
+            "text": "Tidak masalah karena tidak ada yang tahu siapa dia",
+            "isCorrect": false
+          },
+          {
+            "text": "Boleh dilakukan bila orang itu memang menyebalkan",
+            "isCorrect": false
+          },
+          {
+            "text": "Boleh dilakukan asalkan hanya dilakukan sekali saja dan tidak berulang",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu menerima tangkapan layar percakapan pribadi temanmu yang memalukan. Sikap yang tepat adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Percakapan pribadi harus dihormati. Menyebarkannya dapat mempermalukan dan merugikan orang lain.",
+        "options": [
+          {
+            "text": "Tidak menyebarkannya, dan memberi tahu temanmu bila perlu",
+            "isCorrect": true
+          },
+          {
+            "text": "Menyebarkannya ke grup kelas sebagai bahan lelucon bersama teman-teman",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyimpannya untuk menekan temanmu di lain waktu",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengunggahnya lewat akun lain agar tidak ketahuan",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu kecewa terhadap layanan sebuah toko dan ingin menulis ulasan. Cara yang paling etis adalah...",
+        "difficulty": "HARD",
+        "explanation": "Ulasan yang jujur dan berdasarkan pengalaman membantu orang lain. Tuduhan tanpa bukti dan akun palsu adalah tindakan tidak etis.",
+        "options": [
+          {
+            "text": "Menceritakan pengalaman nyata dengan fakta dan bahasa sopan",
+            "isCorrect": true
+          },
+          {
+            "text": "Menuduh pemilik toko menipu walau tidak punya bukti yang kuat sama sekali",
+            "isCorrect": false
+          },
+          {
+            "text": "Membuat banyak akun untuk memberi nilai terendah",
+            "isCorrect": false
+          },
+          {
+            "text": "Menulis ulasan jelek agar toko milik temanmu lebih ramai",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Kata sandi dan autentikasi",
+    "items": [
+      {
+        "text": "Manakah kata sandi yang paling kuat?",
+        "difficulty": "EASY",
+        "explanation": "Kata sandi yang panjang dan memadukan huruf besar-kecil, angka, dan simbol sulit ditebak. Pola umum dan data pribadi mudah ditebak.",
+        "options": [
+          {
+            "text": "Tm!8kopi-Hujan_41",
+            "isCorrect": true
+          },
+          {
+            "text": "andi.budi2010",
+            "isCorrect": false
+          },
+          {
+            "text": "qwerty@123456",
+            "isCorrect": false
+          },
+          {
+            "text": "Sekolah12345678",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Cara yang aman untuk mengelola banyak kata sandi adalah...",
+        "difficulty": "EASY",
+        "explanation": "Kata sandi yang sama di banyak akun berbahaya: jika satu bocor, semua akun ikut terancam.",
+        "options": [
+          {
+            "text": "Sandi berbeda tiap akun, disimpan di pengelola sandi tepercaya",
+            "isCorrect": true
+          },
+          {
+            "text": "Memakai satu kata sandi yang sama untuk semua akun yang aku miliki",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengirim daftar kata sandi ke teman agar tidak lupa",
+            "isCorrect": false
+          },
+          {
+            "text": "Menempel kertas berisi kata sandi di tempat umum",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Verifikasi dua langkah (2FA) berguna karena...",
+        "difficulty": "MEDIUM",
+        "explanation": "2FA menambah lapisan pengaman. Ia memperkecil risiko, tetapi bukan jaminan mutlak.",
+        "options": [
+          {
+            "text": "Penyerang masih butuh kode tambahan walau kata sandi bocor",
+            "isCorrect": true
+          },
+          {
+            "text": "Kata sandi tidak perlu diganti sama sekali selamanya",
+            "isCorrect": false
+          },
+          {
+            "text": "Akun pasti tidak akan pernah bisa diretas oleh siapa pun di dunia ini",
+            "isCorrect": false
+          },
+          {
+            "text": "Akun menjadi lebih cepat dibuka setiap kali masuk",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Seseorang meminta kode OTP yang masuk ke ponselmu dengan alasan verifikasi hadiah. Sikap yang tepat adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "OTP hanya untukmu. Pihak resmi tidak akan meminta kode tersebut.",
+        "options": [
+          {
+            "text": "Tidak memberikannya karena kode OTP bersifat rahasia",
+            "isCorrect": true
+          },
+          {
+            "text": "Memberikannya bila ia mengaku dari penyedia layanan resmi",
+            "isCorrect": false
+          },
+          {
+            "text": "Memberikannya asal kata sandimu tidak ikut diberikan",
+            "isCorrect": false
+          },
+          {
+            "text": "Memberikan setengah dari kode saja agar lebih aman",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu mendapat kabar bahwa kata sandi salah satu akunmu bocor, dan kata sandi itu juga dipakai di akun lain. Langkah terbaik adalah...",
+        "difficulty": "HARD",
+        "explanation": "Penyerang sering mencoba kata sandi bocor di akun lain, jadi semua akun yang memakainya harus diganti.",
+        "options": [
+          {
+            "text": "Mengganti sandi semua akun terkait dengan sandi berbeda, dan aktifkan 2FA",
+            "isCorrect": true
+          },
+          {
+            "text": "Mengganti kata sandi hanya di akun yang dikabarkan bocor saja, akun lain dibiarkan",
+            "isCorrect": false
+          },
+          {
+            "text": "Menunggu dulu sampai muncul aktivitas mencurigakan di akun mana pun",
+            "isCorrect": false
+          },
+          {
+            "text": "Memakai sandi yang sama lagi dengan huruf besar ditambahkan di awal",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Phishing dan penipuan online",
+    "items": [
+      {
+        "text": "Kamu menerima pesan \"Selamat! Kamu menang hadiah, klik tautan ini dalam 10 menit.\" Kemungkinan terbesar pesan itu adalah...",
+        "difficulty": "EASY",
+        "explanation": "Hadiah mendadak dan batas waktu singkat adalah taktik umum penipuan agar korban tidak sempat berpikir.",
+        "options": [
+          {
+            "text": "Penipuan yang memancingmu bertindak terburu-buru",
+            "isCorrect": true
+          },
+          {
+            "text": "Hadiah resmi yang harus segera diambil sebelum hangus",
+            "isCorrect": false
+          },
+          {
+            "text": "Pengumuman resmi dari pihak sekolah",
+            "isCorrect": false
+          },
+          {
+            "text": "Iklan biasa yang aman untuk diklik",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Salah satu tanda email phishing adalah...",
+        "difficulty": "EASY",
+        "explanation": "Pengirim mencurigakan, bahasa janggal, dan desakan menyerahkan data adalah ciri khas phishing.",
+        "options": [
+          {
+            "text": "Alamat pengirim aneh, bahasa janggal, dan meminta data pribadi segera",
+            "isCorrect": true
+          },
+          {
+            "text": "Email yang sama sekali tidak memuat tautan maupun lampiran apa pun di dalamnya",
+            "isCorrect": false
+          },
+          {
+            "text": "Email yang dikirim pada siang hari pada saat jam sekolah",
+            "isCorrect": false
+          },
+          {
+            "text": "Email yang ditulis dengan kalimat yang cukup panjang dan rapi",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Nomor tak dikenal mengaku sebagai orang tuamu: \"Ponselku rusak, tolong transfer uang sekarang.\" Langkah tepat adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Penipu sering menyamar sebagai keluarga. Pastikan lewat jalur yang sudah kamu kenal sebelum mengirim uang.",
+        "options": [
+          {
+            "text": "Menghubungi orang tuamu lewat nomor yang kamu kenal dulu",
+            "isCorrect": true
+          },
+          {
+            "text": "Langsung mentransfer karena kelihatannya sangat mendesak",
+            "isCorrect": false
+          },
+          {
+            "text": "Meminta nomor rekening lalu mentransfer sebagian dulu",
+            "isCorrect": false
+          },
+          {
+            "text": "Membalas pesan itu dan menanyakan nama lengkapnya",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Sebelum memasukkan kata sandi di situs yang dibuka dari tautan pesan, hal yang perlu diperiksa adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Tampilan dan logo mudah ditiru, tetapi alamat situs palsu biasanya berbeda dari yang asli.",
+        "options": [
+          {
+            "text": "Alamat situsnya benar, bukan nama mirip yang diubah sedikit",
+            "isCorrect": true
+          },
+          {
+            "text": "Warna dan logo situs terlihat mirip dengan situs aslinya",
+            "isCorrect": false
+          },
+          {
+            "text": "Ada banyak jendela pop-up yang muncul di halaman itu",
+            "isCorrect": false
+          },
+          {
+            "text": "Ada tulisan \"resmi\" yang tercantum di halaman tersebut",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu terlanjur memasukkan kata sandi di situs yang ternyata palsu. Langkah pertama yang tepat adalah...",
+        "difficulty": "HARD",
+        "explanation": "Kata sandi yang sudah terkirim harus segera diganti sebelum disalahgunakan.",
+        "options": [
+          {
+            "text": "Segera ganti sandi lewat situs resmi, aktifkan 2FA, dan laporkan",
+            "isCorrect": true
+          },
+          {
+            "text": "Menunggu dulu untuk melihat apakah ada masalah muncul",
+            "isCorrect": false
+          },
+          {
+            "text": "Menghapus riwayat penjelajahan lalu melupakannya begitu saja tanpa berbuat apa-apa",
+            "isCorrect": false
+          },
+          {
+            "text": "Menutup tab dan menganggap persoalannya sudah selesai",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Jejak digital dan reputasi",
+    "items": [
+      {
+        "text": "Jejak digital adalah...",
+        "difficulty": "EASY",
+        "explanation": "Jejak digital mencakup semua data aktivitas daringmu, baik yang sengaja maupun tidak sengaja ditinggalkan.",
+        "options": [
+          {
+            "text": "Rekam aktivitas yang kita tinggalkan saat memakai internet",
+            "isCorrect": true
+          },
+          {
+            "text": "Bekas sidik jari yang menempel pada layar ponsel setiap kali kita menyentuhnya",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya foto yang pernah kita unggah ke media sosial",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya berkas yang tersimpan di dalam ponsel kita",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Mengapa perlu berpikir sebelum mengunggah sesuatu?",
+        "difficulty": "EASY",
+        "explanation": "Orang lain dapat menyimpan atau membagikan unggahanmu, jadi menghapusnya belum tentu menghapus semua salinannya.",
+        "options": [
+          {
+            "text": "Unggahan dapat tersimpan dan menyebar sehingga sulit dihapus sepenuhnya",
+            "isCorrect": true
+          },
+          {
+            "text": "Unggahan otomatis hilang sendiri setelah 24 jam di semua platform",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya teman dekatmu yang dapat melihat unggahan itu, sedangkan orang lain tidak bisa",
+            "isCorrect": false
+          },
+          {
+            "text": "Unggahan yang sudah dihapus pasti lenyap dari semua tempat",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Akun media sosialmu berstatus publik. Hal yang tepat dipahami adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Akun publik dapat dilihat banyak orang dan unggahannya bisa disimpan, sehingga ikut membentuk reputasimu.",
+        "options": [
+          {
+            "text": "Siapa pun bisa melihat dan menyimpan unggahanmu, memengaruhi reputasi",
+            "isCorrect": true
+          },
+          {
+            "text": "Hanya pengikutmu yang dapat melihat unggahan di akun itu",
+            "isCorrect": false
+          },
+          {
+            "text": "Unggahan lama otomatis tersembunyi dan tidak terlihat lagi oleh orang lain",
+            "isCorrect": false
+          },
+          {
+            "text": "Tidak ada yang bisa menyimpan tangkapan layar unggahanmu",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu menemukan unggahan lamamu yang memalukan. Langkah terbaik adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Merapikan jejak lama dan mengatur privasi membantu menjaga reputasi, walau tidak menjamin semua salinan hilang.",
+        "options": [
+          {
+            "text": "Menghapus atau mengarsipkannya dan memeriksa pengaturan privasi",
+            "isCorrect": true
+          },
+          {
+            "text": "Membiarkannya karena sudah lama sekali berlalu",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyalahkan temanmu yang dulu ikut ada di dalam unggahan itu bersamamu",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengganti nama akun lalu menganggap masalahnya selesai",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Cara membangun jejak digital yang positif adalah...",
+        "difficulty": "HARD",
+        "explanation": "Jejak digital positif dibangun lewat kontribusi yang baik dan penggunaan yang bijak, bukan dengan menghindari internet.",
+        "options": [
+          {
+            "text": "Membagikan karya atau konten bermanfaat dengan santun",
+            "isCorrect": true
+          },
+          {
+            "text": "Mengunggah seluruh aktivitas pribadi secara rinci agar terkenal",
+            "isCorrect": false
+          },
+          {
+            "text": "Membuat banyak akun palsu untuk memuji akun utamamu sendiri",
+            "isCorrect": false
+          },
+          {
+            "text": "Berhenti memakai internet sama sekali sepanjang waktu",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Pengelolaan berkas dan penyimpanan daring",
+    "items": [
+      {
+        "text": "Manfaat utama menyimpan berkas di penyimpanan awan (cloud) adalah...",
+        "difficulty": "EASY",
+        "explanation": "Penyimpanan awan memudahkan akses dan pencadangan, tetapi tetap perlu dijaga dengan kata sandi yang kuat.",
+        "options": [
+          {
+            "text": "Berkas bisa diakses dari banyak perangkat dan jadi cadangan",
+            "isCorrect": true
+          },
+          {
+            "text": "Berkas dijamin tidak mungkin hilang atau bocor sedikit pun",
+            "isCorrect": false
+          },
+          {
+            "text": "Tidak memerlukan akun dan kata sandi untuk memakainya",
+            "isCorrect": false
+          },
+          {
+            "text": "Ponsel tidak lagi memerlukan memori penyimpanan sama sekali",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Nama berkas yang paling memudahkan pencarian untuk tugas IPS bab 3 adalah...",
+        "difficulty": "EASY",
+        "explanation": "Nama berkas yang deskriptif memudahkan menemukan dan membedakan berkas.",
+        "options": [
+          {
+            "text": "Tugas_IPS_Bab3_NamaKamu.docx",
+            "isCorrect": true
+          },
+          {
+            "text": "dokumen1_final_revisi.docx",
+            "isCorrect": false
+          },
+          {
+            "text": "tugas_baru_banget(2).docx",
+            "isCorrect": false
+          },
+          {
+            "text": "asdf_cobacoba_123.docx",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Cara pencadangan yang paling aman untuk berkas penting adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Satu salinan bisa hilang atau rusak. Salinan di beberapa tempat mengurangi risiko kehilangan.",
+        "options": [
+          {
+            "text": "Menyimpan salinan di perangkat dan di penyimpanan awan",
+            "isCorrect": true
+          },
+          {
+            "text": "Menyimpannya hanya di satu flashdisk yang selalu dibawa ke mana-mana",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyimpannya hanya di folder unduhan ponsel dan tidak di tempat lain",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengirimkannya sekali ke teman lalu menghapus berkas aslinya",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Berkas tugas kelompok dibagikan dengan pengaturan \"siapa saja yang memiliki tautan dapat mengedit\". Risikonya adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Tautan yang tersebar dapat dipakai siapa saja. Batasi akses hanya untuk orang yang berkepentingan.",
+        "options": [
+          {
+            "text": "Siapa pun yang punya tautan bisa melihat atau mengubah; batasi akses",
+            "isCorrect": true
+          },
+          {
+            "text": "Tidak ada risiko karena tautannya panjang dan acak sehingga sulit ditebak orang",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya guru yang dapat membuka berkas tersebut",
+            "isCorrect": false
+          },
+          {
+            "text": "Berkas otomatis terkunci dan tidak bisa diubah lagi",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu tidak sengaja menghapus berkas penting di layanan penyimpanan awan. Langkah pertama yang tepat adalah...",
+        "difficulty": "HARD",
+        "explanation": "Banyak layanan menyimpan berkas terhapus sementara. Memeriksanya aman dan sering berhasil, sedangkan aplikasi dari iklan berisiko.",
+        "options": [
+          {
+            "text": "Memeriksa folder sampah atau riwayat versi di layanan tersebut",
+            "isCorrect": true
+          },
+          {
+            "text": "Mendaftar ulang dengan akun baru untuk memulihkan berkas",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengunduh aplikasi pemulihan dari iklan yang tidak dikenal",
+            "isCorrect": false
+          },
+          {
+            "text": "Menganggapnya sudah hilang dan tidak mencarinya lagi",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Perundungan siber",
+    "items": [
+      {
+        "text": "Perundungan siber adalah...",
+        "difficulty": "EASY",
+        "explanation": "Perundungan siber bertujuan menyakiti dan sering berulang, berbeda dengan kritik atau perbedaan pendapat yang sopan.",
+        "options": [
+          {
+            "text": "Menyakiti, mengejek, atau mengancam orang lain berulang lewat media digital",
+            "isCorrect": true
+          },
+          {
+            "text": "Memberi kritik yang sopan terhadap hasil karya seseorang di kolom komentar",
+            "isCorrect": false
+          },
+          {
+            "text": "Perbedaan pendapat yang disampaikan dengan santun di grup diskusi",
+            "isCorrect": false
+          },
+          {
+            "text": "Teguran guru lewat pesan mengenai tugas yang belum dikumpulkan",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Temanmu diejek ramai-ramai di grup kelas. Sikap yang tepat adalah...",
+        "difficulty": "EASY",
+        "explanation": "Mendukung korban dan melapor membantu menghentikan perundungan. Ikut tertawa atau menyebarkan memperburuknya.",
+        "options": [
+          {
+            "text": "Tidak ikut mengejek, mendukung temanmu, dan melapor ke guru",
+            "isCorrect": true
+          },
+          {
+            "text": "Diam dan ikut tertawa agar tidak jadi sasaran berikutnya",
+            "isCorrect": false
+          },
+          {
+            "text": "Ikut membalas dengan ejekan kepada pelaku di grup itu",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyebarkan tangkapan layar ke teman-teman lain di kelas",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu menjadi korban perundungan lewat pesan. Langkah awal yang tepat adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Bukti membantu proses pelaporan, dan dukungan orang dewasa penting. Membalas atau memendam sendiri jarang menyelesaikan masalah.",
+        "options": [
+          {
+            "text": "Tidak membalas, simpan bukti, blokir pelaku, lalu cerita ke orang dewasa",
+            "isCorrect": true
+          },
+          {
+            "text": "Membalas dengan kata yang lebih kasar kepada pelaku",
+            "isCorrect": false
+          },
+          {
+            "text": "Menghapus semua pesan agar cepat lupa dan tenang",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyimpannya sendiri saja karena nanti perundungan itu akan berhenti sendiri",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Mengapa kita tidak boleh ikut membagikan konten yang mempermalukan seseorang?",
+        "difficulty": "MEDIUM",
+        "explanation": "Setiap orang yang membagikan membantu penyebaran konten, sehingga ikut memperluas kerugian korban.",
+        "options": [
+          {
+            "text": "Membagikan memperluas dampaknya dan ikut menyakiti korban",
+            "isCorrect": true
+          },
+          {
+            "text": "Hanya pembuat konten yang bertanggung jawab atas dampaknya",
+            "isCorrect": false
+          },
+          {
+            "text": "Membagikan tidak berdampak apa pun pada korban",
+            "isCorrect": false
+          },
+          {
+            "text": "Aman selama kita tidak menambahkan komentar sendiri",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Perundungan siber sering terasa lebih sulit dihindari dibanding perundungan langsung karena...",
+        "difficulty": "HARD",
+        "explanation": "Media digital membuat perundungan tidak terbatas tempat dan waktu, dan konten dapat tersimpan dan menyebar.",
+        "options": [
+          {
+            "text": "Terjadi kapan saja, menyebar cepat, dan jejaknya bisa bertahan lama",
+            "isCorrect": true
+          },
+          {
+            "text": "Pelaku selalu jauh lebih kuat secara fisik daripada korbannya di mana pun",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya terjadi pada jam sekolah di lingkungan sekolah",
+            "isCorrect": false
+          },
+          {
+            "text": "Korban selalu mengetahui siapa identitas pelakunya",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Hak cipta dan plagiarisme",
+    "items": [
+      {
+        "text": "Plagiarisme adalah...",
+        "difficulty": "EASY",
+        "explanation": "Intinya adalah mengaku-ngaku. Mengutip dengan sumber dan merujuk dengan jujur bukan plagiarisme.",
+        "options": [
+          {
+            "text": "Mengakui karya orang lain sebagai milik sendiri tanpa menyebut sumber",
+            "isCorrect": true
+          },
+          {
+            "text": "Mengutip tulisan orang lain dengan mencantumkan sumbernya secara jelas",
+            "isCorrect": false
+          },
+          {
+            "text": "Membaca karya orang lain untuk dijadikan bahan referensi tugas",
+            "isCorrect": false
+          },
+          {
+            "text": "Menulis ulang dengan kata-kata sendiri sambil tetap menyebut sumbernya",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Mengunduh film atau lagu bajakan...",
+        "difficulty": "EASY",
+        "explanation": "Pemilik karya berhak atas hasil karyanya. Ada di internet atau gratis tidak berarti boleh digandakan.",
+        "options": [
+          {
+            "text": "Melanggar hak cipta karena memakai karya tanpa izin pemiliknya",
+            "isCorrect": true
+          },
+          {
+            "text": "Boleh dilakukan selama hanya dipakai untuk diri sendiri dan tidak dijual lagi",
+            "isCorrect": false
+          },
+          {
+            "text": "Boleh karena filmnya tersedia di internet",
+            "isCorrect": false
+          },
+          {
+            "text": "Tidak masalah selama diunduh secara gratis",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Saat menyusun tugas dengan kutipan dari sebuah buku, yang benar adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Kutipan harus ditandai dan disertai sumber agar jelas mana gagasanmu dan mana milik orang lain.",
+        "options": [
+          {
+            "text": "Menandai bagian kutipan dan mencantumkan sumbernya",
+            "isCorrect": true
+          },
+          {
+            "text": "Mengganti beberapa kata saja lalu mengakuinya sebagai tulisanmu",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyalin paragraf utuh tanpa memakai tanda kutip",
+            "isCorrect": false
+          },
+          {
+            "text": "Tidak perlu menyebut sumber untuk informasi dari internet",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu memakai gambar dari internet untuk presentasi sekolah. Langkah paling tepat adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Gambar memiliki pemilik. Lisensi dan sumber menentukan bagaimana gambar boleh dipakai.",
+        "options": [
+          {
+            "text": "Memakai gambar berlisensi bebas atau mencantumkan sumber sesuai lisensinya",
+            "isCorrect": true
+          },
+          {
+            "text": "Memakai gambar apa saja tanpa sumber karena presentasi sekolah tidak dijual",
+            "isCorrect": false
+          },
+          {
+            "text": "Menghapus tanda air agar tidak terlihat dari mana asalnya",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengaku gambar itu buatanmu setelah ukurannya diubah",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu memakai alat AI untuk membantu mengerjakan tugas. Sikap yang tepat adalah...",
+        "difficulty": "HARD",
+        "explanation": "Hasil AI bisa keliru dan perlu diperiksa. Mengaku karya sendiri atas tulisan yang bukan hasil sendiri tidak jujur.",
+        "options": [
+          {
+            "text": "Mengikuti aturan guru, memeriksa hasilnya, dan jujur soal pemakaiannya",
+            "isCorrect": true
+          },
+          {
+            "text": "Menyalin hasilnya apa adanya dan mengakuinya sebagai tulisan sendiri",
+            "isCorrect": false
+          },
+          {
+            "text": "Aman karena AI bukan orang sehingga bukan plagiarisme",
+            "isCorrect": false
+          },
+          {
+            "text": "Tidak perlu dicek karena hasil AI pasti selalu benar",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Privasi dan data pribadi",
+    "items": [
+      {
+        "text": "Contoh data pribadi yang tidak boleh dibagikan sembarangan adalah...",
+        "difficulty": "EASY",
+        "explanation": "Alamat, nomor telepon, dan data identitas dapat dipakai untuk menemukan atau meniru dirimu.",
+        "options": [
+          {
+            "text": "Alamat rumah, nomor telepon, dan data identitas",
+            "isCorrect": true
+          },
+          {
+            "text": "Warna kesukaan dan makanan favorit yang biasa disukai",
+            "isCorrect": false
+          },
+          {
+            "text": "Nama band atau grup musik yang paling kamu sukai",
+            "isCorrect": false
+          },
+          {
+            "text": "Menu makanan yang kamu santap pada hari ini",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Aplikasi kalkulator meminta akses kontak, kamera, dan lokasi. Sikap yang tepat adalah...",
+        "difficulty": "EASY",
+        "explanation": "Izin akses harus sesuai fungsi aplikasi. Izin yang tidak relevan adalah tanda bahaya.",
+        "options": [
+          {
+            "text": "Mencurigakan; izinkan hanya akses yang perlu atau jangan dipasang",
+            "isCorrect": true
+          },
+          {
+            "text": "Wajar saja karena semua aplikasi memang membutuhkan izin itu untuk bekerja",
+            "isCorrect": false
+          },
+          {
+            "text": "Izinkan semuanya agar aplikasinya berjalan lebih cepat",
+            "isCorrect": false
+          },
+          {
+            "text": "Abaikan saja karena aplikasinya gratis dan banyak dipakai",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Untuk menjaga privasi akun media sosial, sebaiknya...",
+        "difficulty": "MEDIUM",
+        "explanation": "Pengaturan privasi perlu disesuaikan dan ditinjau agar hanya orang yang kamu kehendaki yang melihat informasimu.",
+        "options": [
+          {
+            "text": "Mengatur siapa yang bisa melihat unggahan dan profil, lalu meninjau berkala",
+            "isCorrect": true
+          },
+          {
+            "text": "Membiarkan pengaturan bawaan karena pasti paling aman bagi semua orang pengguna",
+            "isCorrect": false
+          },
+          {
+            "text": "Mengaktifkan lokasi pada semua unggahan agar teman tahu tempatnya",
+            "isCorrect": false
+          },
+          {
+            "text": "Mencantumkan nomor ponsel di profil agar mudah dihubungi siapa saja",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Temanmu sering mengunggah foto berseragam dengan nama sekolah dan jam pulang yang jelas. Risikonya adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Gabungan identitas, sekolah, dan jadwal memudahkan orang asing mengikuti seseorang.",
+        "options": [
+          {
+            "text": "Orang asing bisa mengetahui identitas dan kebiasaannya sehingga membahayakan",
+            "isCorrect": true
+          },
+          {
+            "text": "Tidak ada risiko apa pun karena itu hanya foto biasa saja",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya ada risiko kuota internet yang menjadi cepat habis karena mengunggah banyak foto",
+            "isCorrect": false
+          },
+          {
+            "text": "Berisiko hanya apabila foto yang diunggah itu terlihat buram",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Menggunakan Wi-Fi publik tanpa kata sandi untuk masuk ke akun penting...",
+        "difficulty": "HARD",
+        "explanation": "Jaringan terbuka dapat dipantau pihak lain. Aktivitas sensitif lebih baik memakai jaringan yang kamu percaya.",
+        "options": [
+          {
+            "text": "Berisiko karena data mudah disadap; hindari login atau transaksi sensitif",
+            "isCorrect": true
+          },
+          {
+            "text": "Aman asalkan ponselmu terkunci dengan sandi atau pola yang rumit dan tidak ditebak",
+            "isCorrect": false
+          },
+          {
+            "text": "Aman karena banyak orang lain yang memakainya juga",
+            "isCorrect": false
+          },
+          {
+            "text": "Aman bila sinyal Wi-Fi-nya terlihat kuat dan stabil",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Hoaks dan verifikasi informasi",
+    "items": [
+      {
+        "text": "Kamu menerima pesan berantai \"Sebarkan ke 10 orang sebelum terlambat!\" Tindakan yang tepat adalah...",
+        "difficulty": "EASY",
+        "explanation": "Hoaks sering memancing agar disebarkan dengan cepat. Periksa dulu sebelum membagikan.",
+        "options": [
+          {
+            "text": "Tidak menyebarkannya sebelum memeriksa kebenarannya",
+            "isCorrect": true
+          },
+          {
+            "text": "Menyebarkannya agar teman-temanmu ikut waspada",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyebarkannya karena banyak yang sudah membagikan",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyebarkannya hanya ke grup keluarga saja",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Salah satu ciri judul berita hoaks adalah...",
+        "difficulty": "EASY",
+        "explanation": "Judul yang memancing emosi tanpa sumber jelas adalah tanda perlu waspada.",
+        "options": [
+          {
+            "text": "Provokatif, berlebihan, dan memancing emosi tanpa sumber jelas",
+            "isCorrect": true
+          },
+          {
+            "text": "Netral dan menyertakan sumber data yang bisa ditelusuri oleh pembaca",
+            "isCorrect": false
+          },
+          {
+            "text": "Dimuat media yang punya penanggung jawab jelas",
+            "isCorrect": false
+          },
+          {
+            "text": "Mencantumkan tanggal terbit dan nama penulisnya",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Foto viral \"banjir kemarin\" ternyata mungkin foto lama. Cara memeriksanya adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Pencarian gambar terbalik dapat menunjukkan apakah foto sudah pernah muncul sebelumnya dalam konteks lain.",
+        "options": [
+          {
+            "text": "Pencarian gambar terbalik untuk melacak kemunculan pertama foto",
+            "isCorrect": true
+          },
+          {
+            "text": "Melihat seberapa banyak orang yang sudah membagikannya",
+            "isCorrect": false
+          },
+          {
+            "text": "Memperbesar foto dan menilai dari warna gambarnya",
+            "isCorrect": false
+          },
+          {
+            "text": "Memastikan foto itu tidak memiliki tanda air atau tulisan apa pun di dalamnya",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Situs pemeriksa fakta berguna karena...",
+        "difficulty": "MEDIUM",
+        "explanation": "Pemeriksa fakta membantu verifikasi, tetapi sebaiknya tetap dibandingkan dengan sumber tepercaya lainnya.",
+        "options": [
+          {
+            "text": "Memeriksa klaim yang beredar dan menjelaskan buktinya",
+            "isCorrect": true
+          },
+          {
+            "text": "Isinya pasti benar sehingga tidak perlu dibandingkan lagi",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya memuat berita hiburan dan gosip terbaru",
+            "isCorrect": false
+          },
+          {
+            "text": "Hanya dapat dibuka dan dipakai oleh para wartawan",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Kamu terlanjur membagikan informasi yang ternyata hoaks. Langkah terbaik adalah...",
+        "difficulty": "HARD",
+        "explanation": "Klarifikasi membantu menghentikan penyebaran hoaks. Bertanggung jawab lebih baik daripada diam atau menyalahkan orang lain.",
+        "options": [
+          {
+            "text": "Mengoreksi unggahan, memberi klarifikasi, dan menyertakan sumber benar",
+            "isCorrect": true
+          },
+          {
+            "text": "Membiarkannya karena sudah telanjur tersebar luas ke mana-mana dan sulit ditarik kembali",
+            "isCorrect": false
+          },
+          {
+            "text": "Menghapusnya diam-diam tanpa menyampaikan klarifikasi apa pun",
+            "isCorrect": false
+          },
+          {
+            "text": "Menyalahkan orang yang mengirimkan informasi itu kepadamu",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "Keberagaman dan toleransi di ruang digital",
+    "items": [
+      {
+        "text": "Perbedaan suku, agama, dan budaya di ruang digital sebaiknya...",
+        "difficulty": "EASY",
+        "explanation": "Keberagaman adalah kenyataan masyarakat kita, dan toleransi berarti menghormati perbedaan tersebut.",
+        "options": [
+          {
+            "text": "Dihargai dan dihormati",
+            "isCorrect": true
+          },
+          {
+            "text": "Dijadikan bahan candaan di grup",
+            "isCorrect": false
+          },
+          {
+            "text": "Diejek bila berbeda dari kita",
+            "isCorrect": false
+          },
+          {
+            "text": "Dihindari dengan tidak bergaul",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Seseorang menyindir keyakinan temanmu di kolom komentar. Sikap yang tepat adalah...",
+        "difficulty": "EASY",
+        "explanation": "Tidak ikut serta dan menegur dengan santun membantu menghentikan sikap tidak toleran.",
+        "options": [
+          {
+            "text": "Tidak ikut menyindir dan menegur dengan sopan",
+            "isCorrect": true
+          },
+          {
+            "text": "Ikut berkomentar supaya suasananya semakin ramai",
+            "isCorrect": false
+          },
+          {
+            "text": "Membagikan komentar itu ke grup lain untuk diperdebatkan",
+            "isCorrect": false
+          },
+          {
+            "text": "Meniru komentarnya supaya diterima oleh kelompoknya",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Ujaran kebencian adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Ujaran kebencian menyasar identitas seseorang, bukan gagasan atau perilakunya.",
+        "options": [
+          {
+            "text": "Pernyataan yang merendahkan orang atau kelompok karena suku, agama, atau ras",
+            "isCorrect": true
+          },
+          {
+            "text": "Kritik yang disampaikan dengan sopan terhadap sebuah kebijakan sekolah",
+            "isCorrect": false
+          },
+          {
+            "text": "Perbedaan pendapat tentang hobi yang disukai oleh masing-masing orang",
+            "isCorrect": false
+          },
+          {
+            "text": "Pertanyaan yang disampaikan dengan sopan mengenai budaya orang lain",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Seseorang mengunggah meme yang menertawakan logat daerah tertentu. Penilaian yang tepat adalah...",
+        "difficulty": "MEDIUM",
+        "explanation": "Dampak lebih penting daripada niat. Lelucon tentang identitas dapat melukai dan memperkuat prasangka.",
+        "options": [
+          {
+            "text": "Dapat menyakiti dan menyebarkan stereotip walau dimaksud bercanda",
+            "isCorrect": true
+          },
+          {
+            "text": "Aman karena hanya lelucon dan tidak dimaksudkan serius oleh pembuatnya",
+            "isCorrect": false
+          },
+          {
+            "text": "Boleh bila kelompok yang ditertawakan berbeda dari kita",
+            "isCorrect": false
+          },
+          {
+            "text": "Boleh bila meme itu sudah banyak beredar di mana-mana",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "text": "Di komunitas gim daring, seorang pemain diserang karena latar belakangnya. Cara terbaik adalah...",
+        "difficulty": "HARD",
+        "explanation": "Mendukung korban dan melapor lewat jalur resmi lebih efektif daripada membalas dengan kekerasan serupa.",
+        "options": [
+          {
+            "text": "Tidak ikut menyerang, mendukung pemain itu, dan melapor ke moderator",
+            "isCorrect": true
+          },
+          {
+            "text": "Membalas serangan itu dengan serangan balik yang sama kasarnya kepada mereka",
+            "isCorrect": false
+          },
+          {
+            "text": "Keluar dari komunitas tanpa berbuat apa pun lagi",
+            "isCorrect": false
+          },
+          {
+            "text": "Membuat grup tandingan untuk menyerang balik mereka",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  }
+]
