@@ -1,4 +1,4 @@
-# Literasik
+# STATUS: Literasik
 
 Prototipe platform asesmen literasi digital gamifikasi dengan dashboard learning analytics untuk siswa SMP (Capstone kelompok, MVP lokal, data sintetis). README ini juga berfungsi sebagai dokumen **Status** proyek. Diperbarui di akhir setiap fase oleh pengerja fase tersebut.
 
