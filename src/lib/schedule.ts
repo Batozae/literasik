@@ -52,3 +52,22 @@ export function getWibDate(date: Date): string {
   const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
   return `${values.year}-${values.month}-${values.day}`;
 }
+
+/** Format tanggal Indonesia: "15 Nov 2026, 09.00 WIB" */
+export function formatWibDateTime(date: Date): string {
+  const formatter = new Intl.DateTimeFormat("id-ID", {
+    timeZone: TIMEZONE,
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+  const parts = formatter.formatToParts(date);
+  const partMap: Record<string, string> = {};
+  for (const p of parts) {
+    partMap[p.type] = p.value;
+  }
+  return `${partMap.day} ${partMap.month} ${partMap.year}, ${partMap.hour}.${partMap.minute} WIB`;
+}

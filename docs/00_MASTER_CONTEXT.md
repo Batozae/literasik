@@ -165,3 +165,20 @@ _(Opsional F4 bila waktu ada: kolom "persentase benar per soal" di bank soal.)_
 - Fungsi `scoring.ts`, `analytics.ts`, `schedule.ts` punya unit test yang lulus; `npm run db:reset` memulihkan data demo.
 
 **Risiko / perlu verifikasi:** semua ambang adalah asumsi · pembagian materi perlu dicocokkan dengan modul resmi · tren per asesmen rawan salah tafsir (pertahankan catatan D-08) · absen mengurangi poin peringkat dan tidak bisa dipulihkan lewat latihan (bahas sebagai keterbatasan) · 5 soal per asesmen membuat hasil rawan tebakan (alasan ada jumlah minimum jawaban) · kebenaran 60 soal bergantung tinjauan manusia · penegakan jendela waktu bergantung kode server (area utama code review) · versi Next.js/Prisma/`jose` dan UU PDP perlu dicek di sumber resmi.
+
+## 13. Keputusan dan Perubahan Antar Fase
+
+- **Fase 1 (Fondasi dan Bank Soal):**
+  1. Guru hanya mengelola bank soal angkatannya (`assertQuestionAccess`, `assertTopicAccess`).
+  2. Soal terkunci bila sudah dijawab atau terdapat pada asesmen yang sudah dibuka (`isQuestionLocked`).
+  3. Soal di asesmen Dijadwalkan/Berlangsung tidak boleh dinonaktifkan.
+  4. Tidak ada fitur hapus soal (hanya nonaktifkan soal).
+  5. Penambahan kolom `AssessmentSession.wajibKey` (unik, nullable) di `schema.prisma`.
+  6. `docs/DESIGN.md` dijadikan acuan wajib UI.
+
+- **Fase 2 (Alur Wajib dan Gamifikasi):**
+  1. Penegakan 1 sesi per siswa per asesmen WAJIB via `wajibKey = "${studentId}-${assessmentId}"` di server action dan transaksi database.
+  2. Penegakan ketat D-11: query data sesi ke siswa pada `src/app/siswa/sesi/[id]` hanya memilih `id, text, order` pada opsi dan tidak pernah memilih `isCorrect` atau `explanation`.
+  3. Format waktu Indonesia distandarisasi melalui fungsi `formatWibDateTime(date)` di `src/lib/schedule.ts` ("15 Nov 2026, 09.00 WIB").
+  4. Seed historis (DAT-02) mengimplementasikan sebaran D-03: 12 Perlu Pendampingan (~10%), 18 Pantau (~15%), 3 Belum Cukup Data (`7a32`, `7b30`, `8b30`), 89 Aman, dan pola kesulitan materi (Keamanan ~58-62%, Etika ~80-81%, Kecakapan ~60-63%, Hoaks ~57%, 7B di bawah 7A) dengan 3 siswa absen dan 2 siswa banyak latihan untuk membuktikan daily cap dan isolasi analitik.
+

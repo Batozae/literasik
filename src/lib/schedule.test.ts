@@ -4,6 +4,7 @@ import {
   canStartSession,
   getAssessmentStatus,
   getWibDate,
+  formatWibDateTime,
 } from "@/lib/schedule";
 
 describe("schedule", () => {
@@ -29,5 +30,14 @@ describe("schedule", () => {
 
   it("menggunakan tanggal WIB untuk pergantian hari", () => {
     expect(getWibDate(new Date("2026-11-15T23:30:00.000Z"))).toBe("2026-11-16");
+  });
+
+  it("memformat tanggal dan waktu dalam WIB", () => {
+    const formatted = formatWibDateTime(new Date("2026-11-15T02:00:00.000Z"));
+    // 02:00 UTC = 09:00 WIB
+    expect(formatted).toContain("15");
+    expect(formatted).toContain("2026");
+    expect(formatted).toContain("09.00");
+    expect(formatted).toContain("WIB");
   });
 });

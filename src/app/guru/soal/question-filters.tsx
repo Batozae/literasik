@@ -19,7 +19,7 @@ export function QuestionFilters({
   const pathname = usePathname();
   const visibleTopics = filters.pilar ? topics.filter((topic) => String(topic.pillarId) === filters.pilar) : topics;
 
-  function updateFilter(key: keyof Filters, value: string) {
+  function updateFilter(key: keyof Filters, value: string | null) {
     const params = new URLSearchParams(window.location.search);
     if (!value || value === "all") params.delete(key);
     else params.set(key, value);
