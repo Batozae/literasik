@@ -182,3 +182,10 @@ _(Opsional F4 bila waktu ada: kolom "persentase benar per soal" di bank soal.)_
   3. Format waktu Indonesia distandarisasi melalui fungsi `formatWibDateTime(date)` di `src/lib/schedule.ts` ("15 Nov 2026, 09.00 WIB").
   4. Seed historis (DAT-02) mengimplementasikan sebaran D-03: 12 Perlu Pendampingan (~10%), 18 Pantau (~15%), 3 Belum Cukup Data (`7a32`, `7b30`, `8b30`), 89 Aman, dan pola kesulitan materi (Keamanan ~58-62%, Etika ~80-81%, Kecakapan ~60-63%, Hoaks ~57%, 7B di bawah 7A) dengan 3 siswa absen dan 2 siswa banyak latihan untuk membuktikan daily cap dan isolasi analitik.
 
+- **Fase 3 (Dashboard Guru dan Analitik):**
+  1. Pemasangan pustaka `recharts` (^2.15.3) untuk visualisasi grafik pilar dan tren akurasi di dashboard guru sesuai panduan `DESIGN.md`.
+  2. Isolasi analitik D-01: seluruh metrik asesmen, tren, skor pilar, dan status materi/siswa diekstraksi eksklusif dari jawaban sesi WAJIB. Sesi LATIHAN diisolasi khusus untuk metrik keterlibatan (GUR-10).
+  3. Otorisasi D-08 & GUR-07: Guru hanya dapat mengakses dan melihat data siswa dari kelas yang diajar; akses ke siswa di luar kelas diajar menghasilkan HTTP 404.
+  4. Ekspor CSV D-09: Route handler server memvalidasi sesi guru, menerapkan filter aktif (kelas & periode), menyisipkan UTF-8 BOM, dan mensanitasi injeksi formula spreadsheet.
+  5. Tutup Loop D-10: Tombol "Buat latihan" pada materi Sulit/Sedang memicu pembuatan asesmen LATIHAN terhubung `sourceTopicId` dan mendistribusikan ke kelas tujuan yang relevan.
+
