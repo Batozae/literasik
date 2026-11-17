@@ -3,6 +3,7 @@
 :root {
   --radius: 0.5rem;
   --background: #f8fafc;
+  --surface-canvas: #f1f5f9;
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
@@ -67,4 +68,32 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.sidebar-active-tab::before,
+.sidebar-active-tab::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  pointer-events: none;
+}
+
+.sidebar-active-tab::before {
+  top: -1.25rem;
+  background: radial-gradient(
+    circle at 0 0,
+    transparent 1.25rem,
+    var(--surface-canvas) 1.28rem
+  );
+}
+
+.sidebar-active-tab::after {
+  bottom: -1.25rem;
+  background: radial-gradient(
+    circle at 0 100%,
+    transparent 1.25rem,
+    var(--surface-canvas) 1.28rem
+  );
 }

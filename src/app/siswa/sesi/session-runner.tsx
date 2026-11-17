@@ -31,7 +31,7 @@ interface SessionRunnerProps {
   sessionId: number;
   assessmentTitle: string;
   questions: QuestionData[];
-  initialAnswers: Record<number, number>; // questionId -> selectedOptionId
+  initialAnswers: Record<number, number>;
 }
 
 const OPTION_LETTERS = ["A", "B", "C", "D"];
@@ -57,7 +57,6 @@ export function SessionRunner({
   async function handleSelectOption(optionId: number) {
     if (!currentQuestion || isPending || isFinishing) return;
 
-    // Optimistic UI update
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: optionId }));
     setSaveStatus(null);
 
@@ -94,18 +93,19 @@ export function SessionRunner({
 
   if (!currentQuestion) {
     return (
-      <div className="p-8 text-center text-slate-600">
+      <div className="rounded-2xl bg-white p-8 text-center text-slate-600">
         Tidak ada soal yang tersedia pada asesmen ini.
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header bar */}
-      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+    <div className="mx-auto max-w-3xl space-y-5">
+      {/* Header bar flat */}
+      <div className="relative flex flex-col gap-3 overflow-hidden rounded-2xl bg-white p-5 pl-6 md:flex-row md:items-center md:justify-between">
+        <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-indigo-700" />
         <div>
-          <span className="text-xs font-semibold tracking-wide text-indigo-600 uppercase">
+          <span className="text-xs font-semibold uppercase tracking-wide text-indigo-700">
             Asesmen Wajib
           </span>
           <h1 className="text-xl font-bold text-slate-900 md:text-2xl">
@@ -116,7 +116,7 @@ export function SessionRunner({
         <div className="flex items-center gap-3">
           <div className="text-right">
             <div className="text-xs text-slate-500">Kemajuan</div>
-            <div className="text-sm font-semibold tabular-nums text-slate-800">
+            <div className="text-sm font-bold tabular-nums text-slate-900">
               {answeredCount} dari {totalQuestions} terjawab
             </div>
           </div>
@@ -124,15 +124,15 @@ export function SessionRunner({
             size="sm"
             onClick={handleFinishClick}
             disabled={isPending || isFinishing}
-            className="bg-indigo-600 font-semibold text-white hover:bg-indigo-700 active:translate-y-0.5"
+            className="rounded-xl bg-indigo-900 px-4 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95"
           >
             {isFinishing ? "Menyelesaikan..." : "Selesai"}
           </Button>
         </div>
       </div>
 
-      {/* Stepper nomor soal */}
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+      {/* Stepper nomor soal flat & interaktif */}
+      <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-white p-3.5">
         {questions.map((q, idx) => {
           const isAnswered = answers[q.id] !== undefined;
           const isCurrent = idx === currentIndex;
@@ -146,12 +146,10 @@ export function SessionRunner({
               }}
               disabled={isFinishing}
               className={cn(
-                "flex h-9 w-9 items-center justify-center rounded-lg text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
-                isCurrent && "ring-2 ring-indigo-600 font-bold",
-                isCurrent && isAnswered && "bg-indigo-600 text-white",
-                isCurrent && !isAnswered && "bg-indigo-50 text-indigo-700 border border-indigo-300",
-                !isCurrent && isAnswered && "bg-slate-100 text-slate-800 hover:bg-slate-200",
-                !isCurrent && !isAnswered && "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50",
+                "flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl text-xs font-semibold transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+                isCurrent && "bg-indigo-900 font-bold text-white",
+                !isCurrent && isAnswered && "bg-emerald-50 text-emerald-700 hover:bg-emerald-100",
+                !isCurrent && !isAnswered && "bg-slate-100 text-slate-600 hover:bg-slate-200",
               )}
               aria-label={`Nomor soal ${idx + 1}`}
             >
@@ -161,26 +159,26 @@ export function SessionRunner({
         })}
       </div>
 
-      {/* Box Soal Satu Per Layar (DESIGN.md) */}
-      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
+      {/* Box Soal Satu Per Layar Flat */}
+      <Card className="rounded-2xl border-0 bg-white shadow-none">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600">
               Soal {currentIndex + 1} dari {totalQuestions}
             </span>
             {saveStatus && (
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600">
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                 <CheckCircle2 className="h-3.5 w-3.5" />
                 {saveStatus}
               </span>
             )}
           </div>
-          <CardTitle className="pt-2 text-base font-normal leading-relaxed text-slate-900 md:text-lg">
+          <CardTitle className="pt-3 text-base font-normal leading-relaxed text-slate-900 md:text-lg">
             {currentQuestion.text}
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="space-y-3 pt-2">
+        <CardContent className="space-y-2.5 pt-2">
           {currentQuestion.options.map((option, optIdx) => {
             const isSelected = currentSelectedOptionId === option.id;
             const letter = OPTION_LETTERS[optIdx] ?? String(optIdx + 1);
@@ -192,18 +190,18 @@ export function SessionRunner({
                 onClick={() => handleSelectOption(option.id)}
                 disabled={isPending || isFinishing}
                 className={cn(
-                  "group flex min-h-[52px] w-full items-center gap-3 rounded-xl border p-4 text-left transition active:translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+                  "group flex min-h-[52px] w-full cursor-pointer items-center gap-3 rounded-xl p-4 text-left transition-all active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
                   isSelected
-                    ? "border-indigo-400 bg-indigo-50/70 text-indigo-950 ring-2 ring-indigo-600 font-medium"
-                    : "border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50/80",
+                    ? "bg-indigo-50 font-medium text-indigo-950 ring-2 ring-indigo-700"
+                    : "bg-slate-50 text-slate-800 hover:bg-slate-100",
                 )}
               >
                 <span
                   className={cn(
-                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition",
+                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors",
                     isSelected
-                      ? "bg-indigo-600 text-white"
-                      : "border border-slate-300 bg-white text-slate-600 group-hover:border-slate-400",
+                      ? "bg-indigo-900 text-white"
+                      : "bg-white text-slate-600 group-hover:bg-slate-200",
                   )}
                 >
                   {isSelected ? <Check className="h-3.5 w-3.5" /> : letter}
@@ -218,9 +216,9 @@ export function SessionRunner({
       </Card>
 
       {/* Navigasi Sebelumnya & Berikutnya */}
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex items-center justify-between pt-1">
         <Button
-          variant="outline"
+          variant="secondary"
           onClick={() => {
             if (currentIndex > 0) {
               setCurrentIndex(currentIndex - 1);
@@ -228,7 +226,7 @@ export function SessionRunner({
             }
           }}
           disabled={currentIndex === 0 || isFinishing}
-          className="gap-1 font-medium"
+          className="gap-1 rounded-xl bg-white px-4 font-semibold text-slate-700 hover:bg-slate-50"
         >
           <ChevronLeft className="h-4 w-4" />
           Sebelumnya
@@ -241,7 +239,7 @@ export function SessionRunner({
               setSaveStatus(null);
             }}
             disabled={isFinishing}
-            className="gap-1 bg-indigo-600 font-semibold text-white hover:bg-indigo-700 active:translate-y-0.5"
+            className="gap-1 rounded-xl bg-indigo-900 px-5 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95"
           >
             Berikutnya
             <ChevronRight className="h-4 w-4" />
@@ -250,7 +248,7 @@ export function SessionRunner({
           <Button
             onClick={handleFinishClick}
             disabled={isPending || isFinishing}
-            className="gap-1 bg-indigo-600 font-semibold text-white hover:bg-indigo-700 active:translate-y-0.5"
+            className="gap-1.5 rounded-xl bg-emerald-600 px-5 font-semibold text-white transition-all hover:bg-emerald-700 active:scale-95"
           >
             Selesaikan Asesmen
             <CheckCircle2 className="h-4 w-4" />
@@ -260,7 +258,7 @@ export function SessionRunner({
 
       {/* Dialog Konfirmasi Selesai */}
       <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="rounded-2xl border-0 sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Selesaikan Asesmen?</DialogTitle>
             <DialogDescription className="space-y-2 pt-2 text-slate-600">
@@ -270,7 +268,7 @@ export function SessionRunner({
                 <strong className="text-slate-900">{totalQuestions}</strong> soal.
               </p>
               {answeredCount < totalQuestions && (
-                <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-2.5 text-xs text-amber-800">
+                <div className="flex items-start gap-2 rounded-xl bg-amber-50 p-3 text-xs text-amber-800">
                   <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
                   <span>
                     Perhatian: Masih ada {totalQuestions - answeredCount} soal yang
@@ -280,7 +278,7 @@ export function SessionRunner({
                 </div>
               )}
               {answeredCount === totalQuestions && (
-                <p className="text-xs text-emerald-700">
+                <p className="rounded-xl bg-emerald-50 p-3 text-xs font-medium text-emerald-700">
                   Hebat! Semua soal sudah dijawab. Kamu berhak mendapatkan bonus 20 poin
                   ketepatan waktu jika selesai sebelum jendela asesmen ditutup.
                 </p>
@@ -289,16 +287,17 @@ export function SessionRunner({
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-0">
             <Button
-              variant="outline"
+              variant="secondary"
               onClick={() => setShowConfirmModal(false)}
               disabled={isFinishing}
+              className="rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200"
             >
               Kembali Periksa
             </Button>
             <Button
               onClick={handleConfirmFinish}
               disabled={isFinishing}
-              className="bg-indigo-600 font-semibold text-white hover:bg-indigo-700"
+              className="rounded-xl bg-indigo-900 font-semibold text-white hover:bg-indigo-800"
             >
               {isFinishing ? "Memproses..." : "Ya, Selesaikan"}
             </Button>

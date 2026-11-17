@@ -70,6 +70,17 @@ export interface DashboardData {
     participantCount: number;
   }[];
 
+  // Jadwal asesmen WAJIB angkatan guru
+  assessments: {
+    id: number;
+    title: string;
+    description: string | null;
+    opensAt: Date | null;
+    closesAt: Date | null;
+    topicName: string | null;
+    pillarCode: string | null;
+  }[];
+
   // Tabel siswa
   studentRows: {
     studentId: number;
@@ -350,6 +361,15 @@ export async function getDashboardData(
     pillarScores,
     topicDifficulties: topicDifficultiesWithAsm,
     trend,
+    assessments: wajibAssessments.map((a) => ({
+      id: a.id,
+      title: a.title,
+      description: a.description,
+      opensAt: a.opensAt,
+      closesAt: a.closesAt,
+      topicName: a.sourceTopic?.name ?? null,
+      pillarCode: a.sourceTopic?.pillar.code ?? null,
+    })),
     studentRows,
   };
 }

@@ -3,27 +3,104 @@ import { requireStudent } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { calculateLevel } from "@/lib/scoring";
 import { formatWibDateTime } from "@/lib/schedule";
-import { StatusBadge } from "@/components/status-badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { StatusBadge, type StatusType } from "@/components/status-badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Trophy,
   Award,
-  Sparkles,
   BookOpen,
   ArrowRight,
   CheckCircle2,
   Lock,
   Play,
   Clock,
+  Sparkles,
+  RotateCcw,
+  Footprints,
+  Target,
+  CalendarCheck,
+  Compass,
+  Zap,
+  Laptop,
+  Scale,
+  ShieldCheck,
+  Globe,
+  type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const BADGE_VISUALS: Record<
+  string,
+  { icon: LucideIcon; iconBg: string; cardBg: string; strip: string }
+> = {
+  LANGKAH_PERTAMA: {
+    icon: Footprints,
+    iconBg: "bg-sky-100 text-sky-600",
+    cardBg: "bg-sky-50/50 hover:bg-sky-50/80",
+    strip: "bg-sky-500",
+  },
+  TELITI: {
+    icon: Target,
+    iconBg: "bg-emerald-100 text-emerald-600",
+    cardBg: "bg-emerald-50/50 hover:bg-emerald-50/80",
+    strip: "bg-emerald-500",
+  },
+  KONSISTEN: {
+    icon: CalendarCheck,
+    iconBg: "bg-amber-100 text-amber-600",
+    cardBg: "bg-amber-50/50 hover:bg-amber-50/80",
+    strip: "bg-amber-400",
+  },
+  PENJELAJAH: {
+    icon: Compass,
+    iconBg: "bg-indigo-100 text-indigo-700",
+    cardBg: "bg-indigo-50/50 hover:bg-indigo-50/80",
+    strip: "bg-indigo-600",
+  },
+  RAJIN_BERLATIH: {
+    icon: Zap,
+    iconBg: "bg-teal-100 text-teal-600",
+    cardBg: "bg-teal-50/50 hover:bg-teal-50/80",
+    strip: "bg-teal-500",
+  },
+  TUNTAS_KECAKAPAN: {
+    icon: Laptop,
+    iconBg: "bg-indigo-100 text-indigo-700",
+    cardBg: "bg-indigo-50/50 hover:bg-indigo-50/80",
+    strip: "bg-indigo-600",
+  },
+  TUNTAS_ETIKA: {
+    icon: Scale,
+    iconBg: "bg-teal-100 text-teal-600",
+    cardBg: "bg-teal-50/50 hover:bg-teal-50/80",
+    strip: "bg-teal-500",
+  },
+  TUNTAS_KEAMANAN: {
+    icon: ShieldCheck,
+    iconBg: "bg-sky-100 text-sky-600",
+    cardBg: "bg-sky-50/50 hover:bg-sky-50/80",
+    strip: "bg-sky-600",
+  },
+  TUNTAS_BUDAYA: {
+    icon: Globe,
+    iconBg: "bg-violet-100 text-violet-700",
+    cardBg: "bg-violet-50/50 hover:bg-violet-50/80",
+    strip: "bg-violet-600",
+  },
+};
+
+const DEFAULT_BADGE_VISUAL = {
+  icon: Award,
+  iconBg: "bg-amber-100 text-amber-600",
+  cardBg: "bg-amber-50/50 hover:bg-amber-50/80",
+  strip: "bg-amber-400",
+};
 
 export default async function SiswaHomePage() {
   const user = await requireStudent();
   const now = new Date();
 
-  // 1. Profil siswa
   const profile = await prisma.studentProfile.findUnique({
     where: { userId: user.id },
     include: { class: true },
@@ -31,20 +108,21 @@ export default async function SiswaHomePage() {
 
   if (!profile) {
     return (
-      <div className="p-4 text-center text-sm text-slate-600">
+      <div className="rounded-2xl bg-white p-6 text-center text-sm text-slate-600">
         Profil siswa tidak ditemukan.
       </div>
     );
   }
 
-  // 2. Total poin & level
   const pointEvents = await prisma.pointEvent.findMany({
     where: { studentId: user.id },
   });
   const totalPoints = pointEvents.reduce((sum, e) => sum + e.points, 0);
+  const wajibPoints = pointEvents
+    .filter((e) => e.type === "WAJIB_ANSWER" || e.type === "WAJIB_BONUS")
+    .reduce((sum, e) => sum + e.points, 0);
   const levelInfo = calculateLevel(totalPoints);
 
-  // 3. Lencana
   const allBadges = await prisma.badge.findMany({
     orderBy: { id: "asc" },
   });
@@ -56,7 +134,6 @@ export default async function SiswaHomePage() {
     studentBadges.map((sb) => [sb.badge.code, sb.awardedAt]),
   );
 
-  // 4. Asesmen aktif / berlangsung untuk angkatan ini
   const activeWajibAssessments = await prisma.assessment.findMany({
     where: {
       gradeLevel: profile.class.gradeLevel,
@@ -77,7 +154,13 @@ export default async function SiswaHomePage() {
   });
   const sessionMap = new Map(studentSessions.map((s) => [s.assessmentId, s]));
 
-  // Cari asesmen yang sedang berlangsung dan belum diselesaikan siswa
+  const completedWajibCount = activeWajibAssessments.filter((a) => {
+    const s = sessionMap.get(a.id);
+    if (s?.finishedAt) return true;
+    if (s && a.closesAt && now >= a.closesAt) return true;
+    return false;
+  }).length;
+
   const ongoingAssessment = activeWajibAssessments.find((a) => {
     const s = sessionMap.get(a.id);
     if (s?.finishedAt) return false;
@@ -85,37 +168,30 @@ export default async function SiswaHomePage() {
     return now >= a.opensAt && now < a.closesAt;
   });
 
+  // Ringkasan 3 asesmen wajib terbaru/terdekat untuk panel kiri
+  const previewAssessments = [...activeWajibAssessments]
+    .reverse()
+    .slice(0, 3);
+
   return (
     <div className="space-y-6">
-      {/* Sapaan Header */}
-      <div>
-        <span className="text-xs font-semibold uppercase tracking-wide text-indigo-600">
-          Ruang Belajar Siswa
-        </span>
-        <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
-          Halo, {user.name}!
-        </h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Kelas {profile.class.name} • Angkatan {profile.class.gradeLevel}
-        </p>
-      </div>
-
-      {/* Banner Asesmen Berlangsung (Jika Ada) */}
+      {/* Banner Asesmen Sedang Berlangsung (jika ada) */}
       {ongoingAssessment && (
-        <Card className="rounded-xl border border-sky-200 bg-sky-50/70 p-5 shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl bg-white p-5 pl-6">
+          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-sky-500" />
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sky-700">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
                 <Play className="h-5 w-5" />
               </div>
               <div>
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-sky-800 uppercase tracking-wide">
+                <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-sky-700">
                   <Clock className="h-3.5 w-3.5" /> Asesmen Sedang Berlangsung
                 </span>
                 <h2 className="text-lg font-bold text-slate-900">
                   {ongoingAssessment.title}
                 </h2>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-slate-500">
                   Tutup pada: {formatWibDateTime(ongoingAssessment.closesAt!)}
                 </p>
               </div>
@@ -129,7 +205,7 @@ export default async function SiswaHomePage() {
             >
               <Button
                 size="sm"
-                className="w-full sm:w-auto gap-1.5 bg-indigo-600 font-semibold text-white hover:bg-indigo-700 active:translate-y-0.5"
+                className="w-full gap-1.5 rounded-xl bg-indigo-900 px-5 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95 sm:w-auto"
               >
                 {sessionMap.get(ongoingAssessment.id)
                   ? "Lanjutkan Pengerjaan"
@@ -138,170 +214,310 @@ export default async function SiswaHomePage() {
               </Button>
             </Link>
           </div>
-        </Card>
+        </div>
       )}
 
-      {/* Kartu Level & Gamifikasi (DESIGN.md Section 6) */}
-      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
-                Tingkat Kemahiran
-              </span>
-              <CardTitle className="text-xl font-bold text-slate-900">
-                Level {levelInfo.level}
-              </CardTitle>
+      {/* Baris 1: 4 Kartu Ringkasan KPI Flat & Interaktif */}
+      <section aria-labelledby="siswa-kpi-heading">
+        <h1 id="siswa-kpi-heading" className="sr-only">
+          Ringkasan Ruang Belajar {user.name}
+        </h1>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <Link
+            href="#progres-level"
+            className="group relative block overflow-hidden rounded-2xl bg-white p-5 pl-6 transition-colors hover:bg-slate-50/90 active:scale-[0.99]"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-1.5 bg-teal-500 transition-all group-hover:w-2"
+            />
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600 transition-transform group-hover:scale-105">
+                <Sparkles className="h-6 w-6" />
+              </div>
+              <div className="min-w-0 text-right">
+                <p className="text-xs font-medium text-slate-500">Level Kamu</p>
+                <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+                  Level {levelInfo.level}
+                </p>
+                <p className="truncate text-xs text-slate-500">
+                  {levelInfo.progressPercent}% menuju level berikut
+                </p>
+              </div>
             </div>
-            <div className="flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1">
-              <Trophy className="h-4 w-4 text-amber-500" />
-              <span className="text-sm font-bold tabular-nums text-slate-900">
-                {totalPoints} Poin
-              </span>
-            </div>
-          </div>
-        </CardHeader>
+          </Link>
 
-        <CardContent className="space-y-4 pt-1">
-          {/* Progress Bar Level Teal */}
-          <div>
-            <div className="mb-1.5 flex justify-between text-xs text-slate-600">
-              <span>Kemajuan Level {levelInfo.level}</span>
-              <span className="font-medium tabular-nums">
-                {levelInfo.nextLevelThreshold !== null
-                  ? `${levelInfo.pointsToNext} poin menuju Level ${levelInfo.level + 1}`
-                  : "Level Maksimum"}
-              </span>
+          <Link
+            href="/siswa/peringkat"
+            className="group relative block overflow-hidden rounded-2xl bg-white p-5 pl-6 transition-colors hover:bg-slate-50/90 active:scale-[0.99]"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-1.5 bg-amber-400 transition-all group-hover:w-2"
+            />
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500 transition-transform group-hover:scale-105">
+                <Trophy className="h-6 w-6" />
+              </div>
+              <div className="min-w-0 text-right">
+                <p className="text-xs font-medium text-slate-500">Total Poin</p>
+                <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+                  {totalPoints}
+                </p>
+                <p className="truncate text-xs text-slate-500">
+                  {wajibPoints} poin peringkat
+                </p>
+              </div>
             </div>
-            <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
-              <div
-                className="h-full rounded-full bg-teal-600 transition-all duration-500"
-                style={{ width: `${levelInfo.progressPercent}%` }}
-              />
+          </Link>
+
+          <Link
+            href="#koleksi-lencana"
+            className="group relative block overflow-hidden rounded-2xl bg-white p-5 pl-6 transition-colors hover:bg-slate-50/90 active:scale-[0.99]"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-1.5 bg-indigo-600 transition-all group-hover:w-2"
+            />
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-700 transition-transform group-hover:scale-105">
+                <Award className="h-6 w-6" />
+              </div>
+              <div className="min-w-0 text-right">
+                <p className="text-xs font-medium text-slate-500">Lencana</p>
+                <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+                  {studentBadges.length} / {allBadges.length}
+                </p>
+                <p className="truncate text-xs text-slate-500">Lencana terbuka</p>
+              </div>
             </div>
-          </div>
+          </Link>
 
-          <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-500">
-            <span>
-              Lencana diperoleh:{" "}
-              <strong className="text-slate-900">{studentBadges.length}</strong> /{" "}
-              {allBadges.length}
-            </span>
-            <Link
-              href="/siswa/peringkat"
-              className="font-medium text-indigo-600 hover:text-indigo-700"
-            >
-              Lihat Peringkat Angkatan →
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Koleksi Lencana (9 Lencana) */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-900">Koleksi Lencana</h2>
-          <span className="text-xs font-medium text-slate-500">
-            {studentBadges.length} dari {allBadges.length} Terbuka
-          </span>
+          <Link
+            href="/siswa/asesmen"
+            className="group relative block overflow-hidden rounded-2xl bg-white p-5 pl-6 transition-colors hover:bg-slate-50/90 active:scale-[0.99]"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-1.5 bg-emerald-500 transition-all group-hover:w-2"
+            />
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-transform group-hover:scale-105">
+                <BookOpen className="h-6 w-6" />
+              </div>
+              <div className="min-w-0 text-right">
+                <p className="text-xs font-medium text-slate-500">Asesmen Wajib</p>
+                <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+                  {completedWajibCount} / {activeWajibAssessments.length}
+                </p>
+                <p className="truncate text-xs text-slate-500">Selesai dikerjakan</p>
+              </div>
+            </div>
+          </Link>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-          {allBadges.map((badge) => {
-            const isEarned = earnedBadgeMap.has(badge.code);
-            const awardedAt = earnedBadgeMap.get(badge.code);
-
-            return (
-              <div
-                key={badge.id}
-                className={cn(
-                  "flex items-start gap-3 rounded-xl border p-4 transition",
-                  isEarned
-                    ? "border-amber-200 bg-white shadow-sm"
-                    : "border-slate-200 bg-slate-50/70 opacity-60",
-                )}
-              >
-                <div
-                  className={cn(
-                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
-                    isEarned
-                      ? "bg-amber-100 text-amber-600"
-                      : "bg-slate-200 text-slate-400",
-                  )}
-                >
-                  {isEarned ? (
-                    <Award className="h-5 w-5" />
-                  ) : (
-                    <Lock className="h-4 w-4" />
-                  )}
+      {/* Baris 2: Grid 2 Kolom Desktop (Progres + Jadwal di Kiri, Koleksi Lencana di Kanan) */}
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
+        {/* Kolom Kiri */}
+        <div className="flex flex-col gap-6 lg:col-span-5">
+          {/* Kartu Progres Level */}
+          <Card
+            id="progres-level"
+            className="scroll-mt-20 rounded-2xl border-0 bg-white shadow-none"
+          >
+            <CardHeader className="pb-1">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base font-bold text-slate-900">
+                  Kemajuan Level
+                </CardTitle>
+                <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
+                  Level {levelInfo.level}
+                </span>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <div className="mb-2 flex justify-between text-xs text-slate-600">
+                  <span>Progres saat ini</span>
+                  <span className="font-semibold tabular-nums text-slate-900">
+                    {levelInfo.nextLevelThreshold !== null
+                      ? `${levelInfo.pointsToNext} poin lagi ke Level ${levelInfo.level + 1}`
+                      : "Level Maksimum"}
+                  </span>
                 </div>
-
-                <div className="min-w-0 flex-1 space-y-1">
-                  <div className="flex items-center justify-between gap-1">
-                    <h3
-                      className={cn(
-                        "truncate text-sm font-semibold",
-                        isEarned ? "text-slate-900" : "text-slate-600",
-                      )}
-                    >
-                      {badge.name}
-                    </h3>
-                    {isEarned && (
-                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
-                    )}
-                  </div>
-                  <p className="text-xs leading-relaxed text-slate-500">
-                    {badge.description}
-                  </p>
-                  {isEarned && awardedAt && (
-                    <div className="pt-1 text-[11px] text-slate-400">
-                      Terbuka: {formatWibDateTime(awardedAt)}
-                    </div>
-                  )}
+                <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
+                  <div
+                    className="h-full rounded-full bg-teal-600 transition-all duration-500"
+                    style={{ width: `${levelInfo.progressPercent}%` }}
+                  />
                 </div>
               </div>
-            );
-          })}
+
+              <div className="grid grid-cols-2 gap-2.5 pt-1">
+                <Link
+                  href="/siswa/peringkat"
+                  className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100 px-3 py-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
+                >
+                  <Trophy className="h-3.5 w-3.5 text-amber-500" />
+                  <span>Peringkat Angkatan</span>
+                </Link>
+                <Link
+                  href="/siswa/riwayat"
+                  className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100 px-3 py-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
+                >
+                  <RotateCcw className="h-3.5 w-3.5 text-teal-600" />
+                  <span>Riwayat Sesi</span>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Kartu Ringkasan Jadwal Asesmen Wajib */}
+          <Card className="rounded-2xl border-0 bg-white shadow-none">
+            <CardHeader className="flex flex-row items-center justify-between gap-2 pb-1">
+              <CardTitle className="text-base font-bold text-slate-900">
+                Jadwal Asesmen Wajib
+              </CardTitle>
+              <Link
+                href="/siswa/asesmen"
+                className="inline-flex items-center rounded-full border border-emerald-500 px-3 py-1 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white"
+              >
+                Lihat Semua
+              </Link>
+            </CardHeader>
+            <CardContent>
+              {previewAssessments.length === 0 ? (
+                <p className="text-sm text-slate-500">
+                  Belum ada asesmen wajib untuk angkatanmu.
+                </p>
+              ) : (
+                <div className="space-y-1">
+                  {previewAssessments.map((a) => {
+                    const session = sessionMap.get(a.id);
+                    let status: StatusType = "Dijadwalkan";
+                    if (session?.finishedAt || (session && a.closesAt && now >= a.closesAt)) {
+                      status = "Selesai";
+                    } else if (session && !session.finishedAt) {
+                      status = "Berlangsung";
+                    } else if (a.opensAt && a.closesAt) {
+                      if (now < a.opensAt) status = "Dijadwalkan";
+                      else if (now < a.closesAt) status = "Berlangsung";
+                      else status = "Terlewat";
+                    }
+
+                    const href =
+                      status === "Selesai" && session
+                        ? `/siswa/hasil/${session.id}`
+                        : status === "Berlangsung" && session
+                          ? `/siswa/sesi/${session.id}`
+                          : "/siswa/asesmen";
+
+                    return (
+                      <Link
+                        key={a.id}
+                        href={href}
+                        className="-mx-3 block rounded-xl px-3 py-2.5 transition-colors hover:bg-slate-50"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-semibold text-slate-900">
+                              {a.title}
+                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500">
+                              {a.opensAt ? formatWibDateTime(a.opensAt) : "Segera"}
+                            </p>
+                          </div>
+                          <StatusBadge status={status} />
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
-      </div>
 
-      {/* Menu Navigasi Cepat Siswa */}
-      <div className="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-3">
-        <Link href="/siswa/asesmen">
-          <Card className="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm transition hover:border-indigo-300 hover:shadow-md">
-            <BookOpen className="mx-auto h-6 w-6 text-indigo-600" />
-            <h3 className="mt-2 text-sm font-semibold text-slate-900">
-              Asesmen Wajib
-            </h3>
-            <p className="mt-0.5 text-xs text-slate-500">
-              Jadwal asesmen angkatan
-            </p>
-          </Card>
-        </Link>
+        {/* Kolom Kanan: Koleksi 9 Lencana */}
+        <Card
+          id="koleksi-lencana"
+          className="scroll-mt-20 rounded-2xl border-0 bg-white shadow-none lg:col-span-7"
+        >
+          <CardHeader className="flex flex-row items-center justify-between gap-2 pb-1">
+            <CardTitle className="text-base font-bold text-slate-900">
+              Koleksi Lencana
+            </CardTitle>
+            <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+              {studentBadges.length} dari {allBadges.length} Terbuka
+            </span>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {allBadges.map((badge) => {
+                const isEarned = earnedBadgeMap.has(badge.code);
+                const awardedAt = earnedBadgeMap.get(badge.code);
+                const visual = BADGE_VISUALS[badge.code] ?? DEFAULT_BADGE_VISUAL;
+                const BadgeIcon = visual.icon;
 
-        <Link href="/siswa/peringkat">
-          <Card className="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm transition hover:border-indigo-300 hover:shadow-md">
-            <Trophy className="mx-auto h-6 w-6 text-amber-500" />
-            <h3 className="mt-2 text-sm font-semibold text-slate-900">
-              Peringkat Angkatan
-            </h3>
-            <p className="mt-0.5 text-xs text-slate-500">
-              Papan 25 besar
-            </p>
-          </Card>
-        </Link>
+                return (
+                  <div
+                    key={badge.id}
+                    className={cn(
+                      "relative flex items-start gap-3 overflow-hidden rounded-2xl p-4 transition-colors",
+                      isEarned
+                        ? `pl-5 ${visual.cardBg}`
+                        : "bg-slate-50 opacity-75",
+                    )}
+                  >
+                    {isEarned && (
+                      <span
+                        aria-hidden="true"
+                        className={`absolute inset-y-0 left-0 w-1.5 ${visual.strip}`}
+                      />
+                    )}
+                    <div
+                      className={cn(
+                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+                        isEarned
+                          ? visual.iconBg
+                          : "bg-slate-200/80 text-slate-400",
+                      )}
+                    >
+                      <BadgeIcon className="h-5 w-5" />
+                    </div>
 
-        <Link href="/siswa/riwayat" className="col-span-2 sm:col-span-1">
-          <Card className="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm transition hover:border-indigo-300 hover:shadow-md">
-            <Award className="mx-auto h-6 w-6 text-teal-600" />
-            <h3 className="mt-2 text-sm font-semibold text-slate-900">
-              Riwayat Belajar
-            </h3>
-            <p className="mt-0.5 text-xs text-slate-500">
-              Hasil & pembahasan sesi
-            </p>
-          </Card>
-        </Link>
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="flex items-start justify-between gap-1.5">
+                        <h3
+                          className={cn(
+                            "text-sm font-bold leading-snug",
+                            isEarned ? "text-slate-900" : "text-slate-600",
+                          )}
+                        >
+                          {badge.name}
+                        </h3>
+                        {isEarned ? (
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                        ) : (
+                          <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-400" />
+                        )}
+                      </div>
+                      <p className="text-xs leading-relaxed text-slate-600">
+                        {badge.description}
+                      </p>
+                      {isEarned && awardedAt && (
+                        <div className="pt-0.5 text-[11px] font-medium text-amber-700">
+                          Terbuka: {formatWibDateTime(awardedAt)}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

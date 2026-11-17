@@ -11,8 +11,6 @@ import {
   XCircle,
   Clock,
   Award,
-  Zap,
-  ArrowRight,
   HelpCircle,
   Sparkles,
   Home,
@@ -63,7 +61,6 @@ export default async function StudentResultPage({
     notFound();
   }
 
-  // Jika sesi belum selesai
   if (session.finishedAt === null) {
     if (session.assessment.closesAt && now >= session.assessment.closesAt) {
       await finalizeExpiredSession(sessionId, user.id, session.assessment.closesAt);
@@ -105,14 +102,14 @@ export default async function StudentResultPage({
   );
 
   return (
-    <div className="space-y-6">
-      {/* Header Kartu Hasil */}
-      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
-        <CardHeader className="text-center pb-4">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+    <div className="mx-auto max-w-3xl space-y-6">
+      {/* Header Kartu Hasil Flat */}
+      <Card className="rounded-2xl border-0 bg-white shadow-none">
+        <CardHeader className="pb-4 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
             <CheckCircle2 className="h-6 w-6" />
           </div>
-          <span className="mt-2 text-xs font-semibold tracking-wide text-indigo-600 uppercase">
+          <span className="mt-2 text-xs font-semibold uppercase tracking-wide text-indigo-700">
             Pilar {pillarName} • {topicName}
           </span>
           <CardTitle className="text-2xl font-bold text-slate-900">
@@ -123,11 +120,12 @@ export default async function StudentResultPage({
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6">
-          {/* Grid Ringkasan Skor & Poin */}
+        <CardContent className="space-y-5">
+          {/* Grid Ringkasan Skor & Poin Flat */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 text-center">
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
+              <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-slate-400" />
+              <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Jawaban Benar
               </span>
               <div className="mt-1 text-2xl font-bold tabular-nums text-slate-900">
@@ -138,17 +136,19 @@ export default async function StudentResultPage({
               </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 text-center">
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
+              <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-indigo-600" />
+              <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Akurasi
               </span>
-              <div className="mt-1 text-2xl font-bold tabular-nums text-indigo-600">
+              <div className="mt-1 text-2xl font-bold tabular-nums text-indigo-700">
                 {accuracy}%
               </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 text-center">
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
+              <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-amber-400" />
+              <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Poin Jawaban
               </span>
               <div className="mt-1 text-2xl font-bold tabular-nums text-amber-600">
@@ -156,8 +156,9 @@ export default async function StudentResultPage({
               </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 text-center">
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
+              <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-emerald-500" />
+              <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Bonus Waktu
               </span>
               <div className="mt-1 text-2xl font-bold tabular-nums text-emerald-600">
@@ -166,14 +167,15 @@ export default async function StudentResultPage({
             </div>
           </div>
 
-          {/* Banner Total Poin */}
-          <div className="flex items-center justify-between rounded-xl border border-amber-200 bg-amber-50/60 p-4">
+          {/* Banner Total Poin Flat */}
+          <div className="relative flex items-center justify-between overflow-hidden rounded-2xl bg-amber-50 p-4 pl-5">
+            <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-amber-400" />
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-amber-500">
                 <Sparkles className="h-5 w-5" />
               </div>
               <div>
-                <h2 className="text-sm font-semibold text-slate-900">
+                <h2 className="text-sm font-bold text-slate-900">
                   Total Poin Diperoleh
                 </h2>
                 <p className="text-xs text-slate-600">
@@ -183,27 +185,38 @@ export default async function StudentResultPage({
                 </p>
               </div>
             </div>
-            <div className="text-2xl font-bold tabular-nums text-amber-700">
+            <div className="text-xl font-extrabold tabular-nums text-amber-700 sm:text-2xl">
               +{totalPoints} Poin
             </div>
           </div>
 
           {/* Navigasi Aksi */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
             <Link href="/siswa">
-              <Button variant="outline" size="sm" className="gap-1.5 font-medium">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="gap-1.5 rounded-xl bg-slate-100 font-semibold text-slate-700 hover:bg-slate-200"
+              >
                 <Home className="h-4 w-4" />
                 Kembali ke Beranda
               </Button>
             </Link>
             <Link href="/siswa/riwayat">
-              <Button variant="outline" size="sm" className="gap-1.5 font-medium">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="gap-1.5 rounded-xl bg-slate-100 font-semibold text-slate-700 hover:bg-slate-200"
+              >
                 <RotateCcw className="h-4 w-4" />
                 Lihat Riwayat
               </Button>
             </Link>
             <Link href="/siswa/peringkat">
-              <Button size="sm" className="gap-1.5 bg-indigo-600 font-semibold text-white hover:bg-indigo-700">
+              <Button
+                size="sm"
+                className="gap-1.5 rounded-xl bg-indigo-900 font-semibold text-white hover:bg-indigo-800 active:scale-95"
+              >
                 <Award className="h-4 w-4" />
                 Lihat Papan Peringkat
               </Button>
@@ -214,16 +227,17 @@ export default async function StudentResultPage({
 
       {/* Bagian Pembahasan (D-04, D-11) */}
       {!isReviewAvailable ? (
-        <Card className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl bg-white p-6 pl-7">
+          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-slate-400" />
           <div className="flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
               <Clock className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-slate-900">
+              <h2 className="text-base font-bold text-slate-900">
                 Pembahasan Belum Dibuka
               </h2>
-              <p className="mt-1 text-sm text-slate-600 leading-relaxed">
+              <p className="mt-1 text-sm leading-relaxed text-slate-600">
                 Demi menjaga integritas dan keadilan asesmen bersama, kunci jawaban dan
                 pembahasan lengkap baru akan terbuka secara otomatis setelah seluruh
                 jendela asesmen ditutup pada{" "}
@@ -238,14 +252,14 @@ export default async function StudentResultPage({
               </p>
             </div>
           </div>
-        </Card>
+        </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between px-1">
             <h2 className="text-xl font-bold text-slate-900">
               Pembahasan Soal
             </h2>
-            <span className="text-xs font-medium text-slate-500">
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-600">
               {totalQuestions} Soal
             </span>
           </div>
@@ -259,14 +273,18 @@ export default async function StudentResultPage({
             return (
               <Card
                 key={question.id}
-                className={cn(
-                  "rounded-xl border bg-white p-5 shadow-sm space-y-4",
-                  userIsCorrect ? "border-slate-200" : "border-rose-200",
-                )}
+                className="relative space-y-4 overflow-hidden rounded-2xl border-0 bg-white p-5 pl-6 shadow-none"
               >
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "absolute inset-y-0 left-0 w-1.5",
+                    userIsCorrect ? "bg-emerald-500" : "bg-rose-500",
+                  )}
+                />
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
-                    <span className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                       Soal {idx + 1}
                     </span>
                     <p className="text-base font-medium text-slate-900">
@@ -274,12 +292,12 @@ export default async function StudentResultPage({
                     </p>
                   </div>
                   {userIsCorrect ? (
-                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
+                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                       <CheckCircle2 className="h-3.5 w-3.5" />
                       Benar
                     </span>
                   ) : (
-                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700 border border-rose-200">
+                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">
                       <XCircle className="h-3.5 w-3.5" />
                       Salah
                     </span>
@@ -292,12 +310,11 @@ export default async function StudentResultPage({
                     const isSelected = userOptionId === opt.id;
                     const isCorrect = opt.isCorrect;
 
-                    let optionStyle = "border-slate-200 bg-white text-slate-700";
+                    let optionStyle = "bg-slate-50 text-slate-700";
                     let label = null;
 
                     if (isCorrect) {
-                      optionStyle =
-                        "border-emerald-300 bg-emerald-50 text-emerald-950 font-medium";
+                      optionStyle = "bg-emerald-50 text-emerald-950 font-medium";
                       label = (
                         <span className="ml-auto flex items-center gap-1 text-xs font-semibold text-emerald-700">
                           <CheckCircle2 className="h-3.5 w-3.5" />
@@ -305,8 +322,7 @@ export default async function StudentResultPage({
                         </span>
                       );
                     } else if (isSelected && !isCorrect) {
-                      optionStyle =
-                        "border-rose-300 bg-rose-50 text-rose-950 font-medium";
+                      optionStyle = "bg-rose-50 text-rose-950 font-medium";
                       label = (
                         <span className="ml-auto flex items-center gap-1 text-xs font-semibold text-rose-700">
                           <XCircle className="h-3.5 w-3.5" />
@@ -319,7 +335,7 @@ export default async function StudentResultPage({
                       <div
                         key={opt.id}
                         className={cn(
-                          "flex items-center justify-between rounded-lg border p-3 text-sm leading-relaxed",
+                          "flex items-center justify-between rounded-xl p-3.5 text-sm leading-relaxed",
                           optionStyle,
                         )}
                       >
@@ -332,12 +348,12 @@ export default async function StudentResultPage({
 
                 {/* Kotak Penjelasan */}
                 {question.explanation && (
-                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-                    <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 uppercase tracking-wide">
+                  <div className="rounded-xl bg-slate-50 p-4">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-700">
                       <HelpCircle className="h-3.5 w-3.5 text-indigo-600" />
                       Penjelasan
                     </div>
-                    <p className="mt-1 text-sm text-slate-700 leading-relaxed">
+                    <p className="mt-1 text-sm leading-relaxed text-slate-700">
                       {question.explanation}
                     </p>
                   </div>

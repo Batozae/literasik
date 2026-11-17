@@ -66,7 +66,7 @@ export function QuestionForm({
       {locked ? (
         <div
           role="status"
-          className="rounded-lg border border-slate-200 bg-slate-100 p-4 text-sm text-slate-700"
+          className="rounded-xl bg-amber-50 p-4 text-sm text-amber-800"
         >
           Soal sudah dipakai/dijawab sehingga isinya tidak bisa diubah. Anda
           hanya dapat mengaktifkan atau menonaktifkannya.
@@ -75,7 +75,7 @@ export function QuestionForm({
       {state.errors.length > 0 ? (
         <div
           role="alert"
-          className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700"
+          className="rounded-xl bg-rose-50 p-4 text-sm text-rose-700"
         >
           <p className="font-semibold">Periksa kembali isian soal:</p>
           <ul className="mt-2 list-inside list-disc space-y-1">
@@ -102,11 +102,11 @@ export function QuestionForm({
         >
           <SelectTrigger
             id="topicId"
-            className="min-h-11 w-full rounded-lg bg-white px-3"
+            className="min-h-11 w-full rounded-xl border-0 bg-slate-100 px-3.5"
           >
             <SelectValue placeholder="Pilih materi" />
           </SelectTrigger>
-          <SelectContent className="rounded-lg">
+          <SelectContent className="rounded-xl">
             {topics.map((topic) => (
               <SelectItem key={topic.id} value={String(topic.id)}>
                 {topic.name} · {topic.pillar.name}
@@ -129,7 +129,7 @@ export function QuestionForm({
           required
           disabled={locked || pending}
           defaultValue={initial?.text}
-          className="min-h-28 rounded-lg bg-white"
+          className="min-h-28 rounded-xl border-0 bg-slate-100 px-3.5 py-2.5 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-indigo-500"
         />
       </div>
 
@@ -143,11 +143,11 @@ export function QuestionForm({
         >
           <SelectTrigger
             id="difficulty"
-            className="min-h-11 w-full rounded-lg bg-white px-3"
+            className="min-h-11 w-full rounded-xl border-0 bg-slate-100 px-3.5"
           >
             <SelectValue placeholder="Pilih kesulitan" />
           </SelectTrigger>
-          <SelectContent className="rounded-lg">
+          <SelectContent className="rounded-xl">
             <SelectItem value="EASY">Mudah</SelectItem>
             <SelectItem value="MEDIUM">Sedang</SelectItem>
             <SelectItem value="HARD">Sulit</SelectItem>
@@ -163,12 +163,12 @@ export function QuestionForm({
           name="correctOption"
           required={!initial}
           defaultValue={correctIndex >= 0 ? String(correctIndex) : undefined}
-          className="space-y-3"
+          className="space-y-2.5"
         >
           {optionValues.map((option, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-4"
+              className="flex items-center gap-3 rounded-xl bg-slate-50 p-3.5 transition-colors hover:bg-slate-100/80"
             >
               <RadioGroupItem id={`correct-${index}`} value={String(index)} />
               <Label htmlFor={`option-${index}`} className="sr-only">
@@ -181,18 +181,18 @@ export function QuestionForm({
                 disabled={locked || pending}
                 defaultValue={option.text}
                 placeholder={`Opsi ${index + 1}`}
-                className="min-h-11 rounded-lg"
+                className="min-h-11 rounded-xl border-0 bg-white px-3.5"
               />
               <Label
                 htmlFor={`correct-${index}`}
-                className="cursor-pointer text-sm text-slate-600"
+                className="cursor-pointer text-sm font-medium text-slate-600"
               >
                 Benar
               </Label>
             </div>
           ))}
         </RadioGroup>
-        <p className="text-sm text-slate-600">
+        <p className="text-xs text-slate-500">
           Pilih satu opsi sebagai jawaban benar.
         </p>
       </fieldset>
@@ -205,7 +205,7 @@ export function QuestionForm({
           required
           disabled={locked || pending}
           defaultValue={initial?.explanation}
-          className="min-h-28 rounded-lg bg-white"
+          className="min-h-28 rounded-xl border-0 bg-slate-100 px-3.5 py-2.5 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-indigo-500"
         />
       </div>
 
@@ -214,16 +214,16 @@ export function QuestionForm({
           <Button
             type="submit"
             disabled={pending || topics.length === 0}
-            className="min-h-11 rounded-lg"
+            className="min-h-11 rounded-xl bg-indigo-900 px-5 font-semibold text-white hover:bg-indigo-800 active:scale-95"
           >
             {pending ? "Menyimpan..." : "Simpan"}
           </Button>
         ) : null}
         <Button
           type="button"
-          variant="outline"
+          variant="secondary"
           asChild
-          className="min-h-11 rounded-lg"
+          className="min-h-11 rounded-xl bg-slate-100 px-5 font-semibold text-slate-700 hover:bg-slate-200"
         >
           <Link href="/guru/soal">Batal</Link>
         </Button>

@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { startWajibSessionAction, finalizeExpiredSession } from "@/app/siswa/actions";
 import { Clock, Calendar, HelpCircle, ArrowRight } from "lucide-react";
 
+const STATUS_STRIP: Record<string, string> = {
+  Berlangsung: "bg-sky-500",
+  Selesai: "bg-emerald-500",
+  Dijadwalkan: "bg-amber-400",
+  Terlewat: "bg-rose-400",
+};
+
 export default async function StudentAssessmentsPage() {
   const user = await requireStudent();
   const now = new Date();
@@ -19,7 +26,7 @@ export default async function StudentAssessmentsPage() {
 
   if (!profile) {
     return (
-      <div className="p-4 text-center text-sm text-slate-600">
+      <div className="rounded-2xl bg-white p-6 text-center text-sm text-slate-600">
         Profil siswa tidak ditemukan.
       </div>
     );
@@ -49,7 +56,6 @@ export default async function StudentAssessmentsPage() {
   });
   const sessionMap = new Map(sessions.map((s) => [s.assessmentId, s]));
 
-  // Auto-close any expired sessions
   for (const session of sessions) {
     if (session.finishedAt === null && session.assessmentId) {
       const ass = assessments.find((a) => a.id === session.assessmentId);
@@ -72,13 +78,13 @@ export default async function StudentAssessmentsPage() {
       </div>
 
       {assessments.length === 0 ? (
-        <Card className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <Card className="rounded-2xl border-0 bg-white p-8 text-center shadow-none">
           <p className="text-sm text-slate-600">
             Belum ada asesmen wajib yang dijadwalkan untuk angkatanmu.
           </p>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {assessments.map((assessment) => {
             const session = sessionMap.get(assessment.id);
             const opensAt = assessment.opensAt;
@@ -122,19 +128,25 @@ export default async function StudentAssessmentsPage() {
               }
             }
 
+            const stripClass = STATUS_STRIP[status] ?? "bg-slate-300";
+
             return (
               <Card
                 key={assessment.id}
-                className="rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md"
+                className="relative overflow-hidden rounded-2xl border-0 bg-white pl-2 shadow-none transition-colors hover:bg-white/90"
               >
+                <span
+                  aria-hidden="true"
+                  className={`absolute inset-y-0 left-0 w-1.5 ${stripClass}`}
+                />
                 <CardHeader className="pb-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="inline-flex rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700">
+                    <span className="inline-flex rounded-full bg-indigo-50 px-3 py-0.5 text-xs font-semibold text-indigo-700">
                       Pilar {pillar}
                     </span>
                     <StatusBadge status={status} />
                   </div>
-                  <CardTitle className="mt-2 text-lg font-semibold text-slate-900">
+                  <CardTitle className="mt-2 text-lg font-bold text-slate-900">
                     {assessment.title}
                   </CardTitle>
                   <CardDescription className="text-sm text-slate-600">
@@ -142,7 +154,7 @@ export default async function StudentAssessmentsPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4 pt-0">
-                  <div className="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs text-slate-500">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
                     <div className="flex items-center gap-1">
                       <HelpCircle className="h-3.5 w-3.5" />
                       <span>{questionCount} Soal</span>
@@ -165,11 +177,11 @@ export default async function StudentAssessmentsPage() {
                     {isFinished && session && (
                       <Link href={`/siswa/hasil/${session.id}`}>
                         <Button
-                          variant="outline"
+                          variant="secondary"
                           size="sm"
-                          className="gap-1.5 font-medium"
+                          className="gap-1.5 rounded-xl bg-slate-100 font-semibold text-indigo-700 hover:bg-indigo-50"
                         >
-                          Lihat Hasil & Pembahasan
+                          Lihat Hasil &amp; Pembahasan
                           <ArrowRight className="h-3.5 w-3.5" />
                         </Button>
                       </Link>
@@ -179,7 +191,7 @@ export default async function StudentAssessmentsPage() {
                       <Link href={`/siswa/sesi/${session.id}`}>
                         <Button
                           size="sm"
-                          className="gap-1.5 bg-indigo-600 font-semibold text-white hover:bg-indigo-700 active:translate-y-0.5"
+                          className="gap-1.5 rounded-xl bg-indigo-900 px-4 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95"
                         >
                           Lanjutkan Pengerjaan
                           <ArrowRight className="h-3.5 w-3.5" />
@@ -192,7 +204,7 @@ export default async function StudentAssessmentsPage() {
                         <Button
                           type="submit"
                           size="sm"
-                          className="gap-1.5 bg-indigo-600 font-semibold text-white hover:bg-indigo-700 active:translate-y-0.5"
+                          className="gap-1.5 rounded-xl bg-indigo-900 px-4 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95"
                         >
                           Mulai Kerjakan
                           <ArrowRight className="h-3.5 w-3.5" />
@@ -201,14 +213,9 @@ export default async function StudentAssessmentsPage() {
                     )}
 
                     {!isFinished && !canContinue && !canStart && status === "Dijadwalkan" && (
-                      <Button
-                        disabled
-                        variant="outline"
-                        size="sm"
-                        className="text-xs text-slate-400"
-                      >
+                      <span className="rounded-xl bg-slate-100 px-3.5 py-1.5 text-xs font-medium text-slate-500">
                         Belum Dibuka
-                      </Button>
+                      </span>
                     )}
 
                     {!isFinished && !canContinue && !canStart && status === "Terlewat" && (

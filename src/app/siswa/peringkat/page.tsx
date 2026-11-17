@@ -2,6 +2,7 @@ import { requireStudent } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sortAndRankLeaderboard, type LeaderboardCandidate } from "@/lib/scoring";
 import { LEADERBOARD_TOP_N } from "@/lib/config";
+import { getInitials, PODIUM_STYLES, RANK_BADGE_CLASSES } from "@/lib/podium";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
   Table,
@@ -11,13 +12,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trophy, Medal, Award, Sparkles, UserCheck } from "lucide-react";
+import { Trophy, Medal, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default async function StudentLeaderboardPage() {
   const user = await requireStudent();
 
-  // 1. Profil siswa
   const profile = await prisma.studentProfile.findUnique({
     where: { userId: user.id },
     include: { class: true },
@@ -25,7 +25,7 @@ export default async function StudentLeaderboardPage() {
 
   if (!profile) {
     return (
-      <div className="p-4 text-center text-sm text-slate-600">
+      <div className="rounded-2xl bg-white p-6 text-center text-sm text-slate-600">
         Profil siswa tidak ditemukan.
       </div>
     );
@@ -33,7 +33,6 @@ export default async function StudentLeaderboardPage() {
 
   const gradeLevel = profile.class.gradeLevel;
 
-  // 2. Ambil seluruh siswa dalam satu angkatan beserta poin & akurasi WAJIB
   const cohortStudents = await prisma.user.findMany({
     where: {
       role: "STUDENT",
@@ -56,7 +55,6 @@ export default async function StudentLeaderboardPage() {
     },
   });
 
-  // 3. Bangun kandidat papan peringkat
   const candidates: LeaderboardCandidate[] = cohortStudents.map((s) => {
     const wajibPoints = s.pointEvents.reduce((sum, e) => sum + e.points, 0);
     const totalWajibAnswers = s.answers.length;
@@ -73,9 +71,9 @@ export default async function StudentLeaderboardPage() {
     };
   });
 
-  // 4. Urutkan dan beri peringkat (hanya dengan poin > 0)
   const rankedAll = sortAndRankLeaderboard(candidates);
   const top25 = rankedAll.slice(0, LEADERBOARD_TOP_N);
+  const topThree = top25.slice(0, 3);
 
   const currentUserInTop25 = top25.find((e) => e.studentId === user.id);
   const currentUserEntry = candidates.find((e) => e.studentId === user.id);
@@ -85,7 +83,7 @@ export default async function StudentLeaderboardPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <span className="text-xs font-semibold uppercase tracking-wide text-indigo-600">
+        <span className="text-xs font-semibold uppercase tracking-wide text-indigo-700">
           Angkatan {gradeLevel}
         </span>
         <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
@@ -96,36 +94,38 @@ export default async function StudentLeaderboardPage() {
         </p>
       </div>
 
-      {/* Kartu Status Jika Siswa di Luar 25 Besar (D-07 & DESIGN.md Section 8) */}
+      {/* Kartu Status Jika Siswa di Luar 25 Besar (D-07: tanpa nomor peringkat) */}
       {!currentUserInTop25 && (
-        <Card className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl bg-white p-5 pl-6">
+          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-amber-400" />
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
               <Award className="h-6 w-6" />
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-900">
                 Belum masuk 25 besar. Poinmu: {currentUserWajibPoints}
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="mt-0.5 text-xs text-slate-500">
                 Terus selesaikan asesmen wajib berikutnya dengan teliti untuk menembus
                 25 besar angkatan!
               </p>
             </div>
           </div>
-        </Card>
+        </div>
       )}
 
-      {/* Jika Siswa Masuk 25 Besar, Tampilkan Info Singkat */}
+      {/* Jika Siswa Masuk 25 Besar */}
       {currentUserInTop25 && (
-        <Card className="rounded-xl border border-indigo-200 bg-indigo-50/60 p-4 shadow-sm">
-          <div className="flex items-center justify-between">
+        <div className="relative overflow-hidden rounded-2xl bg-white p-5 pl-6">
+          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-indigo-700" />
+          <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-700">
                 <Trophy className="h-5 w-5" />
               </div>
               <div>
-                <span className="text-xs font-semibold text-indigo-700 uppercase tracking-wide">
+                <span className="text-xs font-semibold uppercase tracking-wide text-indigo-700">
                   Posisi Kamu
                 </span>
                 <h2 className="text-base font-bold text-slate-900">
@@ -133,22 +133,78 @@ export default async function StudentLeaderboardPage() {
                 </h2>
               </div>
             </div>
-            <span className="text-xs font-medium text-indigo-700">
-              Akurasi: {Math.round(currentUserInTop25.wajibAccuracy * 100)}%
+            <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+              Akurasi {Math.round(currentUserInTop25.wajibAccuracy * 100)}%
             </span>
           </div>
+        </div>
+      )}
+
+      {/* Podium 3 Besar */}
+      {topThree.length > 0 && (
+        <Card className="rounded-2xl border-0 bg-white shadow-none">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-base font-bold text-slate-900">
+              Peraih Skor Tertinggi
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {topThree.map((entry, idx) => {
+                const style = PODIUM_STYLES[idx] ?? PODIUM_STYLES[2];
+                const isCurrent = entry.studentId === user.id;
+                return (
+                  <div
+                    key={entry.studentId}
+                    className={cn(
+                      "flex flex-col items-center justify-between rounded-2xl p-4 text-center",
+                      style.card,
+                      isCurrent && "ring-2 ring-indigo-950 ring-offset-2",
+                    )}
+                  >
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-full text-sm font-bold ${style.ring}`}
+                      >
+                        {getInitials(entry.name)}
+                      </div>
+                      <p className="mt-2.5 line-clamp-1 text-sm font-bold">
+                        {entry.formattedName}
+                      </p>
+                      <p className={`text-xs ${style.sub}`}>
+                        {entry.wajibPoints} Poin Wajib
+                      </p>
+                    </div>
+
+                    <div className="my-2.5">
+                      <p className="text-xl font-extrabold tabular-nums">
+                        {Math.round(entry.wajibAccuracy * 100)}%
+                      </p>
+                    </div>
+
+                    <div
+                      className={`inline-flex w-full items-center justify-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold ${style.pill}`}
+                    >
+                      <Medal className="h-3.5 w-3.5" />
+                      <span>{style.label}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
         </Card>
       )}
 
       {/* Tabel 25 Besar */}
-      <Card className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <CardHeader className="border-b border-slate-100 pb-4">
+      <Card className="overflow-hidden rounded-2xl border-0 bg-white shadow-none">
+        <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-bold text-slate-900">
+            <CardTitle className="text-base font-bold text-slate-900">
               Top 25 Angkatan {gradeLevel}
             </CardTitle>
-            <span className="text-xs text-slate-500">
-              {top25.length} Siswa Terdaftar
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+              {top25.length} Siswa
             </span>
           </div>
           <CardDescription className="text-xs text-slate-500">
@@ -163,18 +219,18 @@ export default async function StudentLeaderboardPage() {
             </div>
           ) : (
             <Table>
-              <TableHeader className="bg-slate-50/70">
-                <TableRow>
-                  <TableHead className="w-16 text-center text-xs font-medium text-slate-600">
+              <TableHeader>
+                <TableRow className="border-slate-100 hover:bg-transparent">
+                  <TableHead className="w-16 text-center text-xs font-medium text-slate-500">
                     Posisi
                   </TableHead>
-                  <TableHead className="text-xs font-medium text-slate-600">
+                  <TableHead className="text-xs font-medium text-slate-500">
                     Nama Siswa
                   </TableHead>
-                  <TableHead className="text-right text-xs font-medium text-slate-600">
+                  <TableHead className="text-right text-xs font-medium text-slate-500">
                     Poin
                   </TableHead>
-                  <TableHead className="text-right text-xs font-medium text-slate-600">
+                  <TableHead className="text-right text-xs font-medium text-slate-500">
                     Akurasi
                   </TableHead>
                 </TableRow>
@@ -182,39 +238,30 @@ export default async function StudentLeaderboardPage() {
               <TableBody>
                 {top25.map((entry) => {
                   const isCurrent = entry.studentId === user.id;
-                  const isTop1 = entry.rank === 1;
-                  const isTop2 = entry.rank === 2;
-                  const isTop3 = entry.rank === 3;
-                  const isTop3Any = isTop1 || isTop2 || isTop3;
 
                   return (
                     <TableRow
                       key={entry.studentId}
                       className={cn(
-                        "transition",
-                        isCurrent && "ring-2 ring-indigo-600 bg-indigo-50/50 font-semibold",
+                        "border-slate-100/80 transition-colors hover:bg-slate-50",
+                        isCurrent && "bg-indigo-50/80 font-semibold ring-2 ring-inset ring-indigo-600",
                       )}
                     >
                       <TableCell className="text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          {isTop1 && (
-                            <Trophy className="h-4 w-4 text-amber-500 shrink-0" />
-                          )}
-                          {isTop2 && (
-                            <Medal className="h-4 w-4 text-amber-500 shrink-0" />
-                          )}
-                          {isTop3 && (
-                            <Award className="h-4 w-4 text-amber-500 shrink-0" />
-                          )}
+                        {entry.rank <= 3 ? (
                           <span
                             className={cn(
-                              "tabular-nums text-sm",
-                              isTop3Any ? "font-bold text-amber-600" : "text-slate-600",
+                              "inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold",
+                              RANK_BADGE_CLASSES[entry.rank] ?? "bg-slate-200 text-slate-900",
                             )}
                           >
                             {entry.rank}
                           </span>
-                        </div>
+                        ) : (
+                          <span className="tabular-nums text-sm text-slate-600">
+                            {entry.rank}
+                          </span>
+                        )}
                       </TableCell>
 
                       <TableCell>
@@ -228,7 +275,7 @@ export default async function StudentLeaderboardPage() {
                             {entry.formattedName}
                           </span>
                           {isCurrent && (
-                            <span className="rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700">
+                            <span className="rounded-full bg-indigo-900 px-2 py-0.5 text-[10px] font-bold text-white">
                               Kamu
                             </span>
                           )}

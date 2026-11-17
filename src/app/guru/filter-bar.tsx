@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -40,6 +39,11 @@ export function FilterBar({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
+  const classItems = [
+    { value: "all_classes", label: "Semua kelas saya" },
+    ...classOptions.map((c) => ({ value: String(c.id), label: c.name })),
+  ];
+
   function updateParam(key: string, value: string | null) {
     const params = new URLSearchParams(searchParams.toString());
     if (!value || value === "all_classes") {
@@ -47,7 +51,6 @@ export function FilterBar({
     } else {
       params.set(key, value);
     }
-    // Reset custom dates jika ganti period bukan custom
     if (key === "period" && value !== "custom") {
       params.delete("from");
       params.delete("to");
@@ -60,25 +63,25 @@ export function FilterBar({
   const isCustom = selectedPeriod === "custom";
 
   return (
-    <div className="flex flex-wrap items-end gap-4">
+    <div className="flex flex-wrap items-end gap-3">
       {/* Filter kelas */}
       <div className="flex flex-col gap-1.5">
-        <Label className="text-xs font-medium text-slate-600 uppercase tracking-wide">
+        <Label className="text-xs font-medium uppercase tracking-wide text-slate-500">
           Kelas
         </Label>
         <Select
+          items={classItems}
           value={selectedClassId || "all_classes"}
           onValueChange={(v) => updateParam("classId", v)}
           disabled={isPending}
         >
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="h-10 w-48 rounded-xl border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
             <SelectValue placeholder="Semua kelas saya" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all_classes">Semua kelas saya</SelectItem>
-            {classOptions.map((c) => (
-              <SelectItem key={c.id} value={String(c.id)}>
-                {c.name}
+          <SelectContent className="rounded-2xl">
+            {classItems.map((item) => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.label}
               </SelectItem>
             ))}
           </SelectContent>
@@ -87,18 +90,19 @@ export function FilterBar({
 
       {/* Filter periode */}
       <div className="flex flex-col gap-1.5">
-        <Label className="text-xs font-medium text-slate-600 uppercase tracking-wide">
+        <Label className="text-xs font-medium uppercase tracking-wide text-slate-500">
           Periode
         </Label>
         <Select
+          items={PERIOD_OPTIONS}
           value={selectedPeriod || "all"}
           onValueChange={(v) => updateParam("period", v)}
           disabled={isPending}
         >
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="h-10 w-48 rounded-xl border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
             <SelectValue placeholder="Semua Waktu" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-2xl">
             {PERIOD_OPTIONS.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>
                 {opt.label}
@@ -112,13 +116,13 @@ export function FilterBar({
       {isCustom && (
         <>
           <div className="flex flex-col gap-1.5">
-            <Label className="text-xs font-medium text-slate-600 uppercase tracking-wide">
+            <Label className="text-xs font-medium uppercase tracking-wide text-slate-500">
               Dari
             </Label>
             <Input
               type="date"
               defaultValue={customFrom}
-              className="w-40"
+              className="h-10 w-40 rounded-xl border-0 bg-slate-100 px-3.5"
               onChange={(e) => {
                 const params = new URLSearchParams(searchParams.toString());
                 params.set("from", e.target.value);
@@ -127,13 +131,13 @@ export function FilterBar({
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label className="text-xs font-medium text-slate-600 uppercase tracking-wide">
+            <Label className="text-xs font-medium uppercase tracking-wide text-slate-500">
               Sampai
             </Label>
             <Input
               type="date"
               defaultValue={customTo}
-              className="w-40"
+              className="h-10 w-40 rounded-xl border-0 bg-slate-100 px-3.5"
               onChange={(e) => {
                 const params = new URLSearchParams(searchParams.toString());
                 params.set("to", e.target.value);
@@ -145,7 +149,9 @@ export function FilterBar({
       )}
 
       {isPending && (
-        <span className="text-sm text-slate-500 self-end pb-2">Memuat...</span>
+        <span className="self-end pb-2 text-xs font-medium text-indigo-700">
+          Memuat...
+        </span>
       )}
     </div>
   );

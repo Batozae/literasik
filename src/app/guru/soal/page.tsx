@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle2, MinusCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -12,7 +12,21 @@ import { QuestionFilters } from "./question-filters";
 import { QuestionStatusToggle } from "./question-status-toggle";
 
 type SearchParams = Record<string, string | string[] | undefined>;
-const difficultyLabels = { EASY: "Mudah", MEDIUM: "Sedang", HARD: "Sulit" } as const;
+
+const difficultyMeta = {
+  EASY: {
+    label: "Mudah",
+    badgeClass: "bg-emerald-50 text-emerald-700",
+  },
+  MEDIUM: {
+    label: "Sedang",
+    badgeClass: "bg-amber-50 text-amber-700",
+  },
+  HARD: {
+    label: "Sulit",
+    badgeClass: "bg-rose-50 text-rose-700",
+  },
+} as const;
 
 function singleParam(value: string | string[] | undefined): string {
   return typeof value === "string" ? value : "";
@@ -97,64 +111,101 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-2">
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <div className="space-y-1">
           <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Bank Soal</h1>
-          <p className="text-base text-slate-600">Kelola soal untuk materi pada angkatan kelas yang Anda ajar.</p>
+          <p className="text-sm text-slate-600 md:text-base">
+            Kelola soal untuk materi pada angkatan kelas yang Anda ajar.
+          </p>
         </div>
-        <Button asChild className="min-h-11 rounded-lg">
-          <Link href="/guru/soal/baru">Tambah soal</Link>
+        <Button
+          asChild
+          className="min-h-11 gap-1.5 rounded-xl bg-indigo-900 px-5 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95"
+        >
+          <Link href="/guru/soal/baru">
+            <Plus className="h-4 w-4" />
+            <span>Tambah soal</span>
+          </Link>
         </Button>
       </header>
 
-      <QuestionFilters
-        topics={topics.map((topic) => ({ id: topic.id, name: topic.name, pillarId: topic.pillarId, pillarName: topic.pillar.name }))}
-        pillars={pillars}
-        filters={filters}
-      />
+      <div className="rounded-2xl bg-white p-4">
+        <QuestionFilters
+          topics={topics.map((topic) => ({ id: topic.id, name: topic.name, pillarId: topic.pillarId, pillarName: topic.pillar.name }))}
+          pillars={pillars}
+          filters={filters}
+        />
+      </div>
 
       {loadFailed ? (
-        <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700">
+        <div role="alert" className="rounded-2xl bg-rose-50 p-6 text-sm font-medium text-rose-700">
           Bank soal tidak dapat dimuat saat ini. Coba muat ulang halaman.
         </div>
       ) : visibleQuestions.length === 0 ? (
-        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <div className="rounded-2xl bg-white p-8 text-center">
           <p className="font-semibold text-slate-900">Belum ada soal yang sesuai.</p>
-          <p className="mt-2 text-sm text-slate-600">Coba ubah filter atau tambahkan soal untuk materi yang Anda ajar.</p>
+          <p className="mt-1.5 text-sm text-slate-600">
+            Coba ubah filter atau tambahkan soal untuk materi yang Anda ajar.
+          </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-2xl bg-white p-2 sm:p-4">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Materi</TableHead>
-                <TableHead>Pilar</TableHead>
-                <TableHead>Teks soal</TableHead>
-                <TableHead>Kesulitan</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Aksi</TableHead>
+              <TableRow className="border-slate-100 hover:bg-transparent">
+                <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Materi</TableHead>
+                <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Pilar</TableHead>
+                <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Teks soal</TableHead>
+                <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Kesulitan</TableHead>
+                <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Status</TableHead>
+                <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-slate-500">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {visibleQuestions.map((question) => (
-                <TableRow key={question.id}>
-                  <TableCell className="font-medium text-slate-900">{question.topic.name}</TableCell>
-                  <TableCell>{question.topic.pillar.name}</TableCell>
-                  <TableCell className="max-w-xs"><span className="block truncate" title={question.text}>{question.text}</span></TableCell>
-                  <TableCell><Badge variant="outline" className="h-6 rounded-full border-slate-200 bg-slate-50 px-2 text-xs text-slate-700">{difficultyLabels[question.difficulty]}</Badge></TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="outline" className={question.isActive ? "h-6 rounded-full border-emerald-200 bg-emerald-50 px-2 text-xs text-emerald-700" : "h-6 rounded-full border-slate-200 bg-slate-50 px-2 text-xs text-slate-700"}>
-                        {question.isActive ? <CheckCircle2 aria-hidden="true" className="mr-1 size-3.5" /> : <MinusCircle aria-hidden="true" className="mr-1 size-3.5" />}
-                        {question.isActive ? "Aktif" : "Nonaktif"}
+              {visibleQuestions.map((question) => {
+                const diff = difficultyMeta[question.difficulty];
+                return (
+                  <TableRow
+                    key={question.id}
+                    className="border-slate-100/80 transition-colors hover:bg-slate-50"
+                  >
+                    <TableCell className="font-medium text-slate-900">{question.topic.name}</TableCell>
+                    <TableCell className="text-slate-600">{question.topic.pillar.name}</TableCell>
+                    <TableCell className="max-w-xs text-slate-700">
+                      <span className="block truncate" title={question.text}>{question.text}</span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={`h-6 rounded-full border-0 px-3 text-xs font-semibold ${diff.badgeClass}`}>
+                        {diff.label}
                       </Badge>
-                      {question.locked ? <Badge variant="outline" className="h-6 rounded-full border-slate-200 bg-slate-50 px-2 text-xs text-slate-700">Terkunci</Badge> : null}
-                    </div>
-                    <div className="mt-2"><QuestionStatusToggle questionId={question.id} initialActive={question.isActive} /></div>
-                  </TableCell>
-                  <TableCell><Button asChild size="sm" variant="outline" className="rounded-lg"><Link href={`/guru/soal/${question.id}`}>Ubah</Link></Button></TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                    <TableCell>
+                      <QuestionStatusToggle
+                        questionId={question.id}
+                        initialActive={question.isActive}
+                        showLabel={false}
+                      />
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="inline-flex items-center gap-2">
+                        {question.locked ? (
+                          <Badge className="h-6 rounded-full border-0 bg-slate-100 px-2.5 text-xs font-medium text-slate-600">
+                            Terkunci
+                          </Badge>
+                        ) : null}
+                        <Button
+                          asChild
+                          size="sm"
+                          variant="secondary"
+                          className="rounded-lg bg-slate-100 text-xs font-semibold text-indigo-700 hover:bg-indigo-50 active:scale-95"
+                        >
+                          <Link href={`/guru/soal/${question.id}`}>Ubah</Link>
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>
@@ -162,4 +213,3 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
     </div>
   );
 }
-

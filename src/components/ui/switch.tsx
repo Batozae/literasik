@@ -1,31 +1,54 @@
-"use client"
+"use client";
 
-import { Switch as SwitchPrimitive } from "@base-ui/react/switch"
-import { cn } from "cn"
+import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
+import { cn } from "cn";
 
 function Switch({
   className,
   size = "default",
+  checked,
   ...props
 }: SwitchPrimitive.Root.Props & {
-  size?: "sm" | "default"
+  size?: "sm" | "default";
 }) {
+  const isSm = size === "sm";
+  const isControlled = typeof checked === "boolean";
+
   return (
     <SwitchPrimitive.Root
       data-slot="switch"
       data-size={size}
+      checked={checked}
       className={cn(
-        "peer group/switch relative inline-flex shrink-0 items-center rounded-none border transition-all outline-none group-has-[:focus-visible]/field-label:ring-0 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 data-[size=default]:h-4.5 data-[size=default]:w-8.25 data-[size=sm]:h-3.5 data-[size=sm]:w-6.25 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary group-has-[:focus-visible]/field-label:data-checked:border-primary data-unchecked:border-input/50 data-unchecked:bg-input group-has-[:focus-visible]/field-label:data-unchecked:border-input/50 data-disabled:cursor-not-allowed data-disabled:opacity-50",
-        className
+        "peer relative inline-flex shrink-0 cursor-pointer items-center overflow-hidden rounded-full border-0 p-0.5 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        isSm ? "h-5 w-9" : "h-6 w-11",
+        isControlled
+          ? checked
+            ? "bg-emerald-500 hover:bg-emerald-600"
+            : "bg-slate-300 hover:bg-slate-400"
+          : "bg-slate-300 hover:bg-slate-400 data-checked:bg-emerald-500 hover:data-checked:bg-emerald-600",
+        className,
       )}
       {...props}
     >
       <SwitchPrimitive.Thumb
         data-slot="switch-thumb"
-        className="pointer-events-none block bg-background ring-0 transition-transform group-data-[size=default]/switch:size-3.5 group-data-[size=sm]/switch:size-2.5 data-checked:translate-x-[calc(100%+2px)] dark:data-checked:bg-primary-foreground data-unchecked:translate-x-0.25 dark:data-unchecked:bg-foreground"
+        className={cn(
+          "pointer-events-none block rounded-full bg-white shadow-sm transition-transform duration-200",
+          isSm ? "size-4" : "size-5",
+          isControlled
+            ? checked
+              ? isSm
+                ? "translate-x-4"
+                : "translate-x-5"
+              : "translate-x-0"
+            : isSm
+              ? "translate-x-0 data-checked:translate-x-4"
+              : "translate-x-0 data-checked:translate-x-5",
+        )}
       />
     </SwitchPrimitive.Root>
-  )
+  );
 }
 
-export { Switch }
+export { Switch };
