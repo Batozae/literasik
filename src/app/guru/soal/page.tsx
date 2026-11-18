@@ -120,7 +120,7 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
         </div>
         <Button
           asChild
-          className="min-h-11 gap-1.5 rounded-xl bg-indigo-900 px-5 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95"
+          className="min-h-11 gap-1 rounded-lg bg-indigo-900 px-4 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95"
         >
           <Link href="/guru/soal/baru">
             <Plus className="h-4 w-4" />
@@ -129,7 +129,7 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
         </Button>
       </header>
 
-      <div className="rounded-2xl bg-white p-4">
+      <div className="rounded-xl bg-white p-4">
         <QuestionFilters
           topics={topics.map((topic) => ({ id: topic.id, name: topic.name, pillarId: topic.pillarId, pillarName: topic.pillar.name }))}
           pillars={pillars}
@@ -138,18 +138,18 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
       </div>
 
       {loadFailed ? (
-        <div role="alert" className="rounded-2xl bg-rose-50 p-6 text-sm font-medium text-rose-700">
+        <div role="alert" className="rounded-xl bg-rose-50 p-6 text-sm font-medium text-rose-700">
           Bank soal tidak dapat dimuat saat ini. Coba muat ulang halaman.
         </div>
       ) : visibleQuestions.length === 0 ? (
-        <div className="rounded-2xl bg-white p-8 text-center">
+        <div className="rounded-xl bg-white p-6 text-center">
           <p className="font-semibold text-slate-900">Belum ada soal yang sesuai.</p>
-          <p className="mt-1.5 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-slate-600">
             Coba ubah filter atau tambahkan soal untuk materi yang Anda ajar.
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl bg-white p-2 sm:p-4">
+        <div className="overflow-x-auto rounded-xl bg-white p-2 sm:p-4">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-100 hover:bg-transparent">
@@ -189,7 +189,7 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
                     <TableCell className="text-right">
                       <div className="inline-flex items-center gap-2">
                         {question.locked ? (
-                          <Badge className="h-6 rounded-full border-0 bg-slate-100 px-2.5 text-xs font-medium text-slate-600">
+                          <Badge className="h-6 rounded-full border-0 bg-slate-100 px-2 text-xs font-medium text-slate-600">
                             Terkunci
                           </Badge>
                         ) : null}

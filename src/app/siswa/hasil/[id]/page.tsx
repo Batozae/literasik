@@ -104,13 +104,13 @@ export default async function StudentResultPage({
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       {/* Header Kartu Hasil Flat */}
-      <Card className="rounded-2xl border-0 bg-white shadow-none">
+      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
         <CardHeader className="pb-4 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
             <CheckCircle2 className="h-6 w-6" />
           </div>
           <span className="mt-2 text-xs font-semibold uppercase tracking-wide text-indigo-700">
-            Pilar {pillarName} • {topicName}
+            Pilar {pillarName}: {topicName}
           </span>
           <CardTitle className="text-2xl font-bold text-slate-900">
             {session.assessment.title}
@@ -120,7 +120,7 @@ export default async function StudentResultPage({
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-5">
+        <CardContent className="space-y-4">
           {/* Grid Ringkasan Skor & Poin Flat */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
@@ -168,7 +168,7 @@ export default async function StudentResultPage({
           </div>
 
           {/* Banner Total Poin Flat */}
-          <div className="relative flex items-center justify-between overflow-hidden rounded-2xl bg-amber-50 p-4 pl-5">
+          <div className="relative flex items-center justify-between overflow-hidden rounded-xl bg-amber-50 p-4 pl-4">
             <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-amber-400" />
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-amber-500">
@@ -191,12 +191,12 @@ export default async function StudentResultPage({
           </div>
 
           {/* Navigasi Aksi */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
             <Link href="/siswa">
               <Button
                 variant="secondary"
                 size="sm"
-                className="gap-1.5 rounded-xl bg-slate-100 font-semibold text-slate-700 hover:bg-slate-200"
+                className="gap-1 rounded-lg bg-slate-100 font-semibold text-slate-700 hover:bg-slate-200"
               >
                 <Home className="h-4 w-4" />
                 Kembali ke Beranda
@@ -206,7 +206,7 @@ export default async function StudentResultPage({
               <Button
                 variant="secondary"
                 size="sm"
-                className="gap-1.5 rounded-xl bg-slate-100 font-semibold text-slate-700 hover:bg-slate-200"
+                className="gap-1 rounded-lg bg-slate-100 font-semibold text-slate-700 hover:bg-slate-200"
               >
                 <RotateCcw className="h-4 w-4" />
                 Lihat Riwayat
@@ -215,7 +215,7 @@ export default async function StudentResultPage({
             <Link href="/siswa/peringkat">
               <Button
                 size="sm"
-                className="gap-1.5 rounded-xl bg-indigo-900 font-semibold text-white hover:bg-indigo-800 active:scale-95"
+                className="gap-1 rounded-lg bg-indigo-900 font-semibold text-white hover:bg-indigo-800 active:scale-95"
               >
                 <Award className="h-4 w-4" />
                 Lihat Papan Peringkat
@@ -227,7 +227,7 @@ export default async function StudentResultPage({
 
       {/* Bagian Pembahasan (D-04, D-11) */}
       {!isReviewAvailable ? (
-        <div className="relative overflow-hidden rounded-2xl bg-white p-6 pl-7">
+        <div className="relative overflow-hidden rounded-xl bg-white p-6 pl-8">
           <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-slate-400" />
           <div className="flex items-start gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
@@ -273,7 +273,7 @@ export default async function StudentResultPage({
             return (
               <Card
                 key={question.id}
-                className="relative space-y-4 overflow-hidden rounded-2xl border-0 bg-white p-5 pl-6 shadow-none"
+                className="relative space-y-4 overflow-hidden rounded-xl border border-slate-200 bg-white p-4 pl-6 shadow-sm"
               >
                 <span
                   aria-hidden="true"
@@ -335,7 +335,7 @@ export default async function StudentResultPage({
                       <div
                         key={opt.id}
                         className={cn(
-                          "flex items-center justify-between rounded-xl p-3.5 text-sm leading-relaxed",
+                          "flex items-center justify-between rounded-xl p-3 text-sm leading-relaxed",
                           optionStyle,
                         )}
                       >
@@ -349,7 +349,7 @@ export default async function StudentResultPage({
                 {/* Kotak Penjelasan */}
                 {question.explanation && (
                   <div className="rounded-xl bg-slate-50 p-4">
-                    <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-700">
+                    <div className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-slate-700">
                       <HelpCircle className="h-3.5 w-3.5 text-indigo-600" />
                       Penjelasan
                     </div>

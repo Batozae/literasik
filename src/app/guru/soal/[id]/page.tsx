@@ -57,7 +57,7 @@ async function TeacherQuestionContent({
     return (
       <div
         role="alert"
-        className="mx-auto max-w-2xl rounded-2xl bg-rose-50 p-6 text-sm text-rose-700"
+        className="mx-auto max-w-2xl rounded-xl bg-rose-50 p-6 text-sm text-rose-700"
       >
         Materi tidak dapat dimuat saat ini. Coba muat ulang halaman.
       </div>
@@ -70,7 +70,7 @@ async function TeacherQuestionContent({
       <div>
         <Link
           href="/guru/soal"
-          className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
+          className="inline-flex items-center gap-1 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
         >
           <ChevronLeft className="h-4 w-4" />
           Kembali ke Bank Soal
@@ -85,8 +85,8 @@ async function TeacherQuestionContent({
             Perbarui isi soal pada materi yang Anda ajar.
           </p>
         </div>
-        <div className="flex items-center gap-3 rounded-2xl bg-white px-4 py-2.5">
-          <Badge className="rounded-full border-0 bg-slate-100 px-2.5 text-slate-700">
+        <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-2">
+          <Badge className="rounded-full border-0 bg-slate-100 px-2 text-slate-700">
             {locked ? "Terkunci" : "Dapat diubah"}
           </Badge>
           <QuestionStatusToggle
@@ -95,7 +95,7 @@ async function TeacherQuestionContent({
           />
         </div>
       </header>
-      <section className="rounded-2xl bg-white p-5 md:p-6">
+      <section className="rounded-xl bg-white p-4 md:p-6">
         <QuestionForm
           action={updateAction}
           topics={topics}

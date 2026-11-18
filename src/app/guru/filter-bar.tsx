@@ -65,7 +65,7 @@ export function FilterBar({
   return (
     <div className="flex flex-wrap items-end gap-3">
       {/* Filter kelas */}
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1">
         <Label className="text-xs font-medium uppercase tracking-wide text-slate-500">
           Kelas
         </Label>
@@ -75,10 +75,10 @@ export function FilterBar({
           onValueChange={(v) => updateParam("classId", v)}
           disabled={isPending}
         >
-          <SelectTrigger className="h-10 w-48 rounded-xl border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
+          <SelectTrigger className="h-10 w-48 rounded-lg border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
             <SelectValue placeholder="Semua kelas saya" />
           </SelectTrigger>
-          <SelectContent className="rounded-2xl">
+          <SelectContent className="rounded-xl">
             {classItems.map((item) => (
               <SelectItem key={item.value} value={item.value}>
                 {item.label}
@@ -89,7 +89,7 @@ export function FilterBar({
       </div>
 
       {/* Filter periode */}
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1">
         <Label className="text-xs font-medium uppercase tracking-wide text-slate-500">
           Periode
         </Label>
@@ -99,10 +99,10 @@ export function FilterBar({
           onValueChange={(v) => updateParam("period", v)}
           disabled={isPending}
         >
-          <SelectTrigger className="h-10 w-48 rounded-xl border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
+          <SelectTrigger className="h-10 w-48 rounded-lg border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
             <SelectValue placeholder="Semua Waktu" />
           </SelectTrigger>
-          <SelectContent className="rounded-2xl">
+          <SelectContent className="rounded-xl">
             {PERIOD_OPTIONS.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>
                 {opt.label}
@@ -115,14 +115,14 @@ export function FilterBar({
       {/* Rentang kustom */}
       {isCustom && (
         <>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1">
             <Label className="text-xs font-medium uppercase tracking-wide text-slate-500">
               Dari
             </Label>
             <Input
               type="date"
               defaultValue={customFrom}
-              className="h-10 w-40 rounded-xl border-0 bg-slate-100 px-3.5"
+              className="h-10 w-40 rounded-lg border-0 bg-slate-100 px-3"
               onChange={(e) => {
                 const params = new URLSearchParams(searchParams.toString());
                 params.set("from", e.target.value);
@@ -130,14 +130,14 @@ export function FilterBar({
               }}
             />
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1">
             <Label className="text-xs font-medium uppercase tracking-wide text-slate-500">
               Sampai
             </Label>
             <Input
               type="date"
               defaultValue={customTo}
-              className="h-10 w-40 rounded-xl border-0 bg-slate-100 px-3.5"
+              className="h-10 w-40 rounded-lg border-0 bg-slate-100 px-3"
               onChange={(e) => {
                 const params = new URLSearchParams(searchParams.toString());
                 params.set("to", e.target.value);

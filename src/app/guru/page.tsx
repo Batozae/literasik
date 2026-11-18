@@ -75,13 +75,13 @@ function AccentKpiCard({
   return (
     <Link
       href={href}
-      className="group relative block overflow-hidden rounded-2xl bg-white transition-colors duration-150 hover:bg-slate-50/90 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+      className="group relative block overflow-hidden rounded-xl bg-white transition-colors duration-150 hover:bg-slate-50/90 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
     >
       <span
         aria-hidden="true"
         className={`absolute inset-y-0 left-0 w-1.5 transition-all duration-150 group-hover:w-2 ${stripClass}`}
       />
-      <div className="flex items-center justify-between gap-4 p-5 pl-6">
+      <div className="flex items-center justify-between gap-4 p-4 pl-6">
         <div
           className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-transform duration-150 group-hover:scale-105 ${iconWrapClass}`}
         >
@@ -89,10 +89,10 @@ function AccentKpiCard({
         </div>
         <div className="min-w-0 text-right">
           <p className="truncate text-xs font-medium text-slate-500">{label}</p>
-          <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900 sm:text-3xl">
+          <p className="mt-1 text-2xl font-bold tabular-nums text-slate-900 sm:text-3xl">
             {value}
           </p>
-          {sub && <p className="mt-0.5 truncate text-xs text-slate-500">{sub}</p>}
+          {sub && <p className="mt-1 truncate text-xs text-slate-500">{sub}</p>}
         </div>
       </div>
     </Link>
@@ -203,10 +203,10 @@ async function DashboardContent({
   }).toString();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Banner Pencarian Aktif */}
       {searchQuery && (
-        <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-indigo-50 px-5 py-3 text-sm text-indigo-950">
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-indigo-50 px-4 py-3 text-sm text-indigo-950">
           <span>
             Menampilkan hasil filter pencarian:{" "}
             <strong className="font-semibold">&ldquo;{searchParams.q}&rdquo;</strong>
@@ -270,7 +270,7 @@ async function DashboardContent({
       </section>
 
       {/* Baris 2: Filter (GUR-01), Keterlibatan Latihan (GUR-10), & Ekspor CSV (GUR-09) */}
-      <div className="flex flex-col justify-between gap-3 rounded-2xl bg-white px-5 py-3.5 lg:flex-row lg:items-end">
+      <div className="flex flex-col justify-between gap-3 rounded-xl bg-white px-4 py-3 lg:flex-row lg:items-end">
         <FilterBar
           classOptions={data.classOptions}
           selectedClassId={searchParams.classId ?? ""}
@@ -280,15 +280,15 @@ async function DashboardContent({
         />
 
         <div className="flex flex-wrap items-center gap-2">
-          <div className="inline-flex items-center gap-2 rounded-xl bg-teal-50 px-3.5 py-2 text-xs font-medium text-teal-800">
-            <BookOpen className="h-3.5 w-3.5 text-teal-600" />
+          <div className="inline-flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-800">
+            <BookOpen className="h-3.5 w-3.5 text-emerald-600" />
             <span>
               <strong className="tabular-nums font-bold">
                 {data.kpi.practiceSessionCount}
               </strong>{" "}
               Sesi Latihan
             </span>
-            <span className="text-teal-400">•</span>
+            <span className="text-emerald-700">dan</span>
             <span>
               <strong className="tabular-nums font-bold">
                 {data.kpi.practiceStudentCount}
@@ -301,7 +301,7 @@ async function DashboardContent({
             <Button
               variant="secondary"
               size="sm"
-              className="gap-1.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200"
+              className="gap-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200"
             >
               <Download className="h-3.5 w-3.5" />
               Ekspor CSV Siswa
@@ -311,7 +311,7 @@ async function DashboardContent({
             <Button
               variant="secondary"
               size="sm"
-              className="gap-1.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200"
+              className="gap-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200"
             >
               <Download className="h-3.5 w-3.5" />
               Ekspor CSV Materi
@@ -325,7 +325,7 @@ async function DashboardContent({
         {/* Kolom Kiri */}
         <div className="flex flex-col gap-6 lg:col-span-5">
           {/* Kalender & Jadwal Asesmen */}
-          <Card className="rounded-2xl border-0 bg-white shadow-none">
+          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
             <CardHeader className="pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Kalender &amp; Jadwal Asesmen
@@ -340,14 +340,14 @@ async function DashboardContent({
           </Card>
 
           {/* Agenda Asesmen Terbaru */}
-          <Card className="rounded-2xl border-0 bg-white shadow-none">
+          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between gap-2 pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Agenda Asesmen
               </CardTitle>
               <Link
                 href="/guru/asesmen"
-                className="inline-flex items-center rounded-full border border-emerald-500 px-3.5 py-1 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                className="inline-flex items-center rounded-full border border-emerald-500 px-3 py-1 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 Lihat Semua
               </Link>
@@ -363,14 +363,14 @@ async function DashboardContent({
                     <Link
                       key={item.id}
                       href={`/guru/asesmen/${item.id}`}
-                      className="-mx-3 block rounded-xl px-3 py-2.5 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                      className="-mx-3 block rounded-xl px-3 py-2 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-slate-900">
                             {item.title}
                           </p>
-                          <p className="mt-0.5 text-xs text-slate-500">
+                          <p className="mt-1 text-xs text-slate-500">
                             {item.opensAtLabel}
                           </p>
                         </div>
@@ -402,7 +402,7 @@ async function DashboardContent({
           {/* GUR-03: Performa per Pilar */}
           <Card
             id="performa-pilar"
-            className="scroll-mt-20 rounded-2xl border-0 bg-white shadow-none"
+            className="scroll-mt-20 rounded-xl border border-slate-200 bg-white shadow-sm"
           >
             <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2 pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
@@ -418,19 +418,19 @@ async function DashboardContent({
           </Card>
 
           {/* GUR-08 Preview: Peraih Skor Tertinggi */}
-          <Card className="rounded-2xl border-0 bg-white shadow-none">
+          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between gap-2 pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Peraih Skor Tertinggi
               </CardTitle>
               <Link
                 href="/guru/peringkat"
-                className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 <GraduationCap className="h-3.5 w-3.5" />
                 <span>
                   {primaryGroup
-                    ? `Angkatan ${primaryGroup.gradeLevel} • Top 25`
+                    ? `Angkatan ${primaryGroup.gradeLevel}: Top 25`
                     : "Lihat Peringkat"}
                 </span>
               </Link>
@@ -450,7 +450,7 @@ async function DashboardContent({
                       <Link
                         key={entry.studentId}
                         href={`/guru/siswa/${entry.studentId}`}
-                        className={`flex flex-col items-center justify-between rounded-2xl p-4 text-center transition-all duration-150 hover:-translate-y-1 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ${style.card}`}
+                        className={`flex flex-col items-center justify-between rounded-xl p-4 text-center transition-all duration-150 hover:-translate-y-1 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ${style.card}`}
                       >
                         <div className="flex flex-col items-center">
                           <div
@@ -458,7 +458,7 @@ async function DashboardContent({
                           >
                             {getInitials(entry.name)}
                           </div>
-                          <p className="mt-2.5 line-clamp-1 text-sm font-bold">
+                          <p className="mt-2 line-clamp-1 text-sm font-bold">
                             {entry.formattedName}
                           </p>
                           <p className={`text-xs ${style.sub}`}>
@@ -466,14 +466,14 @@ async function DashboardContent({
                           </p>
                         </div>
 
-                        <div className="my-2.5">
+                        <div className="my-2">
                           <p className="text-2xl font-extrabold tabular-nums tracking-tight">
                             {(entry.wajibAccuracy * 100).toFixed(1)}%
                           </p>
                         </div>
 
                         <div
-                          className={`inline-flex w-full items-center justify-center gap-1 rounded-lg px-3 py-1.5 text-xs font-bold ${style.pill}`}
+                          className={`inline-flex w-full items-center justify-center gap-1 rounded-lg px-3 py-1 text-xs font-bold ${style.pill}`}
                         >
                           <Medal className="h-3.5 w-3.5" />
                           <span>{style.label}</span>
@@ -487,7 +487,7 @@ async function DashboardContent({
           </Card>
 
           {/* GUR-05: Tren Akurasi ditempatkan di Kolom Kanan agar tinggi kolom seimbang tanpa ruang kosong */}
-          <Card className="rounded-2xl border-0 bg-white shadow-none">
+          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
             <CardHeader className="pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Tren Akurasi per Asesmen
@@ -501,7 +501,7 @@ async function DashboardContent({
       </div>
 
       {/* Baris 4: Materi Tersulit (GUR-04 + GUR-10) */}
-      <Card className="rounded-2xl border-0 bg-white shadow-none">
+      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-base font-bold text-slate-900">
               Tingkat Kesulitan Materi
@@ -531,20 +531,20 @@ async function DashboardContent({
                         key={td.topicId}
                         className="border-b border-slate-100/80 transition-colors last:border-0 hover:bg-slate-50"
                       >
-                        <td className="py-2.5 pr-2">
+                        <td className="py-2 pr-2">
                           <p className="font-medium text-slate-900">
                             {td.topicName}
                           </p>
                           <p className="text-xs text-slate-500">
-                            {td.pillarCode} • {td.totalAnswers} jawaban
+                            {td.pillarCode}: {td.totalAnswers} jawaban
                           </p>
                         </td>
-                        <td className="py-2.5 text-right font-semibold tabular-nums text-slate-900">
+                        <td className="py-2 text-right font-semibold tabular-nums text-slate-900">
                           {td.accuracy !== null
                             ? `${(td.accuracy * 100).toFixed(1)}%`
                             : "—"}
                         </td>
-                        <td className="py-2.5 pl-3">
+                        <td className="py-2 pl-3">
                           <StatusBadge
                             status={
                               td.category as
@@ -555,7 +555,7 @@ async function DashboardContent({
                             }
                           />
                         </td>
-                        <td className="py-2.5 text-right">
+                        <td className="py-2 text-right">
                           {(td.category === "Sulit" ||
                             td.category === "Sedang") && (
                             <form action={createPracticeFromTopicAction}>
@@ -592,7 +592,7 @@ async function DashboardContent({
       {/* Baris 5: Tabel Daftar Siswa (GUR-06) */}
       <Card
         id="daftar-siswa"
-        className="scroll-mt-20 rounded-2xl border-0 bg-white shadow-none"
+        className="scroll-mt-20 rounded-xl border border-slate-200 bg-white shadow-sm"
       >
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-base font-bold text-slate-900">
@@ -627,28 +627,28 @@ async function DashboardContent({
                       key={row.studentId}
                       className="border-b border-slate-100/80 transition-colors last:border-0 hover:bg-slate-50"
                     >
-                      <td className="py-2.5 font-medium text-slate-900">
+                      <td className="py-2 font-medium text-slate-900">
                         {row.name}
                       </td>
-                      <td className="py-2.5 text-slate-600">{row.className}</td>
-                      <td className="py-2.5">
+                      <td className="py-2 text-slate-600">{row.className}</td>
+                      <td className="py-2">
                         <StatusBadge status={row.status} />
                       </td>
-                      <td className="py-2.5 text-right tabular-nums text-slate-600">
+                      <td className="py-2 text-right tabular-nums text-slate-600">
                         {row.totalAnswers}
                       </td>
-                      <td className="py-2.5 text-right tabular-nums text-slate-900">
+                      <td className="py-2 text-right tabular-nums text-slate-900">
                         {row.overallAccuracy !== null
                           ? `${(row.overallAccuracy * 100).toFixed(1)}%`
                           : "—"}
                       </td>
-                      <td className="py-2.5 text-right tabular-nums text-slate-900">
+                      <td className="py-2 text-right tabular-nums text-slate-900">
                         {row.wajibPoints}
                       </td>
-                      <td className="py-2.5 text-right tabular-nums text-slate-600">
+                      <td className="py-2 text-right tabular-nums text-slate-600">
                         {row.practiceSessions}
                       </td>
-                      <td className="py-2.5 text-right">
+                      <td className="py-2 text-right">
                         <Link href={`/guru/siswa/${row.studentId}`}>
                           <Button
                             variant="secondary"

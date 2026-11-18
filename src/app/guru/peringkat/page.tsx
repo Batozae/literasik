@@ -28,8 +28,8 @@ async function LeaderboardContent() {
       </div>
 
       {leaderboardData.length === 0 ? (
-        <Card className="rounded-2xl border-0 bg-white shadow-none">
-          <CardContent className="p-8 text-center text-sm text-slate-500">
+        <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
+          <CardContent className="p-6 text-center text-sm text-slate-500">
             Belum ada data peringkat.
           </CardContent>
         </Card>
@@ -42,10 +42,10 @@ async function LeaderboardContent() {
             <div key={gradeLevel} className="space-y-6">
               {/* Podium 3 Besar Flat & Interaktif */}
               {topThree.length > 0 && (
-                <Card className="rounded-2xl border-0 bg-white shadow-none">
+                <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
                   <CardHeader className="pb-4">
                     <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2">
                         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
                           <Trophy className="h-5 w-5" />
                         </div>
@@ -66,7 +66,7 @@ async function LeaderboardContent() {
                           <Link
                             key={entry.studentId}
                             href={`/guru/siswa/${entry.studentId}`}
-                            className={`flex flex-col items-center justify-between rounded-2xl p-4 text-center transition-all duration-150 hover:-translate-y-1 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${style.card}`}
+                            className={`flex flex-col items-center justify-between rounded-xl p-4 text-center transition-all duration-150 hover:-translate-y-1 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${style.card}`}
                           >
                             <div className="flex flex-col items-center">
                               <div
@@ -89,7 +89,7 @@ async function LeaderboardContent() {
                             </div>
 
                             <div
-                              className={`inline-flex w-full items-center justify-center gap-1 rounded-lg px-3 py-1.5 text-xs font-bold ${style.pill}`}
+                              className={`inline-flex w-full items-center justify-center gap-1 rounded-lg px-3 py-1 text-xs font-bold ${style.pill}`}
                             >
                               <Medal className="h-3.5 w-3.5" />
                               <span>{style.label}</span>
@@ -103,7 +103,7 @@ async function LeaderboardContent() {
               )}
 
               {/* Tabel Top 25 */}
-              <Card className="rounded-2xl border-0 bg-white shadow-none">
+              <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base font-bold text-slate-900">
                     Daftar Top 25 — {GRADE_LABEL[gradeLevel] ?? `Angkatan ${gradeLevel}`}
@@ -119,11 +119,11 @@ async function LeaderboardContent() {
                       <table className="w-full text-sm">
                         <thead>
                           <tr className="border-b border-slate-100 text-xs font-medium uppercase tracking-wide text-slate-500">
-                            <th className="w-16 pb-2.5 text-center">Posisi</th>
-                            <th className="pb-2.5 text-left">Nama</th>
-                            <th className="pb-2.5 text-right">Poin Wajib</th>
-                            <th className="pb-2.5 text-right">Akurasi Wajib</th>
-                            <th className="pb-2.5 text-right">Detail</th>
+                            <th className="w-16 pb-2 text-center">Posisi</th>
+                            <th className="pb-2 text-left">Nama</th>
+                            <th className="pb-2 text-right">Poin Wajib</th>
+                            <th className="pb-2 text-right">Akurasi Wajib</th>
+                            <th className="pb-2 text-right">Detail</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -132,7 +132,7 @@ async function LeaderboardContent() {
                               key={entry.studentId}
                               className="border-b border-slate-100/80 transition-colors last:border-0 hover:bg-slate-50"
                             >
-                              <td className="py-2.5 text-center">
+                              <td className="py-2 text-center">
                                 {entry.rank <= 3 ? (
                                   <span
                                     className={`inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ${
@@ -147,16 +147,16 @@ async function LeaderboardContent() {
                                   </span>
                                 )}
                               </td>
-                              <td className="py-2.5 font-medium text-slate-900">
+                              <td className="py-2 font-medium text-slate-900">
                                 {entry.formattedName}
                               </td>
-                              <td className="py-2.5 text-right tabular-nums font-semibold text-indigo-700">
+                              <td className="py-2 text-right tabular-nums font-semibold text-indigo-700">
                                 {entry.wajibPoints}
                               </td>
-                              <td className="py-2.5 text-right tabular-nums text-slate-700">
+                              <td className="py-2 text-right tabular-nums text-slate-700">
                                 {(entry.wajibAccuracy * 100).toFixed(1)}%
                               </td>
-                              <td className="py-2.5 text-right">
+                              <td className="py-2 text-right">
                                 <Link
                                   href={`/guru/siswa/${entry.studentId}`}
                                   className="inline-flex rounded-lg bg-slate-100 px-3 py-1 text-xs font-semibold text-indigo-700 transition-colors hover:bg-indigo-50"

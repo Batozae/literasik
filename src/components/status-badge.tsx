@@ -63,7 +63,7 @@ const STATUS_CONFIGS: Record<StatusType, StatusConfig> = {
     icon: AlertCircle,
   },
   Berlangsung: {
-    variantClass: "bg-sky-50 text-sky-700 border-sky-200",
+    variantClass: "bg-indigo-50 text-indigo-700 border-indigo-200",
     icon: Play,
   },
   Dijadwalkan: {
@@ -99,7 +99,7 @@ export function StatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center gap-1.5 rounded-full border px-2.5 text-xs font-medium",
+        "inline-flex h-6 items-center gap-1 rounded-full border px-2 text-xs font-medium",
         config.variantClass,
         className,
       )}

@@ -58,7 +58,7 @@ export function QuestionForm({
   const correctIndex = optionValues.findIndex((option) => option.isCorrect);
   const topicItems = topics.map((topic) => ({
     value: String(topic.id),
-    label: `${topic.name} · ${topic.pillar.name}`,
+    label: `${topic.name} / ${topic.pillar.name}`,
   }));
 
   return (
@@ -102,14 +102,14 @@ export function QuestionForm({
         >
           <SelectTrigger
             id="topicId"
-            className="min-h-11 w-full rounded-xl border-0 bg-slate-100 px-3.5"
+            className="min-h-11 w-full rounded-lg border-0 bg-slate-100 px-3"
           >
             <SelectValue placeholder="Pilih materi" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
             {topics.map((topic) => (
               <SelectItem key={topic.id} value={String(topic.id)}>
-                {topic.name} · {topic.pillar.name}
+                {topic.name} / {topic.pillar.name}
               </SelectItem>
             ))}
           </SelectContent>
@@ -129,7 +129,7 @@ export function QuestionForm({
           required
           disabled={locked || pending}
           defaultValue={initial?.text}
-          className="min-h-28 rounded-xl border-0 bg-slate-100 px-3.5 py-2.5 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-indigo-500"
+          className="min-h-28 rounded-lg border-0 bg-slate-100 px-3 py-2 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-indigo-500"
         />
       </div>
 
@@ -143,7 +143,7 @@ export function QuestionForm({
         >
           <SelectTrigger
             id="difficulty"
-            className="min-h-11 w-full rounded-xl border-0 bg-slate-100 px-3.5"
+            className="min-h-11 w-full rounded-lg border-0 bg-slate-100 px-3"
           >
             <SelectValue placeholder="Pilih kesulitan" />
           </SelectTrigger>
@@ -163,12 +163,12 @@ export function QuestionForm({
           name="correctOption"
           required={!initial}
           defaultValue={correctIndex >= 0 ? String(correctIndex) : undefined}
-          className="space-y-2.5"
+          className="space-y-2"
         >
           {optionValues.map((option, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 rounded-xl bg-slate-50 p-3.5 transition-colors hover:bg-slate-100/80"
+              className="flex items-center gap-3 rounded-xl bg-slate-50 p-3 transition-colors hover:bg-slate-100/80"
             >
               <RadioGroupItem id={`correct-${index}`} value={String(index)} />
               <Label htmlFor={`option-${index}`} className="sr-only">
@@ -181,7 +181,7 @@ export function QuestionForm({
                 disabled={locked || pending}
                 defaultValue={option.text}
                 placeholder={`Opsi ${index + 1}`}
-                className="min-h-11 rounded-xl border-0 bg-white px-3.5"
+                className="min-h-11 rounded-lg border border-slate-200 bg-white px-3"
               />
               <Label
                 htmlFor={`correct-${index}`}
@@ -205,7 +205,7 @@ export function QuestionForm({
           required
           disabled={locked || pending}
           defaultValue={initial?.explanation}
-          className="min-h-28 rounded-xl border-0 bg-slate-100 px-3.5 py-2.5 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-indigo-500"
+          className="min-h-28 rounded-lg border-0 bg-slate-100 px-3 py-2 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-indigo-500"
         />
       </div>
 
@@ -214,7 +214,7 @@ export function QuestionForm({
           <Button
             type="submit"
             disabled={pending || topics.length === 0}
-            className="min-h-11 rounded-xl bg-indigo-900 px-5 font-semibold text-white hover:bg-indigo-800 active:scale-95"
+            className="min-h-11 rounded-lg bg-indigo-900 px-4 font-semibold text-white hover:bg-indigo-800 active:scale-95"
           >
             {pending ? "Menyimpan..." : "Simpan"}
           </Button>
@@ -223,7 +223,7 @@ export function QuestionForm({
           type="button"
           variant="secondary"
           asChild
-          className="min-h-11 rounded-xl bg-slate-100 px-5 font-semibold text-slate-700 hover:bg-slate-200"
+          className="min-h-11 rounded-lg bg-slate-100 px-4 font-semibold text-slate-700 hover:bg-slate-200"
         >
           <Link href="/guru/soal">Batal</Link>
         </Button>

@@ -25,7 +25,7 @@ export default async function StudentLeaderboardPage() {
 
   if (!profile) {
     return (
-      <div className="rounded-2xl bg-white p-6 text-center text-sm text-slate-600">
+      <div className="rounded-xl bg-white p-6 text-center text-sm text-slate-600">
         Profil siswa tidak ditemukan.
       </div>
     );
@@ -96,7 +96,7 @@ export default async function StudentLeaderboardPage() {
 
       {/* Kartu Status Jika Siswa di Luar 25 Besar (D-07: tanpa nomor peringkat) */}
       {!currentUserInTop25 && (
-        <div className="relative overflow-hidden rounded-2xl bg-white p-5 pl-6">
+        <div className="relative overflow-hidden rounded-xl bg-white p-4 pl-6">
           <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-amber-400" />
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
@@ -106,7 +106,7 @@ export default async function StudentLeaderboardPage() {
               <h2 className="text-base font-bold text-slate-900">
                 Belum masuk 25 besar. Poinmu: {currentUserWajibPoints}
               </h2>
-              <p className="mt-0.5 text-xs text-slate-500">
+              <p className="mt-1 text-xs text-slate-500">
                 Terus selesaikan asesmen wajib berikutnya dengan teliti untuk menembus
                 25 besar angkatan!
               </p>
@@ -117,7 +117,7 @@ export default async function StudentLeaderboardPage() {
 
       {/* Jika Siswa Masuk 25 Besar */}
       {currentUserInTop25 && (
-        <div className="relative overflow-hidden rounded-2xl bg-white p-5 pl-6">
+        <div className="relative overflow-hidden rounded-xl bg-white p-4 pl-6">
           <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-indigo-700" />
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -142,14 +142,14 @@ export default async function StudentLeaderboardPage() {
 
       {/* Podium 3 Besar */}
       {topThree.length > 0 && (
-        <Card className="rounded-2xl border-0 bg-white shadow-none">
+        <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-base font-bold text-slate-900">
               Peraih Skor Tertinggi
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {topThree.map((entry, idx) => {
                 const style = PODIUM_STYLES[idx] ?? PODIUM_STYLES[2];
                 const isCurrent = entry.studentId === user.id;
@@ -157,33 +157,33 @@ export default async function StudentLeaderboardPage() {
                   <div
                     key={entry.studentId}
                     className={cn(
-                      "flex flex-col items-center justify-between rounded-2xl p-4 text-center",
+                      "flex min-w-0 flex-col items-center justify-between rounded-xl p-2 text-center sm:p-4",
                       style.card,
                       isCurrent && "ring-2 ring-indigo-950 ring-offset-2",
                     )}
                   >
                     <div className="flex flex-col items-center">
                       <div
-                        className={`flex h-12 w-12 items-center justify-center rounded-full text-sm font-bold ${style.ring}`}
+                        className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold sm:h-12 sm:w-12 sm:text-sm ${style.ring}`}
                       >
                         {getInitials(entry.name)}
                       </div>
-                      <p className="mt-2.5 line-clamp-1 text-sm font-bold">
+                      <p className="mt-2 line-clamp-1 w-full text-xs font-bold sm:mt-2 sm:text-sm">
                         {entry.formattedName}
                       </p>
-                      <p className={`text-xs ${style.sub}`}>
+                      <p className={`text-[10px] sm:text-xs ${style.sub}`}>
                         {entry.wajibPoints} Poin Wajib
                       </p>
                     </div>
 
-                    <div className="my-2.5">
+                    <div className="my-2">
                       <p className="text-xl font-extrabold tabular-nums">
                         {Math.round(entry.wajibAccuracy * 100)}%
                       </p>
                     </div>
 
                     <div
-                      className={`inline-flex w-full items-center justify-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold ${style.pill}`}
+                      className={`inline-flex w-full items-center justify-center gap-1 rounded-lg px-1 py-1 text-[10px] font-bold sm:px-2 sm:text-xs ${style.pill}`}
                     >
                       <Medal className="h-3.5 w-3.5" />
                       <span>{style.label}</span>
@@ -197,7 +197,7 @@ export default async function StudentLeaderboardPage() {
       )}
 
       {/* Tabel 25 Besar */}
-      <Card className="overflow-hidden rounded-2xl border-0 bg-white shadow-none">
+      <Card className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base font-bold text-slate-900">
@@ -214,23 +214,23 @@ export default async function StudentLeaderboardPage() {
 
         <CardContent className="p-0">
           {top25.length === 0 ? (
-            <div className="p-8 text-center text-sm text-slate-500">
+            <div className="p-6 text-center text-sm text-slate-500">
               Belum ada siswa yang memiliki poin asesmen wajib.
             </div>
           ) : (
-            <Table>
+            <Table className="table-fixed">
               <TableHeader>
                 <TableRow className="border-slate-100 hover:bg-transparent">
-                  <TableHead className="w-16 text-center text-xs font-medium text-slate-500">
+                  <TableHead className="h-9 w-16 px-3 text-center text-[11px] font-medium text-slate-500 sm:h-12 sm:text-xs">
                     Posisi
                   </TableHead>
-                  <TableHead className="text-xs font-medium text-slate-500">
-                    Nama Siswa
+                  <TableHead className="h-9 px-3 text-[11px] font-medium text-slate-500 sm:h-12 sm:text-xs">
+                    Nama
                   </TableHead>
-                  <TableHead className="text-right text-xs font-medium text-slate-500">
+                  <TableHead className="h-9 w-14 px-3 text-right text-[11px] font-medium text-slate-500 sm:h-12 sm:w-20 sm:text-xs">
                     Poin
                   </TableHead>
-                  <TableHead className="text-right text-xs font-medium text-slate-500">
+                  <TableHead className="h-9 w-20 px-3 text-right text-[11px] font-medium text-slate-500 sm:h-12 sm:w-24 sm:text-xs">
                     Akurasi
                   </TableHead>
                 </TableRow>
@@ -247,7 +247,7 @@ export default async function StudentLeaderboardPage() {
                         isCurrent && "bg-indigo-50/80 font-semibold ring-2 ring-inset ring-indigo-600",
                       )}
                     >
-                      <TableCell className="text-center">
+                      <TableCell className="p-2 text-center sm:p-3">
                         {entry.rank <= 3 ? (
                           <span
                             className={cn(
@@ -264,29 +264,29 @@ export default async function StudentLeaderboardPage() {
                         )}
                       </TableCell>
 
-                      <TableCell>
-                        <div className="flex items-center gap-2">
+                      <TableCell className="min-w-0 p-2 sm:p-3">
+                        <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
                           <span
                             className={cn(
-                              "text-sm",
+                              "min-w-0 max-w-[100px] truncate text-xs sm:max-w-none sm:text-sm",
                               isCurrent ? "font-bold text-indigo-950" : "text-slate-900",
                             )}
                           >
                             {entry.formattedName}
                           </span>
                           {isCurrent && (
-                            <span className="rounded-full bg-indigo-900 px-2 py-0.5 text-[10px] font-bold text-white">
+                            <span className="rounded-full bg-indigo-900 px-2 py-1 text-[10px] font-bold text-white">
                               Kamu
                             </span>
                           )}
                         </div>
                       </TableCell>
 
-                      <TableCell className="text-right tabular-nums text-sm font-semibold text-slate-900">
+                      <TableCell className="p-2 text-right tabular-nums text-xs font-semibold text-slate-900 sm:p-3 sm:text-sm">
                         {entry.wajibPoints}
                       </TableCell>
 
-                      <TableCell className="text-right tabular-nums text-sm text-slate-600">
+                      <TableCell className="p-2 text-right tabular-nums text-xs text-slate-600 sm:p-3 sm:text-sm">
                         {Math.round(entry.wajibAccuracy * 100)}%
                       </TableCell>
                     </TableRow>

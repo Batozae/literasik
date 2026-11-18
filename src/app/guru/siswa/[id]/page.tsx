@@ -127,7 +127,7 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
       <div>
         <Link
           href="/guru"
-          className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
+          className="inline-flex items-center gap-1 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
         >
           <ChevronLeft className="h-4 w-4" />
           Kembali ke Dasbor
@@ -135,31 +135,31 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
       </div>
 
       {/* Header Profil Siswa Flat */}
-      <Card className="rounded-2xl border-0 bg-white shadow-none">
+      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
         <CardContent className="flex flex-wrap items-center justify-between gap-4 p-6">
           <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-950 text-lg font-bold text-white">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-indigo-950 text-lg font-bold text-white">
               {getInitials(student.name)}
             </div>
             <div>
               <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
                 {student.name}
               </h1>
-              <p className="mt-0.5 text-sm text-slate-600">
-                Kelas {studentClass.name} · @{student.username}
+              <p className="mt-1 text-sm text-slate-600">
+                Kelas {studentClass.name} / @{student.username}
               </p>
             </div>
           </div>
-          <StatusBadge status={statusResult.status} className="h-8 px-3.5 text-sm" />
+          <StatusBadge status={statusResult.status} className="h-8 px-3 text-sm" />
         </CardContent>
       </Card>
 
       {/* Kartu Ringkasan dengan Strip Aksen Warna */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="relative overflow-hidden rounded-2xl bg-white p-5 pl-6">
-          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-teal-500" />
+        <div className="relative overflow-hidden rounded-xl bg-white p-4 pl-6">
+          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-emerald-500" />
           <div className="flex items-center justify-between gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
               <Award className="h-5 w-5" />
             </div>
             <div className="text-right">
@@ -171,18 +171,18 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
           </div>
           <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100">
             <div
-              className="h-full rounded-full bg-teal-500"
+              className="h-full rounded-full bg-emerald-500"
               style={{ width: `${levelInfo.progressPercent}%` }}
             />
           </div>
-          <p className="mt-1.5 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-slate-500">
             {levelInfo.pointsToNext > 0
               ? `${levelInfo.pointsToNext} poin ke level ${levelInfo.level + 1}`
               : "Level maksimum"}
           </p>
         </div>
 
-        <div className="relative flex items-center justify-between gap-3 overflow-hidden rounded-2xl bg-white p-5 pl-6">
+        <div className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl bg-white p-4 pl-6">
           <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-amber-400" />
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
             <Sparkles className="h-5 w-5" />
@@ -194,7 +194,7 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
           </div>
         </div>
 
-        <div className="relative flex items-center justify-between gap-3 overflow-hidden rounded-2xl bg-white p-5 pl-6">
+        <div className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl bg-white p-4 pl-6">
           <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-indigo-700" />
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-700">
             <TrendingUp className="h-5 w-5" />
@@ -212,7 +212,7 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
           </div>
         </div>
 
-        <div className="relative flex items-center justify-between gap-3 overflow-hidden rounded-2xl bg-white p-5 pl-6">
+        <div className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl bg-white p-4 pl-6">
           <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-emerald-500" />
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
             <BookOpen className="h-5 w-5" />
@@ -229,12 +229,12 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
 
       {/* Alasan status (jika ada materi lemah) */}
       {statusResult.weakTopics.length > 0 && (
-        <div className="relative overflow-hidden rounded-2xl bg-rose-50 p-5 pl-6">
+        <div className="relative overflow-hidden rounded-xl bg-rose-50 p-4 pl-6">
           <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-rose-500" />
           <p className="font-semibold text-rose-800">
             Materi yang perlu perhatian:
           </p>
-          <ul className="mt-1.5 list-inside list-disc space-y-0.5 text-sm text-rose-700">
+          <ul className="mt-1 list-inside list-disc space-y-1 text-sm text-rose-700">
             {statusResult.weakTopics.map((t) => (
               <li key={t}>{t}</li>
             ))}
@@ -243,7 +243,7 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
       )}
 
       {/* Performa per materi */}
-      <Card className="rounded-2xl border-0 bg-white shadow-none">
+      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-bold text-slate-900">
             Performa per Materi
@@ -257,11 +257,11 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100 text-xs font-medium uppercase tracking-wide text-slate-500">
-                  <th className="pb-2.5 text-left">Materi</th>
-                  <th className="pb-2.5 text-left">Pilar</th>
-                  <th className="pb-2.5 text-right">Jawaban</th>
-                  <th className="pb-2.5 text-right">Akurasi</th>
-                  <th className="pb-2.5 pl-4 text-left">Kategori</th>
+                  <th className="pb-2 text-left">Materi</th>
+                  <th className="pb-2 text-left">Pilar</th>
+                  <th className="pb-2 text-right">Jawaban</th>
+                  <th className="pb-2 text-right">Akurasi</th>
+                  <th className="pb-2 pl-4 text-left">Kategori</th>
                 </tr>
               </thead>
               <tbody>
@@ -277,15 +277,15 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
                       key={td.topicId}
                       className="border-b border-slate-100/80 transition-colors last:border-0 hover:bg-slate-50"
                     >
-                      <td className="py-2.5 font-medium text-slate-900">{td.topicName}</td>
-                      <td className="py-2.5 text-slate-600">{td.pillarCode}</td>
-                      <td className="py-2.5 text-right tabular-nums text-slate-600">
+                      <td className="py-2 font-medium text-slate-900">{td.topicName}</td>
+                      <td className="py-2 text-slate-600">{td.pillarCode}</td>
+                      <td className="py-2 text-right tabular-nums text-slate-600">
                         {td.totalAnswers}
                       </td>
-                      <td className="py-2.5 text-right tabular-nums font-semibold text-slate-900">
+                      <td className="py-2 text-right tabular-nums font-semibold text-slate-900">
                         {td.accuracy !== null ? `${(td.accuracy * 100).toFixed(1)}%` : "—"}
                       </td>
-                      <td className="py-2.5 pl-4">
+                      <td className="py-2 pl-4">
                         <StatusBadge
                           status={
                             td.category as
@@ -306,7 +306,7 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
       </Card>
 
       {/* Riwayat sesi WAJIB */}
-      <Card className="rounded-2xl border-0 bg-white shadow-none">
+      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
         <CardHeader className="flex flex-row items-center gap-2 pb-2">
           <CheckCircle2 className="h-4 w-4 text-emerald-600" />
           <CardTitle className="text-base font-bold text-slate-900">
@@ -321,12 +321,12 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-100 text-xs font-medium uppercase tracking-wide text-slate-500">
-                    <th className="pb-2.5 text-left">Asesmen</th>
-                    <th className="pb-2.5 text-left">Materi</th>
-                    <th className="pb-2.5 text-right">Benar</th>
-                    <th className="pb-2.5 text-right">Total</th>
-                    <th className="pb-2.5 text-right">Akurasi</th>
-                    <th className="pb-2.5 pl-4 text-left">Selesai</th>
+                    <th className="pb-2 text-left">Asesmen</th>
+                    <th className="pb-2 text-left">Materi</th>
+                    <th className="pb-2 text-right">Benar</th>
+                    <th className="pb-2 text-right">Total</th>
+                    <th className="pb-2 text-right">Akurasi</th>
+                    <th className="pb-2 pl-4 text-left">Selesai</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -339,18 +339,18 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
                         key={s.id}
                         className="border-b border-slate-100/80 transition-colors last:border-0 hover:bg-slate-50"
                       >
-                        <td className="py-2.5 font-medium text-slate-900">
+                        <td className="py-2 font-medium text-slate-900">
                           {s.assessment?.title ?? "—"}
                         </td>
-                        <td className="py-2.5 text-slate-600">
+                        <td className="py-2 text-slate-600">
                           {s.assessment?.sourceTopic?.name ?? "—"}
                         </td>
-                        <td className="py-2.5 text-right tabular-nums">{correct}</td>
-                        <td className="py-2.5 text-right tabular-nums">{total}</td>
-                        <td className="py-2.5 text-right tabular-nums font-semibold">
+                        <td className="py-2 text-right tabular-nums">{correct}</td>
+                        <td className="py-2 text-right tabular-nums">{total}</td>
+                        <td className="py-2 text-right tabular-nums font-semibold">
                           {total > 0 ? `${acc}%` : "—"}
                         </td>
-                        <td className="py-2.5 pl-4 text-slate-600">
+                        <td className="py-2 pl-4 text-slate-600">
                           {s.finishedAt ? formatWibDateTime(s.finishedAt) : "Belum selesai"}
                         </td>
                       </tr>

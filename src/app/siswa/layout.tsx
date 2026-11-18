@@ -17,8 +17,8 @@ async function StudentContent({ children }: { children: ReactNode }) {
         classNameLabel={profile?.class.name}
         gradeLevel={profile?.class.gradeLevel}
       />
-      <main className="min-h-[calc(100vh-4rem)] px-4 py-6 pb-24 md:ml-64 md:px-8 md:py-6 md:pb-10">
-        <div className="mx-auto max-w-6xl">{children}</div>
+      <main className="min-h-[calc(100vh-4rem)] px-3 py-4 pb-24 sm:px-4 md:ml-64 md:px-6 md:py-4 md:pb-8 xl:px-8">
+        <div className="mx-auto max-w-7xl">{children}</div>
       </main>
     </>
   );

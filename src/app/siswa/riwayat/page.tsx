@@ -55,7 +55,7 @@ export default async function StudentHistoryPage() {
       </div>
 
       {sessions.length === 0 ? (
-        <Card className="rounded-2xl border-0 bg-white p-8 text-center shadow-none">
+        <Card className="rounded-xl border border-slate-200 bg-white p-6 text-center shadow-sm">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-500">
             <RotateCcw className="h-6 w-6" />
           </div>
@@ -69,7 +69,7 @@ export default async function StudentHistoryPage() {
             <Link href="/siswa/asesmen">
               <Button
                 size="sm"
-                className="rounded-xl bg-indigo-900 px-4 font-semibold text-white hover:bg-indigo-800"
+                className="rounded-lg bg-indigo-900 px-4 font-semibold text-white hover:bg-indigo-800"
               >
                 Lihat Asesmen Wajib
               </Button>
@@ -112,44 +112,44 @@ export default async function StudentHistoryPage() {
             return (
               <Card
                 key={session.id}
-                className="relative overflow-hidden rounded-2xl border-0 bg-white p-5 pl-6 shadow-none transition-colors hover:bg-white/95"
+                className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-4 pl-6 shadow-sm transition-colors hover:bg-white/95"
               >
                 <span
                   aria-hidden="true"
                   className={cn(
                     "absolute inset-y-0 left-0 w-1.5",
-                    isWajib ? "bg-indigo-600" : "bg-teal-500",
+                    isWajib ? "bg-indigo-600" : "bg-emerald-500",
                   )}
                 />
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-col items-start gap-1">
                       <span
                         className={cn(
-                          "rounded-full px-3 py-0.5 text-xs font-semibold",
+                          "rounded-full px-3 py-1 text-xs font-semibold",
                           isWajib
                             ? "bg-indigo-50 text-indigo-700"
-                            : "bg-teal-50 text-teal-700",
+                            : "bg-emerald-50 text-emerald-700",
                         )}
                       >
                         {isWajib ? "Asesmen Wajib" : "Latihan"}
                       </span>
                       <span className="text-xs text-slate-500">
-                        Pilar {pillarName} • {topicName}
+                        Pilar {pillarName}: {topicName}
                       </span>
                     </div>
 
                     <h2 className="text-lg font-bold text-slate-900">{title}</h2>
 
-                    <div className="flex items-center gap-1.5 pt-0.5 text-xs text-slate-500">
+                    <div className="flex items-center gap-1 pt-1 text-xs text-slate-500">
                       <Calendar className="h-3.5 w-3.5" />
                       <span>{formatWibDateTime(session.finishedAt!)}</span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 self-end sm:self-start">
-                    <div className="flex items-center gap-1.5 rounded-xl bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-700">
+                    <div className="flex items-center gap-1 rounded-xl bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
                       <Sparkles className="h-4 w-4 text-amber-500" />
                       +{totalPoints} Poin
                     </div>
@@ -189,7 +189,7 @@ export default async function StudentHistoryPage() {
                     <Button
                       variant="secondary"
                       size="sm"
-                      className="gap-1.5 rounded-xl bg-slate-100 font-semibold text-indigo-700 hover:bg-indigo-50"
+                      className="gap-1 rounded-lg bg-slate-100 font-semibold text-indigo-700 hover:bg-indigo-50"
                     >
                       Lihat Hasil
                       <ArrowRight className="h-3.5 w-3.5" />

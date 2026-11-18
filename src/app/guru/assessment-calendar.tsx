@@ -213,11 +213,11 @@ export function AssessmentCalendar({
       </div>
 
       {/* Nama hari */}
-      <div className="grid grid-cols-7 gap-1.5">
+      <div className="grid grid-cols-7 gap-1">
         {WEEKDAYS.map((day) => (
           <div
             key={day}
-            className="rounded-full bg-slate-100 py-1.5 text-center text-xs font-semibold text-slate-700"
+            className="rounded-full bg-slate-100 py-1 text-center text-xs font-semibold text-slate-700"
           >
             {day}
           </div>
@@ -225,7 +225,7 @@ export function AssessmentCalendar({
       </div>
 
       {/* Grid tanggal flat & interaktif */}
-      <div className="grid grid-cols-7 gap-y-1.5 text-center">
+      <div className="grid grid-cols-7 gap-y-1 text-center">
         {cells.map((cell) => {
           const items = dateAssessmentsMap.get(cell.ymd) ?? [];
           const hasAssessment = items.length > 0;
@@ -248,7 +248,7 @@ export function AssessmentCalendar({
             pillClass =
               "bg-emerald-500 text-white font-semibold hover:bg-emerald-600";
           } else if (primaryStatus === "Berlangsung") {
-            pillClass = "bg-sky-500 text-white font-semibold hover:bg-sky-600";
+            pillClass = "bg-indigo-500 text-white font-semibold hover:bg-indigo-600";
           } else if (primaryStatus === "Dijadwalkan") {
             pillClass =
               "bg-amber-500 text-white font-semibold hover:bg-amber-600";
@@ -286,17 +286,17 @@ export function AssessmentCalendar({
       </div>
 
       {/* Keterangan warna + detail tanggal terpilih (flat surface) */}
-      <div className="space-y-2.5 pt-2">
+      <div className="space-y-2 pt-2">
         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
-          <span className="inline-flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1">
             <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
             Selesai
           </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-sky-500" />
+          <span className="inline-flex items-center gap-1">
+            <span className="h-2.5 w-2.5 rounded-full bg-indigo-500" />
             Berlangsung
           </span>
-          <span className="inline-flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1">
             <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
             Dijadwalkan
           </span>
@@ -329,7 +329,7 @@ export function AssessmentCalendar({
                   />
                   <Link
                     href={`/guru/asesmen/${item.id}`}
-                    className="inline-flex items-center gap-0.5 rounded-lg bg-white px-2.5 py-1 font-semibold text-indigo-700 transition-colors hover:bg-indigo-50"
+                    className="inline-flex items-center gap-1 rounded-lg bg-white px-2 py-1 font-semibold text-indigo-700 transition-colors hover:bg-indigo-50"
                   >
                     <span>Kelola</span>
                     <ArrowRight className="h-3 w-3" />
@@ -339,7 +339,7 @@ export function AssessmentCalendar({
             ))}
           </div>
         ) : (
-          <div className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2.5 text-xs text-slate-500">
+          <div className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-xs text-slate-500">
             <CalendarDays className="h-3.5 w-3.5 shrink-0 text-slate-400" />
             <span>Tidak ada jadwal asesmen wajib pada tanggal terpilih.</span>
           </div>

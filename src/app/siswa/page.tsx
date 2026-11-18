@@ -36,9 +36,9 @@ const BADGE_VISUALS: Record<
 > = {
   LANGKAH_PERTAMA: {
     icon: Footprints,
-    iconBg: "bg-sky-100 text-sky-600",
-    cardBg: "bg-sky-50/50 hover:bg-sky-50/80",
-    strip: "bg-sky-500",
+    iconBg: "bg-indigo-100 text-indigo-600",
+    cardBg: "bg-indigo-50/50 hover:bg-indigo-50/80",
+    strip: "bg-indigo-500",
   },
   TELITI: {
     icon: Target,
@@ -60,9 +60,9 @@ const BADGE_VISUALS: Record<
   },
   RAJIN_BERLATIH: {
     icon: Zap,
-    iconBg: "bg-teal-100 text-teal-600",
-    cardBg: "bg-teal-50/50 hover:bg-teal-50/80",
-    strip: "bg-teal-500",
+    iconBg: "bg-emerald-100 text-emerald-600",
+    cardBg: "bg-emerald-50/50 hover:bg-emerald-50/80",
+    strip: "bg-emerald-500",
   },
   TUNTAS_KECAKAPAN: {
     icon: Laptop,
@@ -72,21 +72,21 @@ const BADGE_VISUALS: Record<
   },
   TUNTAS_ETIKA: {
     icon: Scale,
-    iconBg: "bg-teal-100 text-teal-600",
-    cardBg: "bg-teal-50/50 hover:bg-teal-50/80",
-    strip: "bg-teal-500",
+    iconBg: "bg-emerald-100 text-emerald-600",
+    cardBg: "bg-emerald-50/50 hover:bg-emerald-50/80",
+    strip: "bg-emerald-500",
   },
   TUNTAS_KEAMANAN: {
     icon: ShieldCheck,
-    iconBg: "bg-sky-100 text-sky-600",
-    cardBg: "bg-sky-50/50 hover:bg-sky-50/80",
-    strip: "bg-sky-600",
+    iconBg: "bg-indigo-100 text-indigo-600",
+    cardBg: "bg-indigo-50/50 hover:bg-indigo-50/80",
+    strip: "bg-indigo-600",
   },
   TUNTAS_BUDAYA: {
     icon: Globe,
-    iconBg: "bg-violet-100 text-violet-700",
-    cardBg: "bg-violet-50/50 hover:bg-violet-50/80",
-    strip: "bg-violet-600",
+    iconBg: "bg-indigo-100 text-indigo-700",
+    cardBg: "bg-indigo-50/50 hover:bg-indigo-50/80",
+    strip: "bg-indigo-600",
   },
 };
 
@@ -108,7 +108,7 @@ export default async function SiswaHomePage() {
 
   if (!profile) {
     return (
-      <div className="rounded-2xl bg-white p-6 text-center text-sm text-slate-600">
+      <div className="rounded-xl bg-white p-6 text-center text-sm text-slate-600">
         Profil siswa tidak ditemukan.
       </div>
     );
@@ -177,15 +177,15 @@ export default async function SiswaHomePage() {
     <div className="space-y-6">
       {/* Banner Asesmen Sedang Berlangsung (jika ada) */}
       {ongoingAssessment && (
-        <div className="relative overflow-hidden rounded-2xl bg-white p-5 pl-6">
-          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-sky-500" />
+        <div className="relative overflow-hidden rounded-xl bg-white p-4 pl-6">
+          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-indigo-500" />
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
                 <Play className="h-5 w-5" />
               </div>
               <div>
-                <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-sky-700">
+                <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-indigo-700">
                   <Clock className="h-3.5 w-3.5" /> Asesmen Sedang Berlangsung
                 </span>
                 <h2 className="text-lg font-bold text-slate-900">
@@ -205,7 +205,7 @@ export default async function SiswaHomePage() {
             >
               <Button
                 size="sm"
-                className="w-full gap-1.5 rounded-xl bg-indigo-900 px-5 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95 sm:w-auto"
+                className="w-full gap-1 rounded-lg bg-indigo-900 px-4 font-semibold text-white transition-all hover:bg-indigo-800 active:scale-95 sm:w-auto"
               >
                 {sessionMap.get(ongoingAssessment.id)
                   ? "Lanjutkan Pengerjaan"
@@ -222,22 +222,22 @@ export default async function SiswaHomePage() {
         <h1 id="siswa-kpi-heading" className="sr-only">
           Ringkasan Ruang Belajar {user.name}
         </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 xl:grid-cols-4">
           <Link
             href="#progres-level"
-            className="group relative block overflow-hidden rounded-2xl bg-white p-5 pl-6 transition-colors hover:bg-slate-50/90 active:scale-[0.99]"
+            className="group relative block overflow-hidden rounded-xl bg-white p-3 pl-4 transition-colors hover:bg-slate-50/90 active:scale-[0.99] sm:p-4 sm:pl-6"
           >
             <span
               aria-hidden="true"
-              className="absolute inset-y-0 left-0 w-1.5 bg-teal-500 transition-all group-hover:w-2"
+              className="absolute inset-y-0 left-0 w-1.5 bg-emerald-500 transition-all group-hover:w-2"
             />
             <div className="flex items-center justify-between gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-600 transition-transform group-hover:scale-105">
-                <Sparkles className="h-6 w-6" />
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
+                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
               <div className="min-w-0 text-right">
                 <p className="text-xs font-medium text-slate-500">Level Kamu</p>
-                <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+                <p className="mt-1 text-lg font-bold tabular-nums text-slate-900 sm:text-2xl">
                   Level {levelInfo.level}
                 </p>
                 <p className="truncate text-xs text-slate-500">
@@ -249,19 +249,19 @@ export default async function SiswaHomePage() {
 
           <Link
             href="/siswa/peringkat"
-            className="group relative block overflow-hidden rounded-2xl bg-white p-5 pl-6 transition-colors hover:bg-slate-50/90 active:scale-[0.99]"
+            className="group relative block overflow-hidden rounded-xl bg-white p-3 pl-4 transition-colors hover:bg-slate-50/90 active:scale-[0.99] sm:p-4 sm:pl-6"
           >
             <span
               aria-hidden="true"
               className="absolute inset-y-0 left-0 w-1.5 bg-amber-400 transition-all group-hover:w-2"
             />
             <div className="flex items-center justify-between gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500 transition-transform group-hover:scale-105">
-                <Trophy className="h-6 w-6" />
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500 transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
+                <Trophy className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
               <div className="min-w-0 text-right">
                 <p className="text-xs font-medium text-slate-500">Total Poin</p>
-                <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+                <p className="mt-1 text-lg font-bold tabular-nums text-slate-900 sm:text-2xl">
                   {totalPoints}
                 </p>
                 <p className="truncate text-xs text-slate-500">
@@ -273,19 +273,19 @@ export default async function SiswaHomePage() {
 
           <Link
             href="#koleksi-lencana"
-            className="group relative block overflow-hidden rounded-2xl bg-white p-5 pl-6 transition-colors hover:bg-slate-50/90 active:scale-[0.99]"
+            className="group relative block overflow-hidden rounded-xl bg-white p-3 pl-4 transition-colors hover:bg-slate-50/90 active:scale-[0.99] sm:p-4 sm:pl-6"
           >
             <span
               aria-hidden="true"
               className="absolute inset-y-0 left-0 w-1.5 bg-indigo-600 transition-all group-hover:w-2"
             />
             <div className="flex items-center justify-between gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-700 transition-transform group-hover:scale-105">
-                <Award className="h-6 w-6" />
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-700 transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
+                <Award className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
               <div className="min-w-0 text-right">
                 <p className="text-xs font-medium text-slate-500">Lencana</p>
-                <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+                <p className="mt-1 text-lg font-bold tabular-nums text-slate-900 sm:text-2xl">
                   {studentBadges.length} / {allBadges.length}
                 </p>
                 <p className="truncate text-xs text-slate-500">Lencana terbuka</p>
@@ -295,19 +295,19 @@ export default async function SiswaHomePage() {
 
           <Link
             href="/siswa/asesmen"
-            className="group relative block overflow-hidden rounded-2xl bg-white p-5 pl-6 transition-colors hover:bg-slate-50/90 active:scale-[0.99]"
+            className="group relative block overflow-hidden rounded-xl bg-white p-3 pl-4 transition-colors hover:bg-slate-50/90 active:scale-[0.99] sm:p-4 sm:pl-6"
           >
             <span
               aria-hidden="true"
               className="absolute inset-y-0 left-0 w-1.5 bg-emerald-500 transition-all group-hover:w-2"
             />
             <div className="flex items-center justify-between gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-transform group-hover:scale-105">
-                <BookOpen className="h-6 w-6" />
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
+                <BookOpen className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
               <div className="min-w-0 text-right">
                 <p className="text-xs font-medium text-slate-500">Asesmen Wajib</p>
-                <p className="mt-0.5 text-2xl font-bold tabular-nums text-slate-900">
+                <p className="mt-1 text-lg font-bold tabular-nums text-slate-900 sm:text-2xl">
                   {completedWajibCount} / {activeWajibAssessments.length}
                 </p>
                 <p className="truncate text-xs text-slate-500">Selesai dikerjakan</p>
@@ -324,14 +324,14 @@ export default async function SiswaHomePage() {
           {/* Kartu Progres Level */}
           <Card
             id="progres-level"
-            className="scroll-mt-20 rounded-2xl border-0 bg-white shadow-none"
+            className="scroll-mt-20 rounded-xl border border-slate-200 bg-white shadow-sm"
           >
             <CardHeader className="pb-1">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base font-bold text-slate-900">
                   Kemajuan Level
                 </CardTitle>
-                <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
+                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                   Level {levelInfo.level}
                 </span>
               </div>
@@ -348,25 +348,25 @@ export default async function SiswaHomePage() {
                 </div>
                 <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
                   <div
-                    className="h-full rounded-full bg-teal-600 transition-all duration-500"
+                    className="h-full rounded-full bg-emerald-600 transition-all duration-500"
                     style={{ width: `${levelInfo.progressPercent}%` }}
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5 pt-1">
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <Link
                   href="/siswa/peringkat"
-                  className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100 px-3 py-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
+                  className="flex items-center justify-center gap-1 rounded-xl bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
                 >
                   <Trophy className="h-3.5 w-3.5 text-amber-500" />
                   <span>Peringkat Angkatan</span>
                 </Link>
                 <Link
                   href="/siswa/riwayat"
-                  className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100 px-3 py-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
+                  className="flex items-center justify-center gap-1 rounded-xl bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
                 >
-                  <RotateCcw className="h-3.5 w-3.5 text-teal-600" />
+                  <RotateCcw className="h-3.5 w-3.5 text-emerald-600" />
                   <span>Riwayat Sesi</span>
                 </Link>
               </div>
@@ -374,7 +374,7 @@ export default async function SiswaHomePage() {
           </Card>
 
           {/* Kartu Ringkasan Jadwal Asesmen Wajib */}
-          <Card className="rounded-2xl border-0 bg-white shadow-none">
+          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between gap-2 pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Jadwal Asesmen Wajib
@@ -417,14 +417,14 @@ export default async function SiswaHomePage() {
                       <Link
                         key={a.id}
                         href={href}
-                        className="-mx-3 block rounded-xl px-3 py-2.5 transition-colors hover:bg-slate-50"
+                        className="-mx-3 block rounded-xl px-3 py-2 transition-colors hover:bg-slate-50"
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <p className="truncate text-sm font-semibold text-slate-900">
                               {a.title}
                             </p>
-                            <p className="mt-0.5 text-xs text-slate-500">
+                            <p className="mt-1 text-xs text-slate-500">
                               {a.opensAt ? formatWibDateTime(a.opensAt) : "Segera"}
                             </p>
                           </div>
@@ -442,7 +442,7 @@ export default async function SiswaHomePage() {
         {/* Kolom Kanan: Koleksi 9 Lencana */}
         <Card
           id="koleksi-lencana"
-          className="scroll-mt-20 rounded-2xl border-0 bg-white shadow-none lg:col-span-7"
+          className="scroll-mt-20 rounded-xl border border-slate-200 bg-white shadow-sm lg:col-span-7"
         >
           <CardHeader className="flex flex-row items-center justify-between gap-2 pb-1">
             <CardTitle className="text-base font-bold text-slate-900">
@@ -464,9 +464,9 @@ export default async function SiswaHomePage() {
                   <div
                     key={badge.id}
                     className={cn(
-                      "relative flex items-start gap-3 overflow-hidden rounded-2xl p-4 transition-colors",
+                      "relative flex items-start gap-3 overflow-hidden rounded-xl p-4 transition-colors",
                       isEarned
-                        ? `pl-5 ${visual.cardBg}`
+                        ? `pl-4 ${visual.cardBg}`
                         : "bg-slate-50 opacity-75",
                     )}
                   >
@@ -488,7 +488,7 @@ export default async function SiswaHomePage() {
                     </div>
 
                     <div className="min-w-0 flex-1 space-y-1">
-                      <div className="flex items-start justify-between gap-1.5">
+                      <div className="flex items-start justify-between gap-1">
                         <h3
                           className={cn(
                             "text-sm font-bold leading-snug",
@@ -498,16 +498,16 @@ export default async function SiswaHomePage() {
                           {badge.name}
                         </h3>
                         {isEarned ? (
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                          <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-emerald-600" />
                         ) : (
-                          <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-400" />
+                          <Lock className="mt-1 h-3.5 w-3.5 shrink-0 text-slate-400" />
                         )}
                       </div>
                       <p className="text-xs leading-relaxed text-slate-600">
                         {badge.description}
                       </p>
                       {isEarned && awardedAt && (
-                        <div className="pt-0.5 text-[11px] font-medium text-amber-700">
+                        <div className="pt-1 text-[11px] font-medium text-amber-700">
                           Terbuka: {formatWibDateTime(awardedAt)}
                         </div>
                       )}

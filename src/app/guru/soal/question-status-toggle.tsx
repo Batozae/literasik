@@ -73,7 +73,7 @@ export function QuestionStatusToggle({
           if (!pending) setOpen(nextOpen);
         }}
       >
-        <DialogContent className="rounded-2xl">
+        <DialogContent className="rounded-xl">
           <DialogHeader>
             <DialogTitle>Nonaktifkan soal?</DialogTitle>
             <DialogDescription>
@@ -91,7 +91,7 @@ export function QuestionStatusToggle({
               variant="secondary"
               disabled={pending}
               onClick={() => setOpen(false)}
-              className="rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200"
+              className="rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200"
             >
               Batal
             </Button>
@@ -99,7 +99,7 @@ export function QuestionStatusToggle({
               type="button"
               disabled={pending}
               onClick={() => update(false)}
-              className="rounded-xl bg-indigo-900 text-white hover:bg-indigo-800"
+              className="rounded-lg bg-indigo-900 text-white hover:bg-indigo-800"
             >
               {pending ? "Memproses..." : "Ya, nonaktifkan"}
             </Button>

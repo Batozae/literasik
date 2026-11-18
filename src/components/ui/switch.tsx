@@ -20,7 +20,7 @@ function Switch({
       data-size={size}
       checked={checked}
       className={cn(
-        "peer relative inline-flex shrink-0 cursor-pointer items-center overflow-hidden rounded-full border-0 p-0.5 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        "peer relative inline-flex shrink-0 cursor-pointer items-center overflow-hidden rounded-full border-0 p-1 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         isSm ? "h-5 w-9" : "h-6 w-11",
         isControlled
           ? checked

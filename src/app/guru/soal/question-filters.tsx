@@ -60,10 +60,10 @@ export function QuestionFilters({
         value={filters.pilar || "all"}
         onValueChange={(value) => updateFilter("pilar", value)}
       >
-        <SelectTrigger aria-label="Filter pilar" className="min-h-11 rounded-xl border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
+        <SelectTrigger aria-label="Filter pilar" className="min-h-11 rounded-lg border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
           <SelectValue placeholder="Semua pilar" />
         </SelectTrigger>
-        <SelectContent className="rounded-2xl">
+        <SelectContent className="rounded-xl">
           {pillarItems.map((item) => (
             <SelectItem key={item.value} value={item.value}>
               {item.label}
@@ -77,10 +77,10 @@ export function QuestionFilters({
         value={filters.materi || "all"}
         onValueChange={(value) => updateFilter("materi", value)}
       >
-        <SelectTrigger aria-label="Filter materi" className="min-h-11 rounded-xl border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
+        <SelectTrigger aria-label="Filter materi" className="min-h-11 rounded-lg border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
           <SelectValue placeholder="Semua materi" />
         </SelectTrigger>
-        <SelectContent className="rounded-2xl">
+        <SelectContent className="rounded-xl">
           {topicItems.map((item) => (
             <SelectItem key={item.value} value={item.value}>
               {item.label}
@@ -94,10 +94,10 @@ export function QuestionFilters({
         value={filters.kesulitan || "all"}
         onValueChange={(value) => updateFilter("kesulitan", value)}
       >
-        <SelectTrigger aria-label="Filter kesulitan" className="min-h-11 rounded-xl border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
+        <SelectTrigger aria-label="Filter kesulitan" className="min-h-11 rounded-lg border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
           <SelectValue placeholder="Semua kesulitan" />
         </SelectTrigger>
-        <SelectContent className="rounded-2xl">
+        <SelectContent className="rounded-xl">
           {DIFFICULTY_ITEMS.map((item) => (
             <SelectItem key={item.value} value={item.value}>
               {item.label}
@@ -111,10 +111,10 @@ export function QuestionFilters({
         value={filters.status || "all"}
         onValueChange={(value) => updateFilter("status", value)}
       >
-        <SelectTrigger aria-label="Filter status aktif" className="min-h-11 rounded-xl border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
+        <SelectTrigger aria-label="Filter status aktif" className="min-h-11 rounded-lg border-0 bg-slate-100 px-4 font-medium text-slate-800 transition-colors hover:bg-slate-200/70">
           <SelectValue placeholder="Semua status" />
         </SelectTrigger>
-        <SelectContent className="rounded-2xl">
+        <SelectContent className="rounded-xl">
           {STATUS_ITEMS.map((item) => (
             <SelectItem key={item.value} value={item.value}>
               {item.label}

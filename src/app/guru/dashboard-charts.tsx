@@ -17,17 +17,17 @@ import {
 
 // ─── Warna pilar sesuai DESIGN.md ────────────────────────────────────────────
 const PILLAR_COLORS: Record<string, string> = {
-  KECAKAPAN: "#4F46E5", // indigo-600
-  ETIKA: "#0D9488",     // teal-600
-  KEAMANAN: "#0284C7",  // sky-600
-  BUDAYA: "#7C3AED",    // violet-600
+  KECAKAPAN: "#4338CA", // indigo-700
+  ETIKA: "#4F46E5", // indigo-600
+  KEAMANAN: "#6366F1", // indigo-500
+  BUDAYA: "#818CF8", // indigo-400
 };
 
 const PILLAR_DOT_CLASSES: Record<string, string> = {
-  KECAKAPAN: "bg-indigo-600",
-  ETIKA: "bg-teal-600",
-  KEAMANAN: "bg-sky-600",
-  BUDAYA: "bg-violet-600",
+  KECAKAPAN: "bg-indigo-700",
+  ETIKA: "bg-indigo-600",
+  KEAMANAN: "bg-indigo-500",
+  BUDAYA: "bg-indigo-400",
 };
 
 // ─── Grafik Skor Pilar (Flat & Interaktif: Legenda Kiri + Batang Kanan) ─────
@@ -62,7 +62,7 @@ export function PillarChart({ scores }: { scores: PillarScore[] }) {
   return (
     <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
       {/* Legenda interaktif di kiri */}
-      <div className="space-y-1.5 md:col-span-5">
+      <div className="space-y-1 md:col-span-5">
         {scores.map((s) => {
           const pct =
             s.accuracy !== null
@@ -92,7 +92,7 @@ export function PillarChart({ scores }: { scores: PillarScore[] }) {
               }`}
             >
               <span
-                className={`mt-1.5 h-3.5 w-3.5 shrink-0 rounded-full transition-transform duration-150 ${dotClass} ${
+                className={`mt-1 h-3.5 w-3.5 shrink-0 rounded-full transition-transform duration-150 ${dotClass} ${
                   isSelected ? "scale-110" : ""
                 }`}
               />
@@ -102,7 +102,7 @@ export function PillarChart({ scores }: { scores: PillarScore[] }) {
                 </p>
                 <p className="text-xs text-slate-500 tabular-nums">
                   {s.accuracy !== null
-                    ? `Akurasi ${pct} • ${s.totalAnswers ?? 0} jawaban`
+                    ? `Akurasi ${pct}: ${s.totalAnswers ?? 0} jawaban`
                     : "Belum ada data"}
                 </p>
               </div>
@@ -217,7 +217,7 @@ export function TrendChart({ points }: { points: TrendPoint[] }) {
   }));
 
   return (
-    <div className="space-y-2.5">
+    <div className="space-y-2">
       <ResponsiveContainer width="100%" height={225}>
         <LineChart data={data} margin={{ top: 10, right: 20, left: -12, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
