@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export type StudentHeaderAccent = "indigo" | "teal" | "amber" | "sky" | "violet";
+export type StudentHeaderAccent = "indigo" | "teal" | "amber" | "sky";
 
 const ACCENT_STYLES: Record<
   StudentHeaderAccent,
@@ -26,11 +26,6 @@ const ACCENT_STYLES: Record<
     strip: "bg-sky-500",
     iconBox: "bg-sky-500 text-white",
     eyebrow: "text-sky-700",
-  },
-  violet: {
-    strip: "bg-violet-500",
-    iconBox: "bg-violet-500 text-white",
-    eyebrow: "text-violet-700",
   },
 };
 

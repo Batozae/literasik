@@ -27,13 +27,6 @@ export interface RawAnswer {
   answeredAt: Date;
 }
 
-export interface RawSession {
-  id: number;
-  studentId: number;
-  assessmentId: number | null;
-  finishedAt: Date | null;
-}
-
 export interface RawAssessment {
   id: number;
   title: string;
@@ -313,35 +306,6 @@ export interface TrendPoint {
   opensAt: Date;
   accuracy: number; // 0..1
   participantCount: number;
-}
-
-export function computeTrend(
-  answers: RawAnswer[],
-  sessions: RawSession[], // sesi WAJIB selesai dalam filter
-  assessments: RawAssessment[],
-): TrendPoint[] {
-  // Map sessionId -> assessmentId
-  const sessionToAssessment = new Map<number, number>();
-  for (const s of sessions) {
-    if (s.assessmentId !== null) sessionToAssessment.set(s.id, s.assessmentId);
-  }
-
-  // Hitung per assessmentId
-  const assessmentStats = new Map<number, { total: number; correct: number; students: Set<number> }>();
-  for (const a of answers) {
-    // Cari sesi yang dimiliki jawaban ini – kita butuh sessionId, tapi RawAnswer tidak punya.
-    // Solusi: aggregate langsung dari answers yang sudah dikelompokkan oleh assessmentId
-    // (Pemanggil meneruskan answers yang sudah difilter ke sesi WAJIB + periode)
-    // Gunakan topicId → assessmentId via sessions map
-    // Note: RawAnswer hanya punya studentId + topicId. Kita tidak tahu sessionId.
-    // Pemanggil wajib pass answers dengan field assessmentId tambahan.
-    // Lihat RawAnswerWithAssessment di bawah.
-    void a; // placeholder
-  }
-  void assessmentStats;
-
-  // Gunakan tipe yang lebih lengkap (lihat computeTrendFromExtended)
-  return [];
 }
 
 export interface RawAnswerWithSession {

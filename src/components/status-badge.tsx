@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   CheckCircle2,
   Eye,

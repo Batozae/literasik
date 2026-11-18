@@ -16,9 +16,7 @@ import {
 import {
   POINTS_WAJIB_CORRECT,
   POINTS_WAJIB_BONUS,
-  POINTS_PRACTICE_CORRECT,
 } from "../src/lib/config";
-import { getWibDate } from "../src/lib/schedule";
 import { evaluateAndAwardBadges } from "../src/lib/badge-evaluator";
 
 const prisma = new PrismaClient();
@@ -508,7 +506,7 @@ async function main(): Promise<void> {
 
       // Hitung dan buat PointEvent
       // Selesai sebelum closesAt dan semua soal dijawab -> berhak bonus 20 poin
-      const { answerPoints, bonusPoints } = calculateWajibPoints(sessionCorrectCount, true);
+      const { bonusPoints } = calculateWajibPoints(sessionCorrectCount, true);
 
       for (let i = 0; i < sessionCorrectCount; i++) {
         await prisma.pointEvent.create({
