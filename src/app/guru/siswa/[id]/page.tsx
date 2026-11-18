@@ -24,22 +24,29 @@ function getInitials(name: string): string {
   return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
 }
 
-async function StudentDetailContent({ studentId }: { studentId: number }) {
-  const teacher = await requireTeacher();
+async function StudentDetailContent({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const [teacher, { id }] = await Promise.all([requireTeacher(), params]);
+  const studentId = Number(id);
+  if (isNaN(studentId)) notFound();
 
-  const teacherClasses = await prisma.teacherClass.findMany({
-    where: { teacherId: teacher.id },
-    select: { classId: true },
-  });
+  const [teacherClasses, studentProfile] = await Promise.all([
+    prisma.teacherClass.findMany({
+      where: { teacherId: teacher.id },
+      select: { classId: true },
+    }),
+    prisma.studentProfile.findUnique({
+      where: { userId: studentId },
+      include: {
+        user: { select: { id: true, name: true, username: true } },
+        class: { select: { id: true, name: true, gradeLevel: true } },
+      },
+    }),
+  ]);
   const teacherClassIds = teacherClasses.map((tc) => tc.classId);
-
-  const studentProfile = await prisma.studentProfile.findUnique({
-    where: { userId: studentId },
-    include: {
-      user: { select: { id: true, name: true, username: true } },
-      class: { select: { id: true, name: true, gradeLevel: true } },
-    },
-  });
 
   if (!studentProfile || !teacherClassIds.includes(studentProfile.classId)) {
     notFound();
@@ -48,24 +55,57 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
   const student = studentProfile.user;
   const studentClass = studentProfile.class;
 
-  const wajibAnswers = await prisma.answer.findMany({
-    where: {
-      studentId,
-      session: { kind: "WAJIB" },
-    },
-    select: {
-      isCorrect: true,
-      answeredAt: true,
-      questionId: true,
-      question: { select: { topicId: true } },
-    },
-    orderBy: { answeredAt: "asc" },
-  });
+  const [wajibAnswers, topics, pointEvents, wajibSessions, practiceSessions] =
+    await Promise.all([
+      prisma.answer.findMany({
+        where: {
+          studentId,
+          session: { kind: "WAJIB" },
+        },
+        select: {
+          isCorrect: true,
+          answeredAt: true,
+          questionId: true,
+          question: { select: { topicId: true } },
+        },
+        orderBy: { answeredAt: "asc" },
+      }),
+      prisma.topic.findMany({
+        where: { gradeLevel: studentClass.gradeLevel },
+        include: { pillar: { select: { code: true, name: true } } },
+      }),
+      prisma.pointEvent.findMany({
+        where: { studentId },
+        select: { type: true, points: true, createdAt: true },
+        orderBy: { createdAt: "asc" },
+      }),
+      prisma.assessmentSession.findMany({
+        where: {
+          studentId,
+          kind: "WAJIB",
+        },
+        include: {
+          assessment: {
+            select: {
+              title: true,
+              opensAt: true,
+              closesAt: true,
+              sourceTopic: {
+                select: { name: true, pillar: { select: { name: true } } },
+              },
+            },
+          },
+          answers: { select: { isCorrect: true } },
+        },
+        orderBy: { startedAt: "desc" },
+      }),
+      prisma.assessmentSession.findMany({
+        where: { studentId, kind: "LATIHAN", finishedAt: { not: null } },
+        select: { id: true, finishedAt: true },
+        orderBy: { finishedAt: "desc" },
+      }),
+    ]);
 
-  const topics = await prisma.topic.findMany({
-    where: { gradeLevel: studentClass.gradeLevel },
-    include: { pillar: { select: { code: true, name: true } } },
-  });
   const topicNames = topics.map((t) => ({ id: t.id, name: t.name }));
   const topicList = topics.map((t) => ({
     id: t.id,
@@ -84,43 +124,11 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
   const statusResult = computeStudentStatus(studentId, rawAnswers, topicNames);
   const topicDifficulties = computeTopicDifficulties(rawAnswers, topicList);
 
-  const pointEvents = await prisma.pointEvent.findMany({
-    where: { studentId },
-    select: { type: true, points: true, createdAt: true },
-    orderBy: { createdAt: "asc" },
-  });
   const totalPoints = pointEvents.reduce((sum, pe) => sum + pe.points, 0);
   const wajibPoints = pointEvents
     .filter((pe) => pe.type === "WAJIB_ANSWER" || pe.type === "WAJIB_BONUS")
     .reduce((sum, pe) => sum + pe.points, 0);
   const levelInfo = calculateLevel(totalPoints);
-
-  const wajibSessions = await prisma.assessmentSession.findMany({
-    where: {
-      studentId,
-      kind: "WAJIB",
-    },
-    include: {
-      assessment: {
-        select: {
-          title: true,
-          opensAt: true,
-          closesAt: true,
-          sourceTopic: {
-            select: { name: true, pillar: { select: { name: true } } },
-          },
-        },
-      },
-      answers: { select: { isCorrect: true } },
-    },
-    orderBy: { startedAt: "desc" },
-  });
-
-  const practiceSessions = await prisma.assessmentSession.findMany({
-    where: { studentId, kind: "LATIHAN", finishedAt: { not: null } },
-    select: { id: true, finishedAt: true },
-    orderBy: { finishedAt: "desc" },
-  });
 
   return (
     <div className="space-y-6">
@@ -366,19 +374,14 @@ async function StudentDetailContent({ studentId }: { studentId: number }) {
   );
 }
 
-export default async function TeacherStudentDetailPage({
+export default function TeacherStudentDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await requireTeacher();
-  const { id } = await params;
-  const studentId = Number(id);
-  if (isNaN(studentId)) notFound();
-
   return (
     <Suspense fallback={<div className="text-sm text-slate-500">Memuat detail siswa...</div>}>
-      <StudentDetailContent studentId={studentId} />
+      <StudentDetailContent params={params} />
     </Suspense>
   );
 }

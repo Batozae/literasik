@@ -189,3 +189,10 @@ _(Opsional F4 bila waktu ada: kolom "persentase benar per soal" di bank soal.)_
   4. Ekspor CSV D-09: Route handler server memvalidasi sesi guru, menerapkan filter aktif (kelas & periode), menyisipkan UTF-8 BOM, dan mensanitasi injeksi formula spreadsheet.
   5. Tutup Loop D-10: Tombol "Buat latihan" pada materi Sulit/Sedang memicu pembuatan asesmen LATIHAN terhubung `sourceTopicId` dan mendistribusikan ke kelas tujuan yang relevan.
 
+- **Fase 4 (Penjadwalan, Latihan, Tutup Loop, Finalisasi):**
+  1. Penjadwalan & komposisi asesmen (`src/lib/assessment-rules.ts`, `src/app/guru/asesmen/*`): menegakkan aturan D-04 (soal hanya boleh dipakai di satu asesmen WAJIB; soal materi baru terbuka untuk LATIHAN setelah jendela WAJIB materi itu tertutup) dan D-14 (komposisi soal dan jendela waktu WAJIB terkunci begitu `opensAt` lewat atau sudah memiliki sesi pengerjaan).
+  2. Simulasi jendela langsung ASM-06 (`openAssessmentNowAction`, `closeAssessmentNowAction`): "Buka sekarang" hanya untuk status Dijadwalkan dan mengubah `opensAt` ke waktu server sekarang; "Tutup sekarang" hanya untuk status Berlangsung, memfinalisasi seluruh sesi WAJIB yang belum selesai tanpa bonus waktu (`finalizeExpiredSession`), serta mengubah `closesAt` ke waktu server sekarang sehingga pembahasan, materi latihan, dan analitik langsung terbuka/terbarui.
+  3. Latihan mandiri & rekomendasi guru SIS-07 & ASM-05 (`src/app/siswa/latihan/page.tsx`, `src/app/siswa/actions.ts`, `src/app/siswa/sesi/*`): siswa dapat mengerjakan latihan rekomendasi guru (label "Rekomendasi Guru") maupun latihan mandiri per materi yang jendela WAJIB-nya sudah tertutup secara berulang, dengan umpan balik langsung per soal (benar/salah + penjelasan setelah menjawab sesuai D-11) dan poin latihan `+2/benar` dengan batas harian `20 poin/hari` (WIB) yang terisolasi dari analitik dan peringkat (D-01, D-05).
+  4. Kolom opsional "% Benar" ditambahkan pada tabel Bank Soal (`/guru/soal`) berdasarkan jawaban sesi WAJIB (D-01).
+
+

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { requireStudent } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sortAndRankLeaderboard, type LeaderboardCandidate } from "@/lib/scoring";
@@ -13,9 +14,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Trophy, Medal, Award } from "lucide-react";
+import { StudentPageHeader } from "@/components/student-page-header";
 import { cn } from "@/lib/utils";
 
-export default async function StudentLeaderboardPage() {
+async function StudentLeaderboardContent() {
   const user = await requireStudent();
 
   const profile = await prisma.studentProfile.findUnique({
@@ -33,39 +35,58 @@ export default async function StudentLeaderboardPage() {
 
   const gradeLevel = profile.class.gradeLevel;
 
-  const cohortStudents = await prisma.user.findMany({
+  const cohortProfiles = await prisma.studentProfile.findMany({
     where: {
-      role: "STUDENT",
-      student: {
-        class: { gradeLevel },
-      },
+      class: { gradeLevel },
     },
     include: {
-      student: { include: { class: true } },
-      pointEvents: {
-        where: {
-          type: { in: ["WAJIB_ANSWER", "WAJIB_BONUS"] },
-        },
-      },
-      answers: {
-        where: {
-          session: { kind: "WAJIB" },
-        },
-      },
+      user: { select: { id: true, name: true } },
+      class: { select: { name: true } },
     },
   });
+  const cohortStudentIds = cohortProfiles.map((sp) => sp.userId);
 
-  const candidates: LeaderboardCandidate[] = cohortStudents.map((s) => {
-    const wajibPoints = s.pointEvents.reduce((sum, e) => sum + e.points, 0);
-    const totalWajibAnswers = s.answers.length;
-    const correctWajibAnswers = s.answers.filter((a) => a.isCorrect).length;
-    const wajibAccuracy =
-      totalWajibAnswers > 0 ? correctWajibAnswers / totalWajibAnswers : 0;
+  const [pointSums, answerGroups] = await Promise.all([
+    prisma.pointEvent.groupBy({
+      by: ["studentId"],
+      where: {
+        studentId: { in: cohortStudentIds },
+        type: { in: ["WAJIB_ANSWER", "WAJIB_BONUS"] },
+      },
+      _sum: { points: true },
+    }),
+    prisma.answer.groupBy({
+      by: ["studentId", "isCorrect"],
+      where: {
+        studentId: { in: cohortStudentIds },
+        session: { kind: "WAJIB" },
+      },
+      _count: { id: true },
+    }),
+  ]);
+
+  const wajibPointsMap = new Map<number, number>();
+  for (const row of pointSums) {
+    wajibPointsMap.set(row.studentId, row._sum.points ?? 0);
+  }
+
+  const wajibAccuracyMap = new Map<number, { total: number; correct: number }>();
+  for (const row of answerGroups) {
+    const s = wajibAccuracyMap.get(row.studentId) ?? { total: 0, correct: 0 };
+    s.total += row._count.id;
+    if (row.isCorrect) s.correct += row._count.id;
+    wajibAccuracyMap.set(row.studentId, s);
+  }
+
+  const candidates: LeaderboardCandidate[] = cohortProfiles.map((sp) => {
+    const wajibPoints = wajibPointsMap.get(sp.userId) ?? 0;
+    const acc = wajibAccuracyMap.get(sp.userId);
+    const wajibAccuracy = acc && acc.total > 0 ? acc.correct / acc.total : 0;
 
     return {
-      studentId: s.id,
-      name: s.name,
-      className: s.student?.class.name ?? "",
+      studentId: sp.userId,
+      name: sp.user.name,
+      className: sp.class.name,
       wajibPoints,
       wajibAccuracy,
     };
@@ -82,17 +103,13 @@ export default async function StudentLeaderboardPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <span className="text-xs font-semibold uppercase tracking-wide text-indigo-700">
-          Angkatan {gradeLevel}
-        </span>
-        <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
-          Peringkat Angkatan
-        </h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Papan 25 besar literasi digital berdasarkan capaian asesmen wajib.
-        </p>
-      </div>
+      <StudentPageHeader
+        eyebrow={`Angkatan ${gradeLevel}`}
+        title="Peringkat Angkatan"
+        description="Papan 25 besar literasi digital berdasarkan capaian asesmen wajib."
+        icon={<Trophy className="h-5 w-5" />}
+        accent="amber"
+      />
 
       {/* Kartu Status Jika Siswa di Luar 25 Besar (D-07: tanpa nomor peringkat) */}
       {!currentUserInTop25 && (
@@ -298,5 +315,13 @@ export default async function StudentLeaderboardPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function StudentLeaderboardPage() {
+  return (
+    <Suspense fallback={<div className="text-sm text-slate-500">Memuat peringkat...</div>}>
+      <StudentLeaderboardContent />
+    </Suspense>
   );
 }

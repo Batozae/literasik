@@ -123,32 +123,50 @@ export async function getDashboardData(
   // Filter kelas
   const targetClassIds = selectedClassId ? [selectedClassId] : classIds;
 
-  // 2. Siswa dalam kelas target
-  const studentProfiles = await prisma.studentProfile.findMany({
-    where: { classId: { in: targetClassIds } },
-    include: {
-      user: { select: { id: true, name: true } },
-      class: { select: { id: true, name: true } },
-    },
-  });
+  // 2..4. Ambil siswa, pilar, topik, dan asesmen WAJIB secara paralel
+  const [studentProfiles, pillars, topics, wajibAssessments] =
+    await Promise.all([
+      prisma.studentProfile.findMany({
+        where: { classId: { in: targetClassIds } },
+        include: {
+          user: { select: { id: true, name: true } },
+          class: { select: { id: true, name: true } },
+        },
+      }),
+      prisma.pillar.findMany({
+        orderBy: { id: "asc" },
+      }),
+      prisma.topic.findMany({
+        where: { gradeLevel: { in: gradeLevels } },
+        include: { pillar: { select: { code: true, name: true } } },
+      }),
+      prisma.assessment.findMany({
+        where: {
+          type: "WAJIB",
+          gradeLevel: { in: gradeLevels },
+          isActive: true,
+        },
+        include: {
+          sourceTopic: {
+            include: { pillar: { select: { code: true } } },
+          },
+        },
+        orderBy: { opensAt: "asc" },
+      }),
+    ]);
+
   const studentIds = studentProfiles.map((sp) => sp.userId);
   const studentMap = new Map(
-    studentProfiles.map((sp) => ({
-      id: sp.userId,
-      name: sp.user.name,
-      className: sp.class.name,
-      classId: sp.class.id,
-    })).map((s) => [s.id, s]),
+    studentProfiles
+      .map((sp) => ({
+        id: sp.userId,
+        name: sp.user.name,
+        className: sp.class.name,
+        classId: sp.class.id,
+      }))
+      .map((s) => [s.id, s]),
   );
 
-  // 3. Pilar dan topik
-  const pillars = await prisma.pillar.findMany({
-    orderBy: { id: "asc" },
-  });
-  const topics = await prisma.topic.findMany({
-    where: { gradeLevel: { in: gradeLevels } },
-    include: { pillar: { select: { code: true, name: true } } },
-  });
   const topicToPillar = new Map(topics.map((t) => [t.id, t.pillar.code]));
   const topicList = topics.map((t) => ({
     id: t.id,
@@ -156,21 +174,6 @@ export async function getDashboardData(
     pillarCode: t.pillar.code,
   }));
   const topicNames = topics.map((t) => ({ id: t.id, name: t.name }));
-
-  // 4. Asesmen WAJIB angkatan guru (untuk tren dan sourceTopicId)
-  const wajibAssessments = await prisma.assessment.findMany({
-    where: {
-      type: "WAJIB",
-      gradeLevel: { in: gradeLevels },
-      isActive: true,
-    },
-    include: {
-      sourceTopic: {
-        include: { pillar: { select: { code: true } } },
-      },
-    },
-    orderBy: { opensAt: "asc" },
-  });
 
   const rawAssessments: RawAssessment[] = wajibAssessments.map((a) => ({
     id: a.id,
@@ -183,43 +186,51 @@ export async function getDashboardData(
     pillarCode: a.sourceTopic?.pillar.code ?? null,
   }));
 
-  // 5. Sesi WAJIB selesai (dalam filter periode berdasarkan jawaban; sesi dimulai kapanpun)
-  const wajibSessions = await prisma.assessmentSession.findMany({
-    where: {
-      studentId: { in: studentIds },
-      kind: "WAJIB",
-      finishedAt: { not: null },
-    },
-    select: {
-      id: true,
-      studentId: true,
-      assessmentId: true,
-      finishedAt: true,
-    },
-  });
-
-  // 6. Jawaban sesi WAJIB
-  const wajibAnswersRaw = await prisma.answer.findMany({
-    where: {
-      studentId: { in: studentIds },
-      session: { kind: "WAJIB" },
-    },
-    select: {
-      id: true,
-      studentId: true,
-      questionId: true,
-      isCorrect: true,
-      answeredAt: true,
-      sessionId: true,
-      session: { select: { assessmentId: true } },
-      question: { select: { topicId: true } },
-    },
-  });
-
-  // Map sessionId → assessmentId
-  const sessionAssessmentMap = new Map(
-    wajibSessions.map((s) => [s.id, s.assessmentId]),
-  );
+  // 5..8. Ambil sesi WAJIB, jawaban WAJIB, sesi LATIHAN, dan poin secara paralel
+  const [wajibSessions, wajibAnswersRaw, practiceSessions, pointEvents] =
+    await Promise.all([
+      prisma.assessmentSession.findMany({
+        where: {
+          studentId: { in: studentIds },
+          kind: "WAJIB",
+          finishedAt: { not: null },
+        },
+        select: {
+          id: true,
+          studentId: true,
+          assessmentId: true,
+          finishedAt: true,
+        },
+      }),
+      prisma.answer.findMany({
+        where: {
+          studentId: { in: studentIds },
+          session: { kind: "WAJIB" },
+        },
+        select: {
+          id: true,
+          studentId: true,
+          questionId: true,
+          isCorrect: true,
+          answeredAt: true,
+          sessionId: true,
+          session: { select: { assessmentId: true } },
+          question: { select: { topicId: true } },
+        },
+      }),
+      prisma.assessmentSession.findMany({
+        where: {
+          studentId: { in: studentIds },
+          kind: "LATIHAN",
+          finishedAt: { not: null },
+        },
+        select: { id: true, studentId: true, finishedAt: true },
+      }),
+      prisma.pointEvent.findMany({
+        where: { studentId: { in: studentIds } },
+        select: { studentId: true, type: true, points: true },
+      }),
+    ]);
 
   // Buat RawAnswerWithSession, lalu filter periode berdasarkan answeredAt
   const allAnswersWithSession: RawAnswerWithSession[] = wajibAnswersRaw.map((a) => ({
@@ -243,7 +254,6 @@ export async function getDashboardData(
   const openAssessmentIds = new Set(openAssessmentsInPeriod.map((a) => a.id));
 
   // Sesi WAJIB selesai dalam periode (berdasarkan answeredAt dari jawaban terakhir)
-  // Gunakan sesi yang ada jawaban dalam periode
   const sessionsWithAnswersInPeriod = new Set(filteredAnswers.map((a) => a.sessionId));
   const completedWajibSessionsByStudent = new Map<number, number[]>();
   for (const s of wajibSessions) {
@@ -254,26 +264,10 @@ export async function getDashboardData(
     completedWajibSessionsByStudent.set(s.studentId, arr);
   }
 
-  // 7. GUR-10: sesi LATIHAN (dari kelas guru, dalam periode)
-  const practiceSessions = await prisma.assessmentSession.findMany({
-    where: {
-      studentId: { in: studentIds },
-      kind: "LATIHAN",
-      finishedAt: { not: null },
-    },
-    select: { id: true, studentId: true, finishedAt: true },
-  });
-
   const filteredPracticeSessions = practiceSessions.filter((s) =>
     s.finishedAt && applyPeriodFilter(s.finishedAt, filter, now),
   );
   const practiceStudentIds = new Set(filteredPracticeSessions.map((s) => s.studentId));
-
-  // 8. Poin siswa
-  const pointEvents = await prisma.pointEvent.findMany({
-    where: { studentId: { in: studentIds } },
-    select: { studentId: true, type: true, points: true },
-  });
 
   const totalPointsMap = new Map<number, number>();
   const wajibPointsMap = new Map<number, number>();
@@ -393,36 +387,39 @@ export async function getTeacherLeaderboardData(teacherId: number) {
       class: { select: { name: true } },
     },
   });
+  const studentIds = studentProfiles.map((sp) => sp.userId);
 
-  // Poin WAJIB per siswa (kumulatif semua waktu, D-07)
-  const pointEvents = await prisma.pointEvent.findMany({
-    where: {
-      studentId: { in: studentProfiles.map((sp) => sp.userId) },
-      type: { in: ["WAJIB_ANSWER", "WAJIB_BONUS"] },
-    },
-    select: { studentId: true, points: true },
-  });
-
-  // Akurasi WAJIB per siswa (semua jawaban WAJIB)
-  const wajibAnswers = await prisma.answer.findMany({
-    where: {
-      studentId: { in: studentProfiles.map((sp) => sp.userId) },
-      session: { kind: "WAJIB" },
-    },
-    select: { studentId: true, isCorrect: true },
-  });
+  // Agregasi poin WAJIB dan akurasi WAJIB langsung di MySQL secara paralel (D-07)
+  const [pointSums, answerGroups] = await Promise.all([
+    prisma.pointEvent.groupBy({
+      by: ["studentId"],
+      where: {
+        studentId: { in: studentIds },
+        type: { in: ["WAJIB_ANSWER", "WAJIB_BONUS"] },
+      },
+      _sum: { points: true },
+    }),
+    prisma.answer.groupBy({
+      by: ["studentId", "isCorrect"],
+      where: {
+        studentId: { in: studentIds },
+        session: { kind: "WAJIB" },
+      },
+      _count: { id: true },
+    }),
+  ]);
 
   const wajibPointsMap = new Map<number, number>();
-  for (const pe of pointEvents) {
-    wajibPointsMap.set(pe.studentId, (wajibPointsMap.get(pe.studentId) ?? 0) + pe.points);
+  for (const row of pointSums) {
+    wajibPointsMap.set(row.studentId, row._sum.points ?? 0);
   }
 
   const wajibAccuracyMap = new Map<number, { total: number; correct: number }>();
-  for (const a of wajibAnswers) {
-    const s = wajibAccuracyMap.get(a.studentId) ?? { total: 0, correct: 0 };
-    s.total++;
-    if (a.isCorrect) s.correct++;
-    wajibAccuracyMap.set(a.studentId, s);
+  for (const row of answerGroups) {
+    const s = wajibAccuracyMap.get(row.studentId) ?? { total: 0, correct: 0 };
+    s.total += row._count.id;
+    if (row.isCorrect) s.correct += row._count.id;
+    wajibAccuracyMap.set(row.studentId, s);
   }
 
   const candidates = studentProfiles.map((sp) => {

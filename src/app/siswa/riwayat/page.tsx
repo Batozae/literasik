@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { requireStudent } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -12,9 +13,10 @@ import {
   Calendar,
   RotateCcw,
 } from "lucide-react";
+import { StudentPageHeader } from "@/components/student-page-header";
 import { cn } from "@/lib/utils";
 
-export default async function StudentHistoryPage() {
+async function StudentHistoryContent() {
   const user = await requireStudent();
   const now = new Date();
 
@@ -45,14 +47,12 @@ export default async function StudentHistoryPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
-          Riwayat Asesmen
-        </h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Catatan hasil asesmen dan latihan yang telah kamu selesaikan.
-        </p>
-      </div>
+      <StudentPageHeader
+        title="Riwayat Asesmen"
+        description="Catatan hasil asesmen dan latihan yang telah kamu selesaikan."
+        icon={<RotateCcw className="h-5 w-5" />}
+        accent="sky"
+      />
 
       {sessions.length === 0 ? (
         <Card className="rounded-xl border border-slate-200 bg-white p-6 text-center shadow-sm">
@@ -202,5 +202,13 @@ export default async function StudentHistoryPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function StudentHistoryPage() {
+  return (
+    <Suspense fallback={<div className="text-sm text-slate-500">Memuat riwayat...</div>}>
+      <StudentHistoryContent />
+    </Suspense>
   );
 }

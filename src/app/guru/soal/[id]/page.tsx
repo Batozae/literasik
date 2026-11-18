@@ -17,15 +17,13 @@ import { QuestionStatusToggle } from "../question-status-toggle";
 
 async function TeacherQuestionContent({
   params,
-  teacherId,
 }: {
   params: Promise<{ id: string }>;
-  teacherId: number;
 }) {
-  const { id: rawId } = await params;
+  const [teacher, { id: rawId }] = await Promise.all([requireTeacher(), params]);
   const questionId = Number(rawId);
   if (!Number.isInteger(questionId) || questionId < 1) notFound();
-  const question = await assertQuestionAccess(teacherId, questionId);
+  const question = await assertQuestionAccess(teacher.id, questionId);
   const now = new Date();
   const statuses = question.assessmentQuestions.map(({ assessment }) => {
     if (!assessment.opensAt || !assessment.closesAt)
@@ -33,7 +31,7 @@ async function TeacherQuestionContent({
     return getAssessmentStatus(assessment.opensAt, assessment.closesAt, now);
   });
   const locked = isQuestionLocked(question.answers.length > 0, statuses);
-  const gradeLevels = await getTeacherGradeLevels(teacherId);
+  const gradeLevels = await getTeacherGradeLevels(teacher.id);
 
   let topics: Array<{
     id: number;
@@ -113,12 +111,11 @@ async function TeacherQuestionContent({
   );
 }
 
-export default async function TeacherQuestionPage({
+export default function TeacherQuestionPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const teacher = await requireTeacher();
   return (
     <Suspense
       fallback={
@@ -127,7 +124,7 @@ export default async function TeacherQuestionPage({
         </div>
       }
     >
-      <TeacherQuestionContent params={params} teacherId={teacher.id} />
+      <TeacherQuestionContent params={params} />
     </Suspense>
   );
 }

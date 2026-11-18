@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { compare } from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -47,7 +48,7 @@ export async function deleteSession(): Promise<void> {
   cookieStore.delete(SESSION_COOKIE);
 }
 
-export async function getSession() {
+export const getSession = cache(async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return null;
@@ -62,7 +63,7 @@ export async function getSession() {
   });
   if (!user || user.role !== claims.role) return null;
   return user;
-}
+});
 
 export async function requireStudent() {
   const user = await getSession();

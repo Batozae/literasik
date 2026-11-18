@@ -1,11 +1,20 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { requireStudent } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatWibDateTime } from "@/lib/schedule";
 import { finalizeExpiredSession } from "@/app/siswa/actions";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { LiterasikOwl } from "@/components/literasik-owl";
+import { StudentSectionHeader } from "@/components/student-page-header";
 import {
   CheckCircle2,
   XCircle,
@@ -15,16 +24,16 @@ import {
   Sparkles,
   Home,
   RotateCcw,
+  BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default async function StudentResultPage({
+async function StudentResultContent({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const user = await requireStudent();
-  const { id } = await params;
+  const [user, { id }] = await Promise.all([requireStudent(), params]);
   const sessionId = Number(id);
 
   if (!Number.isInteger(sessionId)) notFound();
@@ -52,49 +61,110 @@ export default async function StudentResultPage({
           },
         },
       },
-      answers: true,
+      topic: {
+        include: {
+          pillar: true,
+          questions: {
+            where: { isActive: true },
+            include: {
+              topic: { include: { pillar: true } },
+              options: {
+                orderBy: { order: "asc" },
+              },
+            },
+            orderBy: { id: "asc" },
+          },
+        },
+      },
+      answers: {
+        include: {
+          question: {
+            include: {
+              topic: { include: { pillar: true } },
+              options: {
+                orderBy: { order: "asc" },
+              },
+            },
+          },
+        },
+      },
       pointEvents: true,
     },
   });
 
-  if (!session || session.studentId !== user.id || !session.assessment) {
+  if (
+    !session ||
+    session.studentId !== user.id ||
+    (!session.assessment && !session.topic)
+  ) {
     notFound();
   }
 
   if (session.finishedAt === null) {
-    if (session.assessment.closesAt && now >= session.assessment.closesAt) {
-      await finalizeExpiredSession(sessionId, user.id, session.assessment.closesAt);
+    if (
+      session.kind === "WAJIB" &&
+      session.assessment?.closesAt &&
+      now >= session.assessment.closesAt
+    ) {
+      await finalizeExpiredSession(
+        sessionId,
+        user.id,
+        session.assessment.closesAt,
+      );
       session.finishedAt = session.assessment.closesAt;
     } else {
       redirect(`/siswa/sesi/${sessionId}`);
     }
   }
 
-  const closesAt = session.assessment.closesAt;
-  const isReviewAvailable = closesAt ? now >= closesAt : true;
+  const isWajib = session.kind === "WAJIB";
+  const closesAt = session.assessment?.closesAt ?? null;
+  // D-04 & D-11: WAJIB baru terbuka setelah closesAt; LATIHAN terbuka langsung
+  const isReviewAvailable = !isWajib || (closesAt ? now >= closesAt : true);
 
-  const totalQuestions = session.assessment.questions.length;
+  // Daftar soal untuk ditampilkan pada pembahasan (jika sudah terbuka)
+  const reviewQuestions = session.assessment
+    ? session.assessment.questions.map((aq) => aq.question)
+    : session.topic && session.topic.questions.length > 0
+      ? session.topic.questions
+      : session.answers.map((a) => a.question);
+
+  const totalQuestions =
+    reviewQuestions.length > 0 ? reviewQuestions.length : session.answers.length;
   const correctCount = session.answers.filter((a) => a.isCorrect).length;
   const accuracy =
     totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
 
-  const answerPoints = session.pointEvents
-    .filter((e) => e.type === "WAJIB_ANSWER")
-    .reduce((sum, e) => sum + e.points, 0);
+  const answerPoints = isWajib
+    ? session.pointEvents
+        .filter((e) => e.type === "WAJIB_ANSWER")
+        .reduce((sum, e) => sum + e.points, 0)
+    : session.pointEvents
+        .filter((e) => e.type === "LATIHAN_ANSWER")
+        .reduce((sum, e) => sum + e.points, 0);
 
-  const bonusPoints = session.pointEvents
-    .filter((e) => e.type === "WAJIB_BONUS")
-    .reduce((sum, e) => sum + e.points, 0);
+  const bonusPoints = isWajib
+    ? session.pointEvents
+        .filter((e) => e.type === "WAJIB_BONUS")
+        .reduce((sum, e) => sum + e.points, 0)
+    : 0;
 
   const totalPoints = answerPoints + bonusPoints;
 
+  const title =
+    session.assessment?.title ??
+    (session.topic ? `Latihan Mandiri: ${session.topic.name}` : "Sesi Latihan");
+
   const topicName =
-    session.assessment.sourceTopic?.name ??
-    session.assessment.questions[0]?.question.topic.name ??
+    session.assessment?.sourceTopic?.name ??
+    session.assessment?.questions[0]?.question.topic.name ??
+    session.topic?.name ??
     "Materi";
+
   const pillarName =
-    session.assessment.sourceTopic?.pillar.name ??
-    session.assessment.questions[0]?.question.topic.pillar.name ??
+    session.assessment?.sourceTopic?.pillar.name ??
+    session.assessment?.questions[0]?.question.topic.pillar.name ??
+    session.topic?.pillar.name ??
     "Pilar";
 
   const studentAnswersMap = new Map(
@@ -106,14 +176,25 @@ export default async function StudentResultPage({
       {/* Header Kartu Hasil Flat */}
       <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
         <CardHeader className="pb-4 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-            <CheckCircle2 className="h-6 w-6" />
+          <div className="mx-auto">
+            <LiterasikOwl
+              size="md"
+              withBackdrop
+              mood={
+                accuracy >= 80
+                  ? "celebrate"
+                  : accuracy >= 60
+                    ? "happy"
+                    : "encourage"
+              }
+            />
           </div>
           <span className="mt-2 text-xs font-semibold uppercase tracking-wide text-indigo-700">
-            Pilar {pillarName}: {topicName}
+            {isWajib ? "Asesmen Wajib" : "Sesi Latihan"} • Pilar {pillarName}:{" "}
+            {topicName}
           </span>
           <CardTitle className="text-2xl font-bold text-slate-900">
-            {session.assessment.title}
+            {title}
           </CardTitle>
           <CardDescription className="text-xs text-slate-500">
             Diselesaikan pada: {formatWibDateTime(session.finishedAt)}
@@ -124,7 +205,10 @@ export default async function StudentResultPage({
           {/* Grid Ringkasan Skor & Poin Flat */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
-              <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-slate-400" />
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-1 bg-slate-400"
+              />
               <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Jawaban Benar
               </span>
@@ -137,7 +221,10 @@ export default async function StudentResultPage({
             </div>
 
             <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
-              <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-indigo-600" />
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-1 bg-indigo-600"
+              />
               <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
                 Akurasi
               </span>
@@ -147,9 +234,12 @@ export default async function StudentResultPage({
             </div>
 
             <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
-              <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-amber-400" />
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-1 bg-amber-400"
+              />
               <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                Poin Jawaban
+                {isWajib ? "Poin Jawaban" : "Poin Latihan"}
               </span>
               <div className="mt-1 text-2xl font-bold tabular-nums text-amber-600">
                 +{answerPoints}
@@ -157,19 +247,25 @@ export default async function StudentResultPage({
             </div>
 
             <div className="relative overflow-hidden rounded-xl bg-slate-50 p-4 text-center">
-              <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-emerald-500" />
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-1 bg-emerald-500"
+              />
               <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                Bonus Waktu
+                {isWajib ? "Bonus Waktu" : "Batas Harian"}
               </span>
               <div className="mt-1 text-2xl font-bold tabular-nums text-emerald-600">
-                {bonusPoints > 0 ? `+${bonusPoints}` : "0"}
+                {isWajib ? (bonusPoints > 0 ? `+${bonusPoints}` : "0") : "20/hari"}
               </div>
             </div>
           </div>
 
           {/* Banner Total Poin Flat */}
           <div className="relative flex items-center justify-between overflow-hidden rounded-xl bg-amber-50 p-4 pl-4">
-            <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-amber-400" />
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-1.5 bg-amber-400"
+            />
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-amber-500">
                 <Sparkles className="h-5 w-5" />
@@ -179,9 +275,11 @@ export default async function StudentResultPage({
                   Total Poin Diperoleh
                 </h2>
                 <p className="text-xs text-slate-600">
-                  {bonusPoints > 0
-                    ? `${answerPoints} poin jawaban + ${bonusPoints} poin bonus ketepatan waktu`
-                    : "Poin langsung diakumulasikan ke peringkat angkatanmu"}
+                  {isWajib
+                    ? bonusPoints > 0
+                      ? `${answerPoints} poin jawaban + ${bonusPoints} poin bonus ketepatan waktu`
+                      : "Poin langsung diakumulasikan ke peringkat angkatanmu"
+                    : "Poin latihan menambah progres Level & Lencana (tidak mengubah peringkat angkatan)"}
                 </p>
               </div>
             </div>
@@ -202,6 +300,18 @@ export default async function StudentResultPage({
                 Kembali ke Beranda
               </Button>
             </Link>
+            {!isWajib && (
+              <Link href="/siswa/latihan">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="gap-1 rounded-lg bg-teal-50 font-semibold text-teal-700 hover:bg-teal-100"
+                >
+                  <BookOpen className="h-4 w-4" />
+                  Kembali ke Latihan
+                </Button>
+              </Link>
+            )}
             <Link href="/siswa/riwayat">
               <Button
                 variant="secondary"
@@ -228,7 +338,10 @@ export default async function StudentResultPage({
       {/* Bagian Pembahasan (D-04, D-11) */}
       {!isReviewAvailable ? (
         <div className="relative overflow-hidden rounded-xl bg-white p-6 pl-8">
-          <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1.5 bg-slate-400" />
+          <span
+            aria-hidden="true"
+            className="absolute inset-y-0 left-0 w-1.5 bg-slate-400"
+          />
           <div className="flex items-start gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
               <Clock className="h-5 w-5" />
@@ -238,37 +351,43 @@ export default async function StudentResultPage({
                 Pembahasan Belum Dibuka
               </h2>
               <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                Demi menjaga integritas dan keadilan asesmen bersama, kunci jawaban dan
-                pembahasan lengkap baru akan terbuka secara otomatis setelah seluruh
-                jendela asesmen ditutup pada{" "}
+                Demi menjaga integritas dan keadilan asesmen bersama, kunci
+                jawaban dan pembahasan lengkap baru akan terbuka secara otomatis
+                setelah seluruh jendela asesmen ditutup pada{" "}
                 <strong className="text-slate-900">
                   {closesAt ? formatWibDateTime(closesAt) : "jadwal penutupan"}
                 </strong>
                 .
               </p>
               <p className="mt-2 text-xs text-slate-500">
-                Silakan kembali ke halaman ini atau periksa menu Riwayat setelah waktu
-                penutupan untuk melihat pembahasan detail.
+                Silakan kembali ke halaman ini atau periksa menu Riwayat setelah
+                waktu penutupan untuk melihat pembahasan detail.
               </p>
             </div>
           </div>
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center justify-between px-1">
-            <h2 className="text-xl font-bold text-slate-900">
-              Pembahasan Soal
-            </h2>
-            <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-600">
-              {totalQuestions} Soal
-            </span>
-          </div>
+          <StudentSectionHeader
+            title="Pembahasan Soal"
+            accent={isWajib ? "indigo" : "teal"}
+            right={
+              <span
+                className={cn(
+                  "rounded-full bg-white px-3 py-1 text-xs font-semibold shadow-sm",
+                  isWajib ? "text-indigo-700" : "text-teal-700",
+                )}
+              >
+                {totalQuestions} Soal
+              </span>
+            }
+          />
 
-          {session.assessment.questions.map((aq, idx) => {
-            const question = aq.question;
+          {reviewQuestions.map((question, idx) => {
             const userOptionId = studentAnswersMap.get(question.id);
             const userIsCorrect =
-              question.options.find((o) => o.id === userOptionId)?.isCorrect ?? false;
+              question.options.find((o) => o.id === userOptionId)?.isCorrect ??
+              false;
 
             return (
               <Card
@@ -314,7 +433,8 @@ export default async function StudentResultPage({
                     let label = null;
 
                     if (isCorrect) {
-                      optionStyle = "bg-emerald-50 text-emerald-950 font-medium";
+                      optionStyle =
+                        "bg-emerald-50 text-emerald-950 font-medium";
                       label = (
                         <span className="ml-auto flex items-center gap-1 text-xs font-semibold text-emerald-700">
                           <CheckCircle2 className="h-3.5 w-3.5" />
@@ -364,5 +484,17 @@ export default async function StudentResultPage({
         </div>
       )}
     </div>
+  );
+}
+
+export default function StudentResultPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-3xl text-sm text-slate-500">Memuat hasil...</div>}>
+      <StudentResultContent params={params} />
+    </Suspense>
   );
 }

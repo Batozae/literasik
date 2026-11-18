@@ -2,6 +2,7 @@ import { Suspense, type ReactNode } from "react";
 import { requireStudent } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { StudentNavigation } from "@/app/siswa/navigation";
+import StudentLoading from "@/app/siswa/loading";
 
 async function StudentContent({ children }: { children: ReactNode }) {
   const student = await requireStudent();
@@ -18,7 +19,9 @@ async function StudentContent({ children }: { children: ReactNode }) {
         gradeLevel={profile?.class.gradeLevel}
       />
       <main className="min-h-[calc(100vh-4rem)] px-3 py-4 pb-24 sm:px-4 md:ml-64 md:px-6 md:py-4 md:pb-8 xl:px-8">
-        <div className="mx-auto max-w-7xl">{children}</div>
+        <div className="mx-auto max-w-7xl">
+          <Suspense fallback={<StudentLoading />}>{children}</Suspense>
+        </div>
       </main>
     </>
   );

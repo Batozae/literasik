@@ -16,8 +16,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id" className={plusJakartaSans.variable}>
-      <body className="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased tabular-nums">
+    <html lang="id" className={plusJakartaSans.variable} suppressHydrationWarning>
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased tabular-nums"
+      >
         {children}
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { requireStudent } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -5,8 +6,9 @@ import { formatWibDateTime } from "@/lib/schedule";
 import { StatusBadge, type StatusType } from "@/components/status-badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { StudentPageHeader } from "@/components/student-page-header";
 import { startWajibSessionAction, finalizeExpiredSession } from "@/app/siswa/actions";
-import { Clock, Calendar, HelpCircle, ArrowRight } from "lucide-react";
+import { BookOpen, Clock, Calendar, HelpCircle, ArrowRight, Sparkles } from "lucide-react";
 
 const STATUS_STRIP: Record<string, string> = {
   Berlangsung: "bg-indigo-500",
@@ -15,7 +17,7 @@ const STATUS_STRIP: Record<string, string> = {
   Terlewat: "bg-rose-400",
 };
 
-export default async function StudentAssessmentsPage() {
+async function StudentAssessmentsContent() {
   const user = await requireStudent();
   const now = new Date();
 
@@ -32,28 +34,29 @@ export default async function StudentAssessmentsPage() {
     );
   }
 
-  const assessments = await prisma.assessment.findMany({
-    where: {
-      gradeLevel: profile.class.gradeLevel,
-      type: "WAJIB",
-      isActive: true,
-    },
-    include: {
-      sourceTopic: { include: { pillar: true } },
-      questions: {
-        include: {
-          question: {
-            include: { topic: { include: { pillar: true } } },
+  const [assessments, sessions] = await Promise.all([
+    prisma.assessment.findMany({
+      where: {
+        gradeLevel: profile.class.gradeLevel,
+        type: "WAJIB",
+        isActive: true,
+      },
+      include: {
+        sourceTopic: { include: { pillar: true } },
+        questions: {
+          include: {
+            question: {
+              include: { topic: { include: { pillar: true } } },
+            },
           },
         },
       },
-    },
-    orderBy: { opensAt: "asc" },
-  });
-
-  const sessions = await prisma.assessmentSession.findMany({
-    where: { studentId: user.id, kind: "WAJIB" },
-  });
+      orderBy: { opensAt: "asc" },
+    }),
+    prisma.assessmentSession.findMany({
+      where: { studentId: user.id, kind: "WAJIB" },
+    }),
+  ]);
   const sessionMap = new Map(sessions.map((s) => [s.assessmentId, s]));
 
   for (const session of sessions) {
@@ -68,14 +71,24 @@ export default async function StudentAssessmentsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
-          Asesmen Wajib
-        </h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Asesmen literasi digital terjadwal untuk kelas {profile.class.name}.
-        </p>
-      </div>
+      <StudentPageHeader
+        title="Asesmen Wajib"
+        description={`Asesmen literasi digital terjadwal untuk kelas ${profile.class.name}.`}
+        icon={<BookOpen className="h-5 w-5" />}
+        accent="indigo"
+        action={
+          <Button
+            asChild
+            variant="secondary"
+            className="rounded-xl bg-white font-semibold text-indigo-700 shadow-sm hover:bg-indigo-50"
+          >
+            <Link href="/siswa/latihan">
+              <Sparkles className="h-4 w-4 text-teal-600" />
+              <span>Buka Latihan Mandiri &amp; Rekomendasi</span>
+            </Link>
+          </Button>
+        }
+      />
 
       {assessments.length === 0 ? (
         <Card className="rounded-xl border border-slate-200 bg-white p-6 text-center shadow-sm">
@@ -231,5 +244,13 @@ export default async function StudentAssessmentsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function StudentAssessmentsPage() {
+  return (
+    <Suspense fallback={<div className="text-sm text-slate-500">Memuat asesmen wajib...</div>}>
+      <StudentAssessmentsContent />
+    </Suspense>
   );
 }

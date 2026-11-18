@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import {
@@ -13,7 +12,6 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { LoginForm } from "@/app/login/login-form";
-import { BrandWordmark } from "@/components/brand-logo";
 import { getSession } from "@/lib/auth";
 import { formatWibDateTime } from "@/lib/schedule";
 
@@ -66,10 +64,23 @@ export default function LoginPage() {
         <AuthRedirect />
       </Suspense>
 
-      <main className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-8">
-        <div className="w-full max-w-md overflow-hidden rounded-3xl bg-white md:grid md:max-w-5xl md:grid-cols-12">
-          {/* Panel Kiri Desktop: 4 Pilar Literasi Digital (Flat & Interaktif) */}
-          <aside className="relative hidden flex-col justify-between overflow-hidden bg-indigo-950 p-8 text-white md:col-span-5 md:flex lg:p-10">
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-violet-100 px-4 py-10 md:pr-32 xl:pr-28 2xl:px-8">
+        {/* Latar belakang ungu pastel cerah dengan dekorasi bubble flat */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          <span className="absolute -top-28 -left-24 h-96 w-96 rounded-full bg-violet-200/80" />
+          <span className="absolute top-1/3 left-10 h-28 w-28 rounded-full bg-teal-200/55" />
+          <span className="absolute -top-20 -right-16 h-80 w-80 rounded-full bg-indigo-200/75" />
+          <span className="absolute -bottom-32 left-1/4 h-96 w-96 rounded-full bg-indigo-200/65" />
+          <span className="absolute right-12 bottom-1/4 h-24 w-24 rounded-full bg-amber-200/60" />
+          <span className="absolute -right-24 -bottom-20 h-80 w-80 rounded-full bg-violet-200/80" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-md rounded-3xl bg-white shadow-xl shadow-indigo-950/10 ring-1 ring-indigo-950/5 md:grid md:max-w-4xl md:grid-cols-12 xl:max-w-5xl">
+          {/* Panel Kiri Desktop: 4 Pilar Literasi Digital */}
+          <aside className="relative hidden flex-col justify-between overflow-hidden rounded-l-3xl bg-indigo-950 p-8 text-white md:col-span-5 md:flex lg:p-10">
             <span
               aria-hidden="true"
               className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-indigo-800/35"
@@ -91,7 +102,8 @@ export default function LoginPage() {
                 </h2>
                 <p className="text-sm leading-relaxed text-indigo-200/90">
                   Membangun ketajaman berpikir kritis, etika siber, dan navigasi
-                  informasi objektif bagi siswa-siswi SMP di era kecerdasan digital.
+                  informasi objektif bagi siswa-siswi SMP di era kecerdasan
+                  digital.
                 </p>
               </div>
 
@@ -130,73 +142,9 @@ export default function LoginPage() {
           </aside>
 
           {/* Panel Kanan Desktop / Konten Utama Mobile */}
-          <section className="flex flex-col justify-between p-6 sm:p-8 md:col-span-7 md:p-10">
+          <section className="relative flex flex-col justify-between rounded-3xl bg-white p-6 sm:p-8 md:col-span-7 md:rounded-l-none md:rounded-r-3xl md:p-10">
             <div className="space-y-6">
-              {/* Header Mobile (sesuai referensi mobile) */}
-              <div className="flex flex-col items-center text-center md:hidden">
-                <div className="h-24 w-24 overflow-hidden rounded-2xl">
-                  <Image
-                    src="/literasik-owl.jpg"
-                    alt="Maskot Burung Hantu Literasik"
-                    width={108}
-                    height={108}
-                    priority
-                    className="h-full w-full scale-125 object-cover"
-                  />
-                </div>
-                <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3.5 py-1 text-[11px] font-bold tracking-wide text-teal-700 uppercase">
-                  <GraduationCap className="h-3.5 w-3.5" />
-                  Asesmen Literasi Digital SMP
-                </span>
-                <h1 className="mt-2.5">
-                  <BrandWordmark darkBg={false} className="text-3xl" />
-                </h1>
-                <p className="mt-1.5 text-sm text-slate-600">
-                  Ukur kecakapan digital, raih prestasi bersama Literasik.
-                </p>
-              </div>
-
-              {/* Header Desktop (sesuai referensi desktop) */}
-              <div className="hidden space-y-4 md:block">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3.5">
-                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl">
-                      <Image
-                        src="/literasik-owl.jpg"
-                        alt="Maskot Burung Hantu Literasik"
-                        width={72}
-                        height={72}
-                        priority
-                        className="h-full w-full scale-125 object-cover"
-                      />
-                    </div>
-                    <div>
-                      <p className="leading-tight">
-                        <BrandWordmark darkBg={false} className="text-xl" />
-                      </p>
-                      <p className="mt-0.5 text-xs text-slate-500">
-                        Platform Asesmen Mandiri
-                      </p>
-                    </div>
-                  </div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
-                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-600" />
-                    Asesmen Literasi Digital SMP
-                  </span>
-                </div>
-
-                <div className="space-y-1 pt-1">
-                  <h1 className="text-xl font-bold text-slate-900 lg:text-2xl">
-                    Ukur kecakapan digital, raih prestasi bersama Literasik.
-                  </h1>
-                  <p className="text-sm text-slate-600">
-                    Masukkan kredensial akun peserta didik atau pendidik untuk
-                    membuka sesi asesmen dan analitik.
-                  </p>
-                </div>
-              </div>
-
-              {/* Form Masuk (1 instance untuk desktop & mobile) */}
+              {/* Header Maskot Interaktif + Form Masuk */}
               <LoginForm />
 
               {/* Info Akun Sekolah Mobile */}

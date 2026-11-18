@@ -180,8 +180,7 @@ async function LeaderboardContent() {
   );
 }
 
-export default async function TeacherLeaderboardPage() {
-  await requireTeacher();
+export default function TeacherLeaderboardPage() {
   return (
     <Suspense fallback={<div className="text-sm text-slate-500">Memuat peringkat...</div>}>
       <LeaderboardContent />

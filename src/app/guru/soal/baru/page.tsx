@@ -69,8 +69,7 @@ async function TeacherNewQuestionContent() {
   );
 }
 
-export default async function TeacherNewQuestionPage() {
-  await requireTeacher();
+export default function TeacherNewQuestionPage() {
   return (
     <Suspense
       fallback={

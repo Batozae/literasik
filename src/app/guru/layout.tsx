@@ -1,22 +1,21 @@
 import { Suspense, type ReactNode } from "react";
 import { requireTeacher } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { getTeacherClasses } from "@/lib/teacher-scope";
 import { TeacherNavigation } from "@/app/guru/navigation";
+import TeacherLoading from "@/app/guru/loading";
 
 async function TeacherContent({ children }: { children: ReactNode }) {
   const teacher = await requireTeacher();
-  const assignments = await prisma.teacherClass.findMany({
-    where: { teacherId: teacher.id },
-    include: { class: { select: { name: true } } },
-    orderBy: { class: { name: "asc" } },
-  });
-  const classNames = assignments.map((a) => a.class.name);
+  const classes = await getTeacherClasses(teacher.id);
+  const classNames = classes.map((c) => c.name);
 
   return (
     <>
       <TeacherNavigation name={teacher.name} classNames={classNames} />
       <main className="min-h-[calc(100vh-4rem)] px-4 py-6 md:ml-64 md:px-8 md:py-6">
-        <div className="mx-auto max-w-7xl">{children}</div>
+        <div className="mx-auto max-w-7xl">
+          <Suspense fallback={<TeacherLoading />}>{children}</Suspense>
+        </div>
       </main>
     </>
   );

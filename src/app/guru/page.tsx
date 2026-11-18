@@ -75,7 +75,7 @@ function AccentKpiCard({
   return (
     <Link
       href={href}
-      className="group relative block overflow-hidden rounded-xl bg-white transition-colors duration-150 hover:bg-slate-50/90 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+      className="group relative block overflow-hidden rounded-2xl bg-white transition-colors duration-150 hover:bg-slate-50/90 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
     >
       <span
         aria-hidden="true"
@@ -104,11 +104,14 @@ function AccentKpiCard({
 // ─────────────────────────────────────────────
 
 async function DashboardContent({
-  searchParams,
+  searchParamsPromise,
 }: {
-  searchParams: Record<string, string | undefined>;
+  searchParamsPromise: Promise<Record<string, string | undefined>>;
 }) {
-  const teacher = await requireTeacher();
+  const [teacher, searchParams] = await Promise.all([
+    requireTeacher(),
+    searchParamsPromise,
+  ]);
   const now = new Date();
 
   const filter = parsePeriodFilter(searchParams);
@@ -232,8 +235,8 @@ async function DashboardContent({
             value={String(data.kpi.totalStudents)}
             icon={Users}
             sub={`${data.classOptions.length} kelas diajar`}
-            stripClass="bg-rose-400"
-            iconWrapClass="bg-rose-50 text-rose-500"
+            stripClass="bg-indigo-600"
+            iconWrapClass="bg-indigo-600 text-white"
           />
           <AccentKpiCard
             href="/guru/asesmen"
@@ -245,8 +248,8 @@ async function DashboardContent({
                 ? `${data.kpi.openAssessmentCount} asesmen terbuka`
                 : "Belum ada asesmen"
             }
-            stripClass="bg-indigo-700"
-            iconWrapClass="bg-indigo-50 text-indigo-700"
+            stripClass="bg-sky-500"
+            iconWrapClass="bg-sky-500 text-white"
           />
           <AccentKpiCard
             href="#performa-pilar"
@@ -254,8 +257,8 @@ async function DashboardContent({
             value={fmt(data.kpi.avgWajibAccuracy)}
             icon={TrendingUp}
             sub="Khusus asesmen wajib"
-            stripClass="bg-amber-400"
-            iconWrapClass="bg-amber-50 text-amber-500"
+            stripClass="bg-emerald-500"
+            iconWrapClass="bg-emerald-500 text-white"
           />
           <AccentKpiCard
             href="#daftar-siswa"
@@ -263,14 +266,14 @@ async function DashboardContent({
             value={String(data.kpi.needsAttentionCount)}
             icon={AlertCircle}
             sub="Prioritas bimbingan"
-            stripClass="bg-emerald-500"
-            iconWrapClass="bg-emerald-50 text-emerald-600"
+            stripClass="bg-rose-500"
+            iconWrapClass="bg-rose-500 text-white"
           />
         </div>
       </section>
 
       {/* Baris 2: Filter (GUR-01), Keterlibatan Latihan (GUR-10), & Ekspor CSV (GUR-09) */}
-      <div className="flex flex-col justify-between gap-3 rounded-xl bg-white px-4 py-3 lg:flex-row lg:items-end">
+      <div className="flex flex-col justify-between gap-3 rounded-2xl bg-white px-4 py-3.5 lg:flex-row lg:items-end">
         <FilterBar
           classOptions={data.classOptions}
           selectedClassId={searchParams.classId ?? ""}
@@ -280,15 +283,15 @@ async function DashboardContent({
         />
 
         <div className="flex flex-wrap items-center gap-2">
-          <div className="inline-flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-800">
-            <BookOpen className="h-3.5 w-3.5 text-emerald-600" />
+          <div className="inline-flex items-center gap-2 rounded-xl bg-teal-50 px-3 py-2 text-xs font-medium text-teal-800">
+            <BookOpen className="h-3.5 w-3.5 text-teal-600" />
             <span>
               <strong className="tabular-nums font-bold">
                 {data.kpi.practiceSessionCount}
               </strong>{" "}
               Sesi Latihan
             </span>
-            <span className="text-emerald-700">dan</span>
+            <span className="text-teal-700">dan</span>
             <span>
               <strong className="tabular-nums font-bold">
                 {data.kpi.practiceStudentCount}
@@ -301,7 +304,7 @@ async function DashboardContent({
             <Button
               variant="secondary"
               size="sm"
-              className="gap-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200"
+              className="gap-1 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
             >
               <Download className="h-3.5 w-3.5" />
               Ekspor CSV Siswa
@@ -311,7 +314,7 @@ async function DashboardContent({
             <Button
               variant="secondary"
               size="sm"
-              className="gap-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200"
+              className="gap-1 rounded-xl bg-sky-50 text-sky-700 hover:bg-sky-100"
             >
               <Download className="h-3.5 w-3.5" />
               Ekspor CSV Materi
@@ -325,7 +328,7 @@ async function DashboardContent({
         {/* Kolom Kiri */}
         <div className="flex flex-col gap-6 lg:col-span-5">
           {/* Kalender & Jadwal Asesmen */}
-          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
+          <Card className="rounded-2xl border-0 bg-white shadow-none">
             <CardHeader className="pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Kalender &amp; Jadwal Asesmen
@@ -340,14 +343,14 @@ async function DashboardContent({
           </Card>
 
           {/* Agenda Asesmen Terbaru */}
-          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
+          <Card className="rounded-2xl border-0 bg-white shadow-none">
             <CardHeader className="flex flex-row items-center justify-between gap-2 pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Agenda Asesmen
               </CardTitle>
               <Link
                 href="/guru/asesmen"
-                className="inline-flex items-center rounded-full border border-emerald-500 px-3 py-1 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                className="inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 transition-colors hover:bg-indigo-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 Lihat Semua
               </Link>
@@ -402,7 +405,7 @@ async function DashboardContent({
           {/* GUR-03: Performa per Pilar */}
           <Card
             id="performa-pilar"
-            className="scroll-mt-20 rounded-xl border border-slate-200 bg-white shadow-sm"
+            className="scroll-mt-20 rounded-2xl border-0 bg-white shadow-none"
           >
             <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2 pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
@@ -418,7 +421,7 @@ async function DashboardContent({
           </Card>
 
           {/* GUR-08 Preview: Peraih Skor Tertinggi */}
-          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
+          <Card className="rounded-2xl border-0 bg-white shadow-none">
             <CardHeader className="flex flex-row items-center justify-between gap-2 pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Peraih Skor Tertinggi
@@ -487,7 +490,7 @@ async function DashboardContent({
           </Card>
 
           {/* GUR-05: Tren Akurasi ditempatkan di Kolom Kanan agar tinggi kolom seimbang tanpa ruang kosong */}
-          <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
+          <Card className="rounded-2xl border-0 bg-white shadow-none">
             <CardHeader className="pb-1">
               <CardTitle className="text-base font-bold text-slate-900">
                 Tren Akurasi per Asesmen
@@ -501,7 +504,7 @@ async function DashboardContent({
       </div>
 
       {/* Baris 4: Materi Tersulit (GUR-04 + GUR-10) */}
-      <Card className="rounded-xl border border-slate-200 bg-white shadow-sm">
+      <Card className="rounded-2xl border-0 bg-white shadow-none">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-base font-bold text-slate-900">
               Tingkat Kesulitan Materi
@@ -592,7 +595,7 @@ async function DashboardContent({
       {/* Baris 5: Tabel Daftar Siswa (GUR-06) */}
       <Card
         id="daftar-siswa"
-        className="scroll-mt-20 rounded-xl border border-slate-200 bg-white shadow-sm"
+        className="scroll-mt-20 rounded-2xl border-0 bg-white shadow-none"
       >
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-base font-bold text-slate-900">
@@ -675,20 +678,18 @@ async function DashboardContent({
 // Page export
 // ─────────────────────────────────────────────
 
-export default async function TeacherDashboardPage({
+export default function TeacherDashboardPage({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
-  await requireTeacher();
-  const params = await searchParams;
   return (
     <Suspense
       fallback={
         <div className="text-sm text-slate-500">Memuat dasbor analitik...</div>
       }
     >
-      <DashboardContent searchParams={params} />
+      <DashboardContent searchParamsPromise={searchParams} />
     </Suspense>
   );
 }

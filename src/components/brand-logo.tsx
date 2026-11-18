@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { LiterasikOwl } from "@/components/literasik-owl";
 
 export function BrandWordmark({
   darkBg = true,
@@ -25,17 +25,8 @@ export function BrandWordmark({
 export function BrandSidebarLogo() {
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="h-28 w-28 overflow-hidden rounded-2xl">
-        <Image
-          src="/literasik-owl.jpg"
-          alt="Maskot Burung Hantu Literasik"
-          width={128}
-          height={128}
-          priority
-          className="h-full w-full scale-125 object-cover"
-        />
-      </div>
-      <BrandWordmark darkBg className="mt-1.5 text-2xl" />
+      <LiterasikOwl size="xl" interactive />
+      <BrandWordmark darkBg className="mt-1 text-2xl" />
       <span className="mt-1.5 inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.22em] text-indigo-200/80 uppercase">
         <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
         Literasi Digital
@@ -47,16 +38,33 @@ export function BrandSidebarLogo() {
 export function BrandCompactLogo() {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="h-11 w-11 overflow-hidden rounded-xl">
-        <Image
-          src="/literasik-owl.jpg"
-          alt="Maskot Burung Hantu Literasik"
-          width={48}
-          height={48}
-          className="h-full w-full scale-125 object-cover"
-        />
-      </div>
+      <LiterasikOwl size="sm" interactive />
       <BrandWordmark darkBg className="text-lg" />
+    </div>
+  );
+}
+
+export function SidebarBubbles() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
+      <span className="absolute -top-14 -right-14 h-44 w-44 rounded-full bg-indigo-800/35" />
+      <span className="absolute top-1/2 -left-10 h-32 w-32 rounded-full bg-indigo-800/20" />
+      <span className="absolute -bottom-16 -left-14 h-48 w-48 rounded-full bg-teal-500/10" />
+    </div>
+  );
+}
+
+export function MobileHeaderBubbles() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
+      <span className="absolute -top-10 -right-8 h-24 w-24 rounded-full bg-indigo-800/35" />
+      <span className="absolute -bottom-10 left-10 h-20 w-20 rounded-full bg-teal-500/10" />
     </div>
   );
 }

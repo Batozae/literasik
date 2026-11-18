@@ -6,18 +6,18 @@ Prototipe platform asesmen literasi digital gamifikasi dengan dashboard learning
 
 ## 1. Posisi Saat Ini
 
-- **Fase selesai:** Fase 1, Fase 2, Fase 3. **Fase aktif:** Fase 4 (menunggu pengerja Ihza).
-- **Versi Master Context:** v2.0 (+ keputusan Fase 1, 2, & 3 di Bagian 13)
+- **Fase selesai:** Fase 1, Fase 2, Fase 3, Fase 4 (Seluruh fase MVP selesai).
+- **Versi Master Context:** v2.0 (+ keputusan Fase 1, 2, 3, & 4 di Bagian 13)
 - **Versi pustaka terkunci:** `next` 16.4.6, `react` 19.3.0, `prisma` dan `@prisma/client` 6.19.3, `vitest` 5.1.0, `jose` 6.2.17, `bcryptjs` 3.0.3, `tsx` 4.23.15, `recharts` 2.15.3 (`shadcn/ui`, `lucide-react`, `tailwind` mengikuti hasil instalasi)
 
 ## 2. Papan Fase
 
-| Fase                                | Pengerja | Status       | Dokumen keluaran |
-| ----------------------------------- | -------- | ------------ | ---------------- |
-| 1. Fondasi dan Bank Soal            | Fatih    | **Selesai**  | `docs/Fase_1.md` |
-| 2. Alur Wajib dan Gamifikasi        | Ikfi     | **Selesai**  | `docs/Fase_2.md` |
-| 3. Dashboard Guru dan Analitik      | Ardan    | **Selesai**  | `docs/Fase_3.md` |
-| 4. Penjadwalan, Latihan, Finalisasi | Ihza     | Siap dimulai | `docs/Fase_4.md` |
+| Fase                                | Pengerja | Status      | Dokumen keluaran |
+| ----------------------------------- | -------- | ----------- | ---------------- |
+| 1. Fondasi dan Bank Soal            | Fatih    | **Selesai** | `docs/Fase_1.md` |
+| 2. Alur Wajib dan Gamifikasi        | Ikfi     | **Selesai** | `docs/Fase_2.md` |
+| 3. Dashboard Guru dan Analitik      | Ardan    | **Selesai** | `docs/Fase_3.md` |
+| 4. Penjadwalan, Latihan, Finalisasi | Ihza     | **Selesai** | `docs/Fase_4.md` |
 
 ## 3. Status Fitur
 
@@ -28,13 +28,13 @@ Status: `Belum` / `Berjalan` / `Selesai (teruji)` / `Dipangkas`
 | 1    | AUTH-01, AUTH-02, DAT-01, DAT-03, ASM-01, ASM-02, `schedule.ts`+test, layout, tema      | Selesai (teruji) |
 | 2    | SIS-01, SIS-02, SIS-03, SIS-04, SIS-05, SIS-06, GAM-01/02/03, DAT-02, `scoring.ts`+test | Selesai (teruji) |
 | 3    | GUR-01 s.d. GUR-10, `analytics.ts`+test                                                 | Selesai (teruji) |
-| 4    | ASM-03, ASM-04, ASM-05, ASM-06, SIS-07, uji akses, latihan demo                         | Belum            |
+| 4    | ASM-03, ASM-04, ASM-05, ASM-06, SIS-07, `assessment-rules.ts`+test, uji akses, siap demo | Selesai (teruji) |
 
 ## 4. Isu Terbuka dan Hal yang Diwariskan
 
 - Kolom `AssessmentSession.wajibKey` (unik, nullable) ditegakkan di kode server dan database dengan format `"{studentId}-{assessmentId}"` untuk sesi WAJIB.
 - Dashboard analitik guru (GUR-01..06), detail siswa (GUR-07), peringkat angkatan guru (GUR-08), dan ekspor CSV (GUR-09) selesai penuh dan beroperasi eksklusif atas jawaban sesi WAJIB (D-01).
-- Fitur tutup loop (GUR-10 / D-10) telah terpasang: aksi "Buat latihan" pada materi Sulit/Sedang membuat draft asesmen LATIHAN terkait materi (`sourceTopicId`) dan mengarahkan guru ke halaman edit/jadwal asesmen (`/guru/asesmen/[id]`), siap dituntaskan alurnya di Fase 4.
+- Penjadwalan asesmen wajib & latihan rekomendasi (ASM-03), toggle aktif/nonaktif asesmen (ASM-04), aksi simulasi "Buka sekarang" / "Tutup sekarang" (ASM-06), serta halaman latihan mandiri & rekomendasi guru dengan umpan balik langsung per soal (SIS-07 & ASM-05) telah selesai penuh dan teruji end-to-end.
 - Data historis (DAT-02) ter-seed lengkap via `npm run db:reset` (606 sesi, 3015 jawaban, 2616 point event, 684 lencana) dengan sebaran siswa teruji.
 - Isi 60 soal belum dicocokkan dengan modul resmi Komdigi/Siberkreasi; pembagian materi D-13 perlu verifikasi.
 - Tidak ada pembatasan percobaan login (di luar lingkup; catat sebagai keterbatasan di laporan).

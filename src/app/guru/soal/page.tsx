@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -32,8 +33,8 @@ function singleParam(value: string | string[] | undefined): string {
   return typeof value === "string" ? value : "";
 }
 
-export default async function TeacherQuestionsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  const teacher = await requireTeacher();
+async function TeacherQuestionsContent({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const [teacher, params] = await Promise.all([requireTeacher(), searchParams]);
   let gradeLevels: number[] = [];
   let topics: Array<{ id: number; name: string; pillarId: number; gradeLevel: number; pillar: { name: string } }> = [];
   let questions: Array<{
@@ -42,11 +43,10 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
     difficulty: "EASY" | "MEDIUM" | "HARD";
     isActive: boolean;
     topic: { id: number; name: string; pillarId: number; pillar: { name: string } };
-    answers: Array<{ id: number }>;
+    answers: Array<{ id: number; isCorrect: boolean; session: { kind: "WAJIB" | "LATIHAN" } }>;
     assessmentQuestions: Array<{ assessment: { opensAt: Date | null; closesAt: Date | null } }>;
   }> = [];
   let loadFailed = false;
-  const params = await searchParams;
 
   try {
     gradeLevels = await getTeacherGradeLevels(teacher.id);
@@ -78,7 +78,7 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
       },
       include: {
         topic: { include: { pillar: { select: { name: true } } } },
-        answers: { select: { id: true } },
+        answers: { select: { id: true, isCorrect: true, session: { select: { kind: true } } } },
         assessmentQuestions: {
           where: { assessment: { is: { type: "WAJIB" } } },
           include: { assessment: { select: { opensAt: true, closesAt: true } } },
@@ -157,6 +157,7 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
                 <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Pilar</TableHead>
                 <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Teks soal</TableHead>
                 <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Kesulitan</TableHead>
+                <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-slate-500">% Benar</TableHead>
                 <TableHead className="text-xs font-medium uppercase tracking-wide text-slate-500">Status</TableHead>
                 <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-slate-500">Aksi</TableHead>
               </TableRow>
@@ -164,6 +165,12 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
             <TableBody>
               {visibleQuestions.map((question) => {
                 const diff = difficultyMeta[question.difficulty];
+                const wajibAnswers = question.answers.filter((a) => a.session.kind === "WAJIB");
+                const wajibCorrect = wajibAnswers.filter((a) => a.isCorrect).length;
+                const accuracyPct =
+                  wajibAnswers.length > 0
+                    ? `${Math.round((wajibCorrect / wajibAnswers.length) * 100)}%`
+                    : "—";
                 return (
                   <TableRow
                     key={question.id}
@@ -178,6 +185,14 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
                       <Badge className={`h-6 rounded-full border-0 px-3 text-xs font-semibold ${diff.badgeClass}`}>
                         {diff.label}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="text-right font-semibold tabular-nums text-slate-700">
+                      <span>{accuracyPct}</span>
+                      {wajibAnswers.length > 0 ? (
+                        <span className="ml-1 text-xs font-normal text-slate-400">
+                          ({wajibCorrect}/{wajibAnswers.length})
+                        </span>
+                      ) : null}
                     </TableCell>
                     <TableCell>
                       <QuestionStatusToggle
@@ -211,5 +226,13 @@ export default async function TeacherQuestionsPage({ searchParams }: { searchPar
         </div>
       )}
     </div>
+  );
+}
+
+export default function TeacherQuestionsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  return (
+    <Suspense fallback={<div className="text-sm text-slate-500">Memuat bank soal...</div>}>
+      <TeacherQuestionsContent searchParams={searchParams} />
+    </Suspense>
   );
 }
